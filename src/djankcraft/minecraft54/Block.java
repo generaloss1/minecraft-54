@@ -74,9 +74,9 @@ public class Block{
 
     public static final Block AIR,GRASS_BLOCK,DIRT,STONE,SAND,OAK_LOG,OAK_LEAVES,BIRCH_LOG,WATER,STILL_WATER,GLASS,GRASS,COBBLESTONE,PLANKS,CHEST,OAK_STAIRS;
     static{
-        float gcr=0.7f;
-        float gcg=1.0f;
-        float gcb=0.5f;
+        float gcr=0.4f;
+        float gcg=0.9f;
+        float gcb=0.3f;
 
         float wymax=1.5f/16f;
 
@@ -178,7 +178,9 @@ public class Block{
         WATER.setShowFor(ALL,-(id+1));
         WATER.render_layer=new int[]{4,4,3,3,4,4,3};
         //WATER.setColor(0.3f,0.85f,1,1);
-        WATER.setColor(0,0.6f,0.7f,0.85f);
+        //WATER.setColor(0,0.5f,0.7f,0.9f);
+        //WATER.setColor(1,1,1,0.85f);
+        WATER.setColor(0,0.5f,0.8f,1);
 
         id++;
         STILL_WATER=new Block(id,BlockModel.still_water,new BlockTextureModel()
@@ -192,7 +194,9 @@ public class Block{
         STILL_WATER.setShowFor(ALL,-(id-1));
         STILL_WATER.render_layer=new int[]{4,4,3,3,4,4,3};
         //WATER.setColor(0.3f,0.85f,1,1);
-        STILL_WATER.setColor(0,0.6f,0.7f,0.85f);
+        //STILL_WATER.setColor(0,0.5f,0.7f,0.9f);
+        //STILL_WATER.setColor(1,1,1,0.85f);
+        STILL_WATER.setColor(0,0.5f,0.8f,1);
 
         id++;
         GLASS=new Block(id,BlockModel.cube,new BlockTextureModel()
@@ -204,6 +208,7 @@ public class Block{
                 .setSide(5,BlockTextureModel.quad(10)) // mz
         );
         GLASS.setShowFor(ALL,WATER.id);
+        //GLASS.render_layer=new int[]{4,4,4,4,4,4,4};
 
         id++;
         GRASS=new Block(id,BlockModel.grass,new BlockTextureModel()
@@ -217,38 +222,38 @@ public class Block{
 
         id++;
         PLANKS=new Block(id,BlockModel.cube,new BlockTextureModel()
-                .setSide(0,BlockTextureModel.quad(22)) // px
-                .setSide(1,BlockTextureModel.quad(22)) // mx
-                .setSide(2,BlockTextureModel.quad(22)) // py
-                .setSide(3,BlockTextureModel.quad(22)) // my
-                .setSide(4,BlockTextureModel.quad(22)) // pz
-                .setSide(5,BlockTextureModel.quad(22)) // mz
+                .setSide(0,BlockTextureModel.quad(14)) // px
+                .setSide(1,BlockTextureModel.quad(14)) // mx
+                .setSide(2,BlockTextureModel.quad(14)) // py
+                .setSide(3,BlockTextureModel.quad(14)) // my
+                .setSide(4,BlockTextureModel.quad(14)) // pz
+                .setSide(5,BlockTextureModel.quad(14)) // mz
         );
 
         id++;
         CHEST=new Block(id,BlockModel.cube,new BlockTextureModel()
-                .setSide(0,BlockTextureModel.quad(23)) // px
-                .setSide(1,BlockTextureModel.quad(26)) // mx
-                .setSide(2,BlockTextureModel.quad(25)) // py
-                .setSide(3,BlockTextureModel.quad(25)) // my
-                .setSide(4,BlockTextureModel.quad(24)) // pz
-                .setSide(5,BlockTextureModel.quad(24)) // mz
+                .setSide(0,BlockTextureModel.quad(15)) // px
+                .setSide(1,BlockTextureModel.quad(18)) // mx
+                .setSide(2,BlockTextureModel.quad(17)) // py
+                .setSide(3,BlockTextureModel.quad(17)) // my
+                .setSide(4,BlockTextureModel.quad(16)) // pz
+                .setSide(5,BlockTextureModel.quad(16)) // mz
         );
 
         id++;
         OAK_STAIRS=new Block(id,BlockModel.stairs,new BlockTextureModel()
-                .setSide(0,BlockTextureModel.quad(22,0,0.5f,1,1)) // px
-                .setSide(1,BlockTextureModel.quad(22)) // mx
-                .setSide(2,BlockTextureModel.quad(22,0.5f,0,1,1)) // py
-                .setSide(3,BlockTextureModel.quad(22)) // my
+                .setSide(0,BlockTextureModel.quad(14,0,0.5f,1,1)) // px
+                .setSide(1,BlockTextureModel.quad(14)) // mx
+                .setSide(2,BlockTextureModel.quad(14,0.5f,0,1,1)) // py
+                .setSide(3,BlockTextureModel.quad(14)) // my
                 .setSide(4,Utils.add(
-                        BlockTextureModel.quad(22,0,0,0.5f,1),BlockTextureModel.quad(22,0.5f,0.5f,1,1)
+                        BlockTextureModel.quad(14,0,0,0.5f,1),BlockTextureModel.quad(14,0.5f,0.5f,1,1)
                 )) // pz
                 .setSide(5,Utils.add(
-                        BlockTextureModel.quad(22,0.5f,0,1,1),BlockTextureModel.quad(22,0,0.5f,0.5f,1)
+                        BlockTextureModel.quad(14,0.5f,0,1,1),BlockTextureModel.quad(14,0,0.5f,0.5f,1)
                 )) // mz
                 .setSide(6,Utils.add(
-                        BlockTextureModel.quad(22,0,0,0.5f,1),BlockTextureModel.quad(22,0,0,1,0.5f)
+                        BlockTextureModel.quad(14,0,0,0.5f,1),BlockTextureModel.quad(14,0,0,1,0.5f)
                 ))
         );
         OAK_STAIRS.setColor(6,0.85f,0.85f,0.85f,1);

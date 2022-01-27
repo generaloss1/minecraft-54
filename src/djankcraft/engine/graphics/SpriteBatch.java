@@ -322,9 +322,11 @@ public class SpriteBatch{
     public void setColor(Color color){
         this.color.set(color);
     }
-
     public void setColor(float r,float g,float b,float a){
         this.color.set(r,g,b,a);
+    }
+    public Color getColor(){
+        return color;
     }
 
     public void setAlpha(float a){

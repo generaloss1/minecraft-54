@@ -48,4 +48,12 @@ public class Main{
         cfg.init(new Minecraft54());
     }
 
+    public static float getFPS(){
+        return cfg.FPS;
+    }
+
+    public static float getDeltaTime(){
+        return cfg.DELTA_TIME;
+    }
+
 }

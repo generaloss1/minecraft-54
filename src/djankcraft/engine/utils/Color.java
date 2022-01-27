@@ -87,6 +87,10 @@ public class Color{
     }
 
 
+    public Color clone(){
+        return new Color(this);
+    }
+
     public String toString(){
         return r+" "+g+" "+b+" "+a;
     }

@@ -13,8 +13,7 @@ import djankcraft.minecraft54.events.EventsListener;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F11;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class GameScreen implements AppScreen, EventsListener{
 
@@ -32,6 +31,8 @@ public class GameScreen implements AppScreen, EventsListener{
         cam=new OrthographicCamera(Main.window);
 
         player=new Player(Minecraft54.ACCOUNT_NAME);
+        player.setCanFly(true);
+        player.setJumpBoost(1);
 
         Controls.CAMERA.setPosition(new Vector3(0,84,0));
 
@@ -43,8 +44,11 @@ public class GameScreen implements AppScreen, EventsListener{
     public void render(){
         GL46.glClearColor(0.4f,0.7f,1,1);
         cam.update();
-        Controls.update(Main.window,Main.mouse,Main.keyboard);
+        Controls.rotateCamera(Main.window,Main.mouse);
+        player.controls(Main.keyboard);
         Controls.CAMERA.update();
+
+        player.update();
 
         world.update();
         world.render();
@@ -54,7 +58,7 @@ public class GameScreen implements AppScreen, EventsListener{
         sb.drawText(font,"vsync: "+Main.window.isVSync()+", fps: "+Math.round(Main.cfg.FPS),10,Main.window.getHeight()-10-font.getFontHeight());
         sb.drawText(font,"tps: "+Math.round(Minecraft54.TPS),10,Main.window.getHeight()-(10+font.getFontHeight())*2);
         sb.drawText(font,"seed: "+world.seed,10,Main.window.getHeight()-(10+font.getFontHeight())*3);
-        sb.drawText(font,"pos: "+Controls.CAMERA.getPosition(),10,Main.window.getHeight()-(10+font.getFontHeight())*4);
+        sb.drawText(font,"pos: "+player.getHitbox().getPosition(),10,Main.window.getHeight()-(10+font.getFontHeight())*4);
         sb.drawText(font,"dir: "+Controls.CAMERA.getDirection(),10,Main.window.getHeight()-(10+font.getFontHeight())*5);
         sb.drawText(font,"world: "+world.name,10,Main.window.getHeight()-(10+font.getFontHeight())*6);
         sb.setAlpha(1);
@@ -115,7 +119,6 @@ public class GameScreen implements AppScreen, EventsListener{
             Controls.ignoreRotation();
             Main.window.toggleFullscreen();
         }
-
     }
 
     public void tick(){

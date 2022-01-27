@@ -3,10 +3,7 @@ package djankcraft.minecraft54.screens;
 import djankcraft.engine.app.AppScreen;
 import djankcraft.engine.graphics.OrthographicCamera;
 import djankcraft.engine.graphics.SpriteBatch;
-import djankcraft.engine.gui.Button;
-import djankcraft.engine.gui.ButtonCallback;
-import djankcraft.engine.gui.Gravity;
-import djankcraft.engine.gui.Layout;
+import djankcraft.engine.gui.*;
 import djankcraft.engine.math.Maths;
 import djankcraft.engine.utils.Assets;
 import djankcraft.minecraft54.*;
@@ -15,9 +12,7 @@ import djankcraft.minecraft54.generator.Generator;
 import java.io.*;
 import java.nio.file.Files;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F11;
-import static org.lwjgl.opengl.GL11C.glClearColor;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class WorldListScreen implements AppScreen{
 
@@ -34,32 +29,40 @@ public class WorldListScreen implements AppScreen{
         layout2=new Layout();
 
         Button button=new Button(0.7,0.15,"button1_n","button1_a","button1_p");
-        button.setText(Assets.getTTF("font3"),"Create New World");
         button.setPos(0.05,-0.05);
         button.setGravity(Gravity.LEFT_UP);
-        button.setCallback(new ButtonCallback(){
-            public void down(){}
-            public void pressed(){}
-            public void release(){
+        button.setTouchCallback(new TouchCallback(){
+            public void touchOn(LayoutElement current){}
+            public void touched(LayoutElement current){}
+            public void touchOff(LayoutElement current){
                 GameScreen.world=new World();
                 GameScreen.world.create("New World",Generator.NORMAL,Maths.randomSeed(8));
                 updateWorldList();
             }
         });
-        layout2.addElement("CNWBtt",button);
+        layout2.addElement("btt1",button);
+        Text text=new Text(button.getWidth(),button.getHeight(),"font3","Create New World");
+        text.setPos(button.x(),button.y());
+        text.setGravity(button.getGravity());
+        text.setColor(0.55f,0.55f,0.7f,1);
+        layout2.addElement("btt1txt",text);
 
         button=new Button(0.2,0.15,"button1_n","button1_a","button1_p");
-        button.setText(Assets.getTTF("font3"),"Back");
         button.setPos(0.05,0.05);
         button.setGravity(Gravity.LEFT_DOWN);
-        button.setCallback(new ButtonCallback(){
-            public void down(){}
-            public void pressed(){}
-            public void release(){
+        button.setTouchCallback(new TouchCallback(){
+            public void touchOn(LayoutElement current){}
+            public void touched(LayoutElement current){}
+            public void touchOff(LayoutElement current){
                 Main.cfg.setScreen("menu");
             }
         });
-        layout2.addElement("BackBtt",button);
+        layout2.addElement("btt2",button);
+        text=new Text(button.getWidth(),button.getHeight(),"font3","Back");
+        text.setPos(button.x(),button.y());
+        text.setGravity(button.getGravity());
+        text.setColor(0.55f,0.55f,0.7f,1);
+        layout2.addElement("btt2txt",text);
     }
 
 
@@ -77,13 +80,12 @@ public class WorldListScreen implements AppScreen{
                     String worldName=Files.readAllLines(properties.toPath()).get(2).split("name: ")[1];
 
                     Button button=new Button(0.7,0.1,"button1_n","button1_a","button1_p");
-                    button.setText(Assets.getTTF("font3"),worldName);
                     button.setPos(-0.05,-0.05-0.12*i);
                     button.setGravity(Gravity.RIGHT_UP);
-                    button.setCallback(new ButtonCallback(){
-                        public void down(){}
-                        public void pressed(){}
-                        public void release(){
+                    button.setTouchCallback(new TouchCallback(){
+                        public void touchOn(LayoutElement current){}
+                        public void touched(LayoutElement current){}
+                        public void touchOff(LayoutElement current){
                             //seeds: 12733317, 31184696, 41231155
                             GameScreen.world=new World();
                             GameScreen.world.load(world.getName());
@@ -93,6 +95,11 @@ public class WorldListScreen implements AppScreen{
                         }
                     });
                     layout1.addElement("btt"+i,button);
+                    Text text=new Text(button.getWidth(),button.getHeight(),"font3",worldName);
+                    text.setPos(button.x(),button.y());
+                    text.setGravity(button.getGravity());
+                    text.setColor(0.55f,0.55f,0.7f,1);
+                    layout1.addElement("btt"+i+"txt",text);
                 }catch(IOException e){
                     e.printStackTrace();
                 }

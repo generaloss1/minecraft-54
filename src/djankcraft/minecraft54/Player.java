@@ -1,54 +1,107 @@
 package djankcraft.minecraft54;
 
+import djankcraft.engine.io.Keyboard;
 import djankcraft.engine.math.vectors.Vector3;
-import djankcraft.engine.physics.Collider;
-import djankcraft.engine.physics.CubeHitbox;
-import djankcraft.minecraft54.screens.GameScreen;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 
-public class Player{
+public class Player extends Entity{
 
 
     public String name;
-    public CubeHitbox hitbox;
-    public Velocity velocity;
+    private boolean canFly;
+    private boolean flying;
 
 
     public Player(String name){
+        super(new Vector3(-0.3,0,-0.3),new Vector3(0.3,1.8,0.3),new Vector3(0,1.62,0));
         this.name=name;
-        hitbox=new CubeHitbox(new Vector3(-0.3,0,-0.3),new Vector3(0.3,1.8,0.3));
-        velocity=new Velocity();
         setSpeed(4.3);
     }
 
 
-    public void setSpeed(double speed){
-        velocity.setMax((float)speed);
-    }
+    public void controls(Keyboard keyboard){
+        float cam_speed=getVelocity().max()/10;
+        Vector3 controlMoveVel=Controls.CAMERA.getDefaultMove(new Vector3(
+                keyboard.isKeyPressed(GLFW_KEY_W)?cam_speed:keyboard.isKeyPressed(GLFW_KEY_S)?-cam_speed:0,
+                flying?(keyboard.isKeyPressed(GLFW_KEY_SPACE) ? cam_speed:keyboard.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? -cam_speed:0):0,
+                keyboard.isKeyPressed(GLFW_KEY_D)?cam_speed:keyboard.isKeyPressed(GLFW_KEY_A)?-cam_speed:0
+        ));
 
+        if(isOnGround()){
+            if(flying)
+                flying=false;
 
-    public boolean isOnGround(){
-        List<CubeHitbox> blockList=hitboxList();
-        CubeHitbox h=hitbox.clone();
-        h.move(0,-Float.MIN_VALUE,0);
-        return Collider.getCollidedMove(h,blockList).y==0;
-    }
+            if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_SHIFT)){
+                setSpeed(1.3);
+                getEye().y=getEye().y>1.495f?getEye().y-0.03f:1.495f;
 
-
-    public List<CubeHitbox> hitboxList(){
-        List<CubeHitbox> blockList=new ArrayList<>();
-        Vector3 pos=hitbox.getPosition();
-        int offset=10;
-        for(int x=Math.round(pos.x-1-offset); x<pos.x+1+offset; x++)
-            for(int y=Math.round(pos.y-1-offset); y<pos.y+3+offset; y++)
-                for(int z=Math.round(pos.z-1-offset); z<pos.z+1+offset; z++){
-                    int id=GameScreen.world.getBlock(x,y,z);
-                    if(id!=-1 && id!=Block.AIR.id && id!=Block.WATER.id && id!=Block.STILL_WATER.id && id!=Block.GRASS.id)
-                        blockList.add(new CubeHitbox(new Vector3(x,y,z),new Vector3(x+1,y+1,z+1)));
+                if(!isOnGround(controlMoveVel.x,0,0)){
+                    controlMoveVel.x=0;
+                    getVelocity().get().x=0;
                 }
-        return blockList;
+                if(!isOnGround(0,0,controlMoveVel.z)){
+                    controlMoveVel.z=0;
+                    getVelocity().get().z=0;
+                }
+
+            }else if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL)){
+                setSpeed(5.6);
+                getEye().y=getEye().y<1.62f?getEye().y+0.03f:1.62f;
+            }else{
+                setSpeed(4.3);
+                getEye().y=getEye().y<1.62f?getEye().y+0.03f:1.62f;
+            }
+
+            if(keyboard.isKeyPressed(GLFW_KEY_SPACE))
+                jump();
+        }
+
+        if(isJumping())
+            controlMoveVel.div(1.7f);
+
+        if(flying){
+            setNoGravity(true);
+            if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL))
+                setSpeed(22);
+            else
+                setSpeed(4.3);
+        }else{
+            setNoGravity(false);
+            if(keyboard.isKeyDown(GLFW_KEY_F) && isCanFly())
+                flying=true;
+        }
+
+        getVelocity().get().add(controlMoveVel);
+
+        Controls.CAMERA.setPosition(getHitbox().getPosition().clone().add(getEye()));
+
+        if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL) && getVelocity().get().x!=0 && getVelocity().get().z!=0)
+            Controls.CAMERA.setFOV(Controls.CAMERA.getFOV()<Minecraft54.FOV+8?Controls.CAMERA.getFOV()+1:Minecraft54.FOV+8);
+        else
+            Controls.CAMERA.setFOV(Controls.CAMERA.getFOV()>Minecraft54.FOV?Controls.CAMERA.getFOV()-1:Minecraft54.FOV);
+    }
+
+
+    public void setSpeed(double speed){
+        getVelocity().setMax((float)speed);
+    }
+
+
+    public boolean isCanFly(){
+        return canFly;
+    }
+    public void setCanFly(boolean canFly){
+        this.canFly=canFly;
+    }
+
+    public boolean isFlying(){
+        return flying;
+    }
+    public void setFlying(boolean flying){
+        this.flying=flying;
+        setNoGravity(flying);
     }
 
 

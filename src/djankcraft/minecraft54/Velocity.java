@@ -11,11 +11,16 @@ public class Velocity{
 
     public Velocity(){
         value=new Vector3();
-        this.max=1;
+        max=1;
+    }
+
+    public Velocity(Velocity velocity){
+        value=velocity.value.clone();
+        max=velocity.max;
     }
 
 
-    public void collidedAxesToZero(Vector3 collidedMovement){
+    public Velocity collidedAxesToZero(Vector3 collidedMovement){
         if(value.x!=0 && collidedMovement.x==0)
             value.x=0;
 
@@ -24,9 +29,11 @@ public class Velocity{
 
         if(value.z!=0 && collidedMovement.z==0)
             value.z=0;
+
+        return this;
     }
 
-    public void clamp(){
+    public Velocity clampToMax(){
         Vector3 nor=value.clone().nor().module();
         if(value.x>max*nor.x)
             value.x=max*nor.x;
@@ -42,9 +49,10 @@ public class Velocity{
             value.z=max*nor.z;
         else if(value.z<-max*nor.z)
             value.z=-max*nor.z;
+        return this;
     }
 
-    public void reduce(float reduce){
+    public Velocity reduce(float reduce){
         Vector3 nor=value.clone().nor().module();
 
         float r=reduce*nor.x;
@@ -85,17 +93,19 @@ public class Velocity{
             else
                 value.z=0;
         }
+
+        return this;
     }
 
 
-    public void add(Vector3 v){
-        value.add(v);
+    public Velocity add(Vector3 v){
+        return this;
     }
-    public void add(float x,float y,float z){
-        value.add(x,y,z);
+    public Velocity add(float x,float y,float z){
+        return this;
     }
-    public void add(double x,double y,double z){
-        value.add(x,y,z);
+    public Velocity add(double x,double y,double z){
+        return this;
     }
 
 
@@ -107,8 +117,13 @@ public class Velocity{
         return max;
     }
 
-    public void setMax(float max){
+    public Velocity setMax(float max){
         this.max=max;
+        return this;
+    }
+
+    public Velocity clone(){
+        return new Velocity(this);
     }
 
 

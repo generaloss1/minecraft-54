@@ -140,8 +140,8 @@ public class PerspectiveCamera{
     public void setRotation(float yaw,float pitch,float roll){
         this.rotation.setAngles(pitch,yaw,roll);
     }
-    public void rotate(float x,float y,float z){
-        this.rotation.rotateAngles(x,y,z);
+    public void rotate(float yaw,float pitch,float roll){
+        this.rotation.rotateAngles(yaw,pitch,roll);
     }
 
     public float getNear(){

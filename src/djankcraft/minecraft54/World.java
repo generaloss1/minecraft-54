@@ -338,9 +338,9 @@ public class World{
             EulerAngle camRot=Controls.CAMERA.getRotation();
 
             JSONObject stats=new JSONObject();
-            stats.put("x",player.hitbox.getPosition().x);
-            stats.put("y",player.hitbox.getPosition().y);
-            stats.put("z",player.hitbox.getPosition().z);
+            stats.put("x",player.getHitbox().getPosition().x);
+            stats.put("y",player.getHitbox().getPosition().y);
+            stats.put("z",player.getHitbox().getPosition().z);
             stats.put("yaw",camRot.getYaw());
             stats.put("pitch",camRot.getPitch());
             stats.put("roll",camRot.getRoll());
@@ -366,7 +366,7 @@ public class World{
             String statsString=Files.readString(statsFile.toPath());
             JSONObject stats=new JSONObject(statsString);
 
-            player.hitbox.getPosition().set(new Vector3(stats.getFloat("x"),stats.getFloat("y"),stats.getFloat("z")));
+            player.getHitbox().getPosition().set(new Vector3(stats.getFloat("x"),stats.getFloat("y"),stats.getFloat("z")));
             Controls.CAMERA.setRotation(stats.getFloat("yaw"),stats.getFloat("pitch"),stats.getFloat("roll"));
 
             return true;

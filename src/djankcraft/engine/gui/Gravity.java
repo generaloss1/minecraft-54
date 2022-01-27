@@ -14,4 +14,20 @@ public class Gravity{
     public static final int RIGHT_CENTER=64;
     public static final int CENTER_DOWN=128;
 
+    public static int parseGravity(String stringGravity){
+        return switch(stringGravity){
+            default->LEFT_DOWN;
+            case "LEFT_UP"->LEFT_UP;
+            case "RIGHT_UP"->RIGHT_UP;
+            case "RIGHT_DOWN"->RIGHT_DOWN;
+
+            case "CENTER"->CENTER;
+
+            case "LEFT_CENTER"->LEFT_CENTER;
+            case "CENTER_UP"->CENTER_UP;
+            case "RIGHT_CENTER"->RIGHT_CENTER;
+            case "CENTER_DOWN"->CENTER_DOWN;
+        };
+    }
+
 }

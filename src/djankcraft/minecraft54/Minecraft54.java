@@ -2,8 +2,6 @@ package djankcraft.minecraft54;
 
 import djankcraft.engine.app.AppListener;
 import djankcraft.engine.graphics.*;
-import djankcraft.engine.math.Maths;
-import djankcraft.engine.math.vectors.Vector3;
 import djankcraft.engine.utils.Assets;
 import djankcraft.engine.utils.Color;
 import djankcraft.engine.utils.Utils;
@@ -24,7 +22,7 @@ public class Minecraft54 implements AppListener{
     public static int TICK_RATE=20;
     public static Color CURSOR_COLOR_1=new Color(0,0.6f,0.2f,1);
     public static Color CURSOR_COLOR_2=new Color(0.75f,1,0.81f,1);
-    public static int RENDER_DISTANCE=4;
+    public static int RENDER_DISTANCE=3;
     public static String ACCOUNT_NAME="GeneralPashon";
 
     public static String GAME_PATH=".minecraft54";
@@ -63,45 +61,38 @@ public class Minecraft54 implements AppListener{
             Assets.loadTexture("textures/ui/button1_pressed.png","button1_p");
             Assets.loadTexture("textures/ui/background.png","background");
 
-            Assets.loadTexture3d(new Texture3D(32,32,
-                    "textures/blocks1/grass_block_side.png", // 0
-                    "textures/blocks1/grass_block_top.png",
-                    "textures/blocks1/dirt.png",
-                    "textures/blocks1/stone.png",
-                    "textures/blocks1/sand.png",
-                    "textures/blocks1/oak_log.png",
-                    "textures/blocks1/oak_log_top.png",
-                    "textures/blocks1/oak_leaves.png",
-                    "textures/blocks1/birch_log.png",
-                    "textures/blocks1/birch_log_top.png",
-                    "textures/blocks1/glass.png",            // 10
-                    "textures/blocks1/grass.png",
-                    "textures/blocks1/cobblestone.png",
-                    "textures/blocks1/water_0.png",
-                    "textures/blocks1/water_1.png",
-                    "textures/blocks1/water_2.png",
-                    "textures/blocks1/water_3.png",
-                    "textures/blocks1/water_4.png",
-                    "textures/blocks1/water_5.png",
-                    "textures/blocks1/water_6.png",
-                    "textures/blocks1/water_7.png",          // 20
-                    "textures/blocks1/water_8.png",
-                    "textures/blocks1/oak_planks.png",
-                    "textures/blocks1/chest_front.png",
-                    "textures/blocks1/chest_side.png",
-                    "textures/blocks1/chest_top.png",
-                    "textures/blocks1/chest_back.png"/*,
-                    "textures/blocks1/.png"/*,
-                    "textures/blocks1/.png"/*,
-                    "textures/blocks1/.png"/*,
-                    "textures/blocks1/.png"/*,
-                    "textures/blocks1/.png"/*,
-                    "textures/blocks1/.png"/*,
-                    "textures/blocks1/.png"/*,
-                    "textures/blocks1/.png"/*,
-                    "textures/blocks1/.png"/*,
-                    "textures/blocks1/.png"/*,
-                    "textures/blocks1/.png"*/
+            String blocks="textures/blocks3/";
+            Assets.loadTexture3d(new Texture3D(16,16,
+                    blocks+"grass_block_side.png", // 0
+                    blocks+"grass_block_top.png",
+                    blocks+"dirt.png",
+                    blocks+"stone.png",
+                    blocks+"sand.png",
+                    blocks+"oak_log.png",
+                    blocks+"oak_log_top.png",
+                    blocks+"oak_leaves.png",
+                    blocks+"birch_log.png",
+                    blocks+"birch_log_top.png",
+                    blocks+"glass.png",            // 10
+                    blocks+"grass.png",
+                    blocks+"cobblestone.png",
+                    blocks+"water_still.png",
+                    blocks+"oak_planks.png",
+                    blocks+"chest_front.png",
+                    blocks+"chest_side.png",
+                    blocks+"chest_top.png",
+                    blocks+"chest_back.png"/*,
+                    blocks+".png"/*,
+                    blocks+".png"/*,               // 20
+                    blocks+".png"/*,
+                    blocks+".png"/*,
+                    blocks+".png"/*,
+                    blocks+".png"/*,
+                    blocks+".png"/*,
+                    blocks+".png"/*,
+                    blocks+".png"/*,
+                    blocks+".png"/*,
+                    blocks+".png"*/
             ),"blocks");
         }
 

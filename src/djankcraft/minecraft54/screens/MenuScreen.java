@@ -3,17 +3,12 @@ package djankcraft.minecraft54.screens;
 import djankcraft.engine.app.AppScreen;
 import djankcraft.engine.graphics.OrthographicCamera;
 import djankcraft.engine.graphics.SpriteBatch;
-import djankcraft.engine.gui.Button;
-import djankcraft.engine.gui.ButtonCallback;
-import djankcraft.engine.gui.Gravity;
-import djankcraft.engine.gui.Layout;
+import djankcraft.engine.gui.*;
 import djankcraft.engine.utils.Assets;
 import djankcraft.minecraft54.Main;
 import djankcraft.minecraft54.MouseCursor;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F11;
-import static org.lwjgl.opengl.GL11C.*;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class MenuScreen implements AppScreen{
 
@@ -26,52 +21,31 @@ public class MenuScreen implements AppScreen{
     public void create(){
         sb=new SpriteBatch();
         cam=new OrthographicCamera(Main.window);
+
         layout=new Layout();
+        layout.load("gui/menu.json");
 
-        Button button=new Button(0.5,0.15,"button1_n","button1_a","button1_p");
-        button.setText(Assets.getTTF("font3"),"Settings");
-        button.setPos(0.3,-0.4);
-        button.setGravity(Gravity.CENTER_UP);
-        layout.addElement("btt1",button);
-
-        button=new Button(0.5,0.15,"button1_n","button1_a","button1_p");
-        button.setText(Assets.getTTF("font3"),"Play");
-        button.setPos(-0.3,-0.4);
-        button.setGravity(Gravity.CENTER_UP);
-        button.setCallback(new ButtonCallback(){
-            public void down(){}
-            public void pressed(){}
-            public void release(){
+        layout.getElement("btt2").setTouchCallback(new TouchCallback(){
+            public void touchOn(LayoutElement current){}
+            public void touched(LayoutElement current){}
+            public void touchOff(LayoutElement current){
                 Main.cfg.setScreen("world list");
             }
         });
-        layout.addElement("btt2",button);
-
-        button=new Button(0.5,0.15,"button1_n","button1_a","button1_p");
-        button.setText(Assets.getTTF("font3"),"Quit");
-        button.setPos(0.3,-0.6);
-        button.setGravity(Gravity.CENTER_UP);
-        button.setCallback(new ButtonCallback(){
-            public void down(){}
-            public void pressed(){}
-            public void release(){
+        layout.getElement("btt3").setTouchCallback(new TouchCallback(){
+            public void touchOn(LayoutElement current){}
+            public void touched(LayoutElement current){}
+            public void touchOff(LayoutElement current){
                 System.exit(0);
             }
         });
-        layout.addElement("btt3",button);
-
-        button=new Button(0.5,0.15,"button1_n","button1_a","button1_p");
-        button.setText(Assets.getTTF("font3"),"Button");
-        button.setPos(-0.3,-0.6);
-        button.setGravity(Gravity.CENTER_UP);
-        layout.addElement("btt4",button);
     }
 
 
     public void render(){
         cam.update();
 
-        sb.draw(Assets.getTexture("background"),0,0,Main.window.getWidth(),Main.window.getHeight());
+        //sb.draw(Assets.getTexture("background"),0,0,Main.window.getWidth(),Main.window.getHeight());
 
         layout.update(Main.mouse,Main.keyboard,Main.window);
         layout.render(sb);

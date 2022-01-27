@@ -51,6 +51,10 @@ public class Maths{
         return (int)Math.floor(a);
     }
 
+    public static float sqrt(double a){
+        return (float)Math.sqrt(a);
+    }
+
     public static float sinFromCos(float cos){
         return (float)Math.sqrt(1-cos*cos);
     }

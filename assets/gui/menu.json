@@ -1,0 +1,94 @@
+[
+  {
+    "id": "bg",
+    "type": "Image",
+    "size": [1, 1],
+    "textureID": "background",
+    "pos": [-0, 0],
+    "gravity": "CENTER"
+  },
+
+  {
+    "id": "btt1",
+    "type": "Button",
+    "size": [0.5, 0.15],
+    "texture1ID": "button1_n",
+    "texture2ID": "button1_a",
+    "texture3ID": "button1_p",
+    "pos": [0.3, -0.4],
+    "gravity": "CENTER_UP"
+  },
+  {
+    "id": "btt1txt",
+    "type": "Text",
+    "size": [0.5, 0.15],
+    "fontID": "font3",
+    "text": "Setting",
+    "pos": [0.3, -0.4],
+    "gravity": "CENTER_UP",
+    "color": [0.55, 0.55, 0.7, 1]
+  },
+
+  {
+    "id": "btt2",
+    "type": "Button",
+    "size": [0.5, 0.15],
+    "texture1ID": "button1_n",
+    "texture2ID": "button1_a",
+    "texture3ID": "button1_p",
+    "pos": [-0.3, -0.4],
+    "gravity": "CENTER_UP"
+  },
+  {
+    "id": "btt2txt",
+    "type": "Text",
+    "size": [0.5, 0.15],
+    "fontID": "font3",
+    "text": "Play",
+    "pos": [-0.3, -0.4],
+    "gravity": "CENTER_UP",
+    "color": [0.55, 0.55, 0.7, 1]
+  },
+
+  {
+    "id": "btt3",
+    "type": "Button",
+    "size": [0.5, 0.15],
+    "texture1ID": "button1_n",
+    "texture2ID": "button1_a",
+    "texture3ID": "button1_p",
+    "pos": [0.3, -0.6],
+    "gravity": "CENTER_UP"
+  },
+  {
+    "id": "btt3txt",
+    "type": "Text",
+    "size": [0.5, 0.15],
+    "fontID": "font3",
+    "text": "Exit",
+    "pos": [0.3, -0.6],
+    "gravity": "CENTER_UP",
+    "color": [0.55, 0.55, 0.7, 1]
+  },
+
+  {
+    "id": "btt4",
+    "type": "Button",
+    "size": [0.5, 0.15],
+    "texture1ID": "button1_n",
+    "texture2ID": "button1_a",
+    "texture3ID": "button1_p",
+    "pos": [-0.3, -0.6],
+    "gravity": "CENTER_UP"
+  },
+  {
+    "id": "btt4txt",
+    "type": "Text",
+    "size": [0.5, 0.15],
+    "fontID": "font3",
+    "text": "Button",
+    "pos": [-0.3, -0.6],
+    "gravity": "CENTER_UP",
+    "color": [0.55, 0.55, 0.7, 1]
+  }
+]
