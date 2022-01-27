@@ -1,7 +1,6 @@
 package djankcraft.minecraft54;
 
 import djankcraft.engine.graphics.PerspectiveCamera;
-import djankcraft.engine.io.Keyboard;
 import djankcraft.engine.io.Mouse;
 import djankcraft.engine.io.Window;
 

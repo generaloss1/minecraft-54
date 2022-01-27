@@ -72,15 +72,19 @@ public class WorldListScreen implements AppScreen{
         File saves=new File(Minecraft54.HOME_PATH+"/"+Minecraft54.GAME_PATH+"/saves");
         File[] worlds=saves.listFiles();
         if(worlds!=null){
-            for(int i=0; i<worlds.length; i++){
+            for(int i=0,n=0; i<worlds.length; i++){
 
                 try{
                     File world=worlds[i];
+                    if(!world.isDirectory())
+                        continue;
                     File properties=new File(saves+"/"+world.getName()+"/properties");
+                    if(!properties.exists())
+                        continue;
                     String worldName=Files.readAllLines(properties.toPath()).get(2).split("name: ")[1];
 
                     Button button=new Button(0.7,0.1,"button1_n","button1_a","button1_p");
-                    button.setPos(-0.05,-0.05-0.12*i);
+                    button.setPos(-0.05,-0.05-0.12*n);
                     button.setGravity(Gravity.RIGHT_UP);
                     button.setTouchCallback(new TouchCallback(){
                         public void touchOn(LayoutElement current){}
@@ -100,6 +104,7 @@ public class WorldListScreen implements AppScreen{
                     text.setGravity(button.getGravity());
                     text.setColor(0.55f,0.55f,0.7f,1);
                     layout1.addElement("btt"+i+"txt",text);
+                    n++;
                 }catch(IOException e){
                     e.printStackTrace();
                 }

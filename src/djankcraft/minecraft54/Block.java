@@ -74,9 +74,9 @@ public class Block{
 
     public static final Block AIR,GRASS_BLOCK,DIRT,STONE,SAND,OAK_LOG,OAK_LEAVES,BIRCH_LOG,WATER,STILL_WATER,GLASS,GRASS,COBBLESTONE,PLANKS,CHEST,OAK_STAIRS;
     static{
-        float gcr=0.4f;
-        float gcg=0.9f;
-        float gcb=0.3f;
+        float gcr=0.4f;float lcr=0.2f;
+        float gcg=0.9f;float lcg=0.9f;
+        float gcb=0.3f;float lcb=0.1f;
 
         float wymax=1.5f/16f;
 
@@ -154,7 +154,7 @@ public class Block{
                 .setSide(5,BlockTextureModel.quad(7)) // mz
         );
         OAK_LEAVES.setShowFor(ALL,id);
-        OAK_LEAVES.setColor(0.45f*gcr,0.8f*gcg,0.45f*gcb,1);
+        OAK_LEAVES.setColor(0.45f*lcr,0.8f*lcg,0.45f*lcb,1);
 
         id++;
         BIRCH_LOG=new Block(id,BlockModel.cube,new BlockTextureModel()
@@ -180,7 +180,7 @@ public class Block{
         //WATER.setColor(0.3f,0.85f,1,1);
         //WATER.setColor(0,0.5f,0.7f,0.9f);
         //WATER.setColor(1,1,1,0.85f);
-        WATER.setColor(0,0.5f,0.8f,1);
+        WATER.setColor(0,0.4f,0.9f,1);
 
         id++;
         STILL_WATER=new Block(id,BlockModel.still_water,new BlockTextureModel()
@@ -196,7 +196,7 @@ public class Block{
         //WATER.setColor(0.3f,0.85f,1,1);
         //STILL_WATER.setColor(0,0.5f,0.7f,0.9f);
         //STILL_WATER.setColor(1,1,1,0.85f);
-        STILL_WATER.setColor(0,0.5f,0.8f,1);
+        STILL_WATER.setColor(0,0.4f,0.9f,1);
 
         id++;
         GLASS=new Block(id,BlockModel.cube,new BlockTextureModel()
