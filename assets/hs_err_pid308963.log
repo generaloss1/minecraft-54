@@ -18,7 +18,7 @@
 
 ---------------  S U M M A R Y ------------
 
-Command Line: -javaagent:/usr/share/idea/lib/idea_rt.jar=45541:/usr/share/idea/bin -Dfile.encoding=UTF-8 djankcraft.minecraft54.Main
+Command Line: -javaagent:/usr/share/idea/lib/idea_rt.jar=45541:/usr/share/idea/bin -Dfile.encoding=UTF-8 minecraft54.minecraft54.Main
 
 Host: AMD Ryzen 5 2600X Six-Core Processor, 12 cores, 15G, Arch Linux
 Time: Thu Jan 27 08:57:08 2022 +12 elapsed time: 16.413244 seconds (0d 0h 0m 16s)
@@ -33,10 +33,10 @@ C  0x00000000415b7e42
 
 Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
 J 1737  org.lwjgl.opengl.GL11C.glDrawArrays(III)V (0 bytes) @ 0x00007fe9e119b6ef [0x00007fe9e119b6a0+0x000000000000004f]
-J 2098 c1 djankcraft.minecraft54.World.render()V (708 bytes) @ 0x00007fe9d9f30edc [0x00007fe9d9f2eca0+0x000000000000223c]
-J 1992 c1 djankcraft.minecraft54.screens.GameScreen.render()V (688 bytes) @ 0x00007fe9d9ee45bc [0x00007fe9d9ee42e0+0x00000000000002dc]
-j  djankcraft.engine.app.AppCfg.init(Ldjankcraft/engine/app/AppListener;)V+243
-j  djankcraft.minecraft54.Main.main([Ljava/lang/String;)V+154
+J 2098 c1 minecraft54.minecraft54.World.render()V (708 bytes) @ 0x00007fe9d9f30edc [0x00007fe9d9f2eca0+0x000000000000223c]
+J 1992 c1 minecraft54.minecraft54.screens.GameScreen.render()V (688 bytes) @ 0x00007fe9d9ee45bc [0x00007fe9d9ee42e0+0x00000000000002dc]
+j  minecraft54.engine.app.AppCfg.init(Ldjankcraft/engine/app/AppListener;)V+243
+j  minecraft54.minecraft54.Main.main([Ljava/lang/String;)V+154
 v  ~StubRoutines::call_stub
 
 siginfo: si_signo: 11 (SIGSEGV), si_code: 1 (SEGV_MAPERR), si_addr: 0x0000000000000000
@@ -167,7 +167,7 @@ Other Threads:
   0x00007fe9f0138cc0 ConcurrentGCThread "G1 Service" [stack: 0x00007fe9cc5e8000,0x00007fe9cc6e8000] [id=308974]
 
 Threads with active compile tasks:
-C2 CompilerThread0    16419 2106 %     4       djankcraft.minecraft54.events.EventProcessor::update @ 8 (1020 bytes)
+C2 CompilerThread0    16419 2106 %     4       minecraft54.minecraft54.events.EventProcessor::update @ 8 (1020 bytes)
 
 VM state: not at safepoint (normal execution)
 
@@ -432,19 +432,19 @@ Event: 14.339 Thread 0x00007fe9f01f8d90 2096       3       org.lwjgl.system.Memo
 Event: 14.339 Thread 0x00007fe9f01f8d90 nmethod 2096 0x00007fe9d9f2ce10 code [0x00007fe9d9f2cfc0, 0x00007fe9d9f2d250]
 Event: 14.339 Thread 0x00007fe9f01f8d90 2097   !   3       java.nio.DirectIntBufferU::put (37 bytes)
 Event: 14.340 Thread 0x00007fe9f01f8d90 nmethod 2097 0x00007fe9d9f2d390 code [0x00007fe9d9f2d5e0, 0x00007fe9d9f2df90]
-Event: 14.396 Thread 0x00007fe9f01f8d90 2098       3       djankcraft.minecraft54.World::render (708 bytes)
+Event: 14.396 Thread 0x00007fe9f01f8d90 2098       3       minecraft54.minecraft54.World::render (708 bytes)
 Event: 14.399 Thread 0x00007fe9f01f8d90 nmethod 2098 0x00007fe9d9f2e490 code [0x00007fe9d9f2eca0, 0x00007fe9d9f32e60]
-Event: 14.436 Thread 0x00007fe9f01f8d90 2099 %s    3       djankcraft.minecraft54.Chunk::buildMeshes @ 57 (6873 bytes)
+Event: 14.436 Thread 0x00007fe9f01f8d90 2099 %s    3       minecraft54.minecraft54.Chunk::buildMeshes @ 57 (6873 bytes)
 Event: 14.466 Thread 0x00007fe9f01f8d90 nmethod 2099% 0x00007fe9d9f34590 code [0x00007fe9d9f36b20, 0x00007fe9d9f54f30]
-Event: 14.466 Thread 0x00007fe9f01f8d90 2101 %s    3       djankcraft.minecraft54.Chunk::buildMeshes @ 1086 (6873 bytes)
+Event: 14.466 Thread 0x00007fe9f01f8d90 2101 %s    3       minecraft54.minecraft54.Chunk::buildMeshes @ 1086 (6873 bytes)
 Event: 14.487 Thread 0x00007fe9f01f8d90 nmethod 2101% 0x00007fe9d9f61e90 code [0x00007fe9d9f64420, 0x00007fe9d9f82a10]
-Event: 14.487 Thread 0x00007fe9f01f8d90 2100       3       djankcraft.minecraft54.World::update (204 bytes)
-Event: 14.487 Thread 0x00007fe9f01f78b0 2102 %s    4       djankcraft.minecraft54.Chunk::buildMeshes @ 1086 (6873 bytes)
+Event: 14.487 Thread 0x00007fe9f01f8d90 2100       3       minecraft54.minecraft54.World::update (204 bytes)
+Event: 14.487 Thread 0x00007fe9f01f78b0 2102 %s    4       minecraft54.minecraft54.Chunk::buildMeshes @ 1086 (6873 bytes)
 Event: 14.487 Thread 0x00007fe9f01f8d90 nmethod 2100 0x00007fe9d9f8fa10 code [0x00007fe9d9f8fcc0, 0x00007fe9d9f908e0]
-Event: 15.050 Thread 0x00007fe9f01f8d90 2104       3       djankcraft.minecraft54.events.EventProcessor::update (1020 bytes)
+Event: 15.050 Thread 0x00007fe9f01f8d90 2104       3       minecraft54.minecraft54.events.EventProcessor::update (1020 bytes)
 Event: 15.054 Thread 0x00007fe9f01f8d90 nmethod 2104 0x00007fe9d9f90d10 code [0x00007fe9d9f91340, 0x00007fe9d9f953c0]
 Event: 15.185 Thread 0x00007fe9f01f78b0 nmethod 2102% 0x00007fe9e128a810 code [0x00007fe9e128c300, 0x00007fe9e12a5cf8]
-Event: 15.185 Thread 0x00007fe9f01f78b0 2106 %     4       djankcraft.minecraft54.events.EventProcessor::update @ 8 (1020 bytes)
+Event: 15.185 Thread 0x00007fe9f01f78b0 2106 %     4       minecraft54.minecraft54.events.EventProcessor::update @ 8 (1020 bytes)
 
 GC Heap History (20 events):
 Event: 12.338 GC heap before
@@ -592,17 +592,17 @@ Deoptimization events (20 events):
 Event: 14.436 Thread 0x00007fe9f140dbd0 DEOPT PACKING pc=0x00007fe9e11dc828 sp=0x00007fe9005b37e0
 Event: 14.436 Thread 0x00007fe9f140dbd0 DEOPT UNPACKING pc=0x00007fe9d9644099 sp=0x00007fe9005b37b0 mode 2
 Event: 14.438 Thread 0x00007fe9f140dbd0 Uncommon trap: trap_request=0xffffff45 fr.pc=0x00007fe9e1205cc0 relative=0x0000000000013a40
-Event: 14.438 Thread 0x00007fe9f140dbd0 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007fe9e1205cc0 method=djankcraft.minecraft54.Chunk.buildMeshes()V @ 1217 c2
+Event: 14.438 Thread 0x00007fe9f140dbd0 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007fe9e1205cc0 method=minecraft54.minecraft54.Chunk.buildMeshes()V @ 1217 c2
 Event: 14.438 Thread 0x00007fe9f140dbd0 DEOPT PACKING pc=0x00007fe9e1205cc0 sp=0x00007fe9005b3830
 Event: 14.438 Thread 0x00007fe9f140dbd0 DEOPT UNPACKING pc=0x00007fe9d9644099 sp=0x00007fe9005b37b0 mode 2
 Event: 15.035 Thread 0x00007fe9f00173e0 Uncommon trap: trap_request=0xffffff45 fr.pc=0x00007fe9e1282764 relative=0x0000000000002d04
-Event: 15.036 Thread 0x00007fe9f00173e0 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007fe9e1282764 method=djankcraft.minecraft54.events.EventProcessor.update(Ldjankcraft/minecraft54/World;Ldjankcraft/engine/graphics/PerspectiveCamera;)V @ 812 c2
+Event: 15.036 Thread 0x00007fe9f00173e0 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007fe9e1282764 method=minecraft54.minecraft54.events.EventProcessor.update(Ldjankcraft/minecraft54/World;Ldjankcraft/engine/graphics/PerspectiveCamera;)V @ 812 c2
 Event: 15.036 Thread 0x00007fe9f00173e0 DEOPT PACKING pc=0x00007fe9e1282764 sp=0x00007fe9f41aa380
 Event: 15.036 Thread 0x00007fe9f00173e0 DEOPT UNPACKING pc=0x00007fe9d9644099 sp=0x00007fe9f41aa318 mode 2
 Event: 15.049 Thread 0x00007fe9f00173e0 DEOPT PACKING pc=0x00007fe9d9f329c7 sp=0x00007fe9f41aa2c0
 Event: 15.049 Thread 0x00007fe9f00173e0 DEOPT UNPACKING pc=0x00007fe9d964482f sp=0x00007fe9f41a98a0 mode 0
 Event: 15.051 Thread 0x00007fe9f00173e0 Uncommon trap: trap_request=0xffffff45 fr.pc=0x00007fe9e125bfb4 relative=0x0000000000003bf4
-Event: 15.051 Thread 0x00007fe9f00173e0 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007fe9e125bfb4 method=djankcraft.minecraft54.events.EventProcessor.update(Ldjankcraft/minecraft54/World;Ldjankcraft/engine/graphics/PerspectiveCamera;)V @ 812 c2
+Event: 15.051 Thread 0x00007fe9f00173e0 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007fe9e125bfb4 method=minecraft54.minecraft54.events.EventProcessor.update(Ldjankcraft/minecraft54/World;Ldjankcraft/engine/graphics/PerspectiveCamera;)V @ 812 c2
 Event: 15.051 Thread 0x00007fe9f00173e0 DEOPT PACKING pc=0x00007fe9e125bfb4 sp=0x00007fe9f41aa360
 Event: 15.051 Thread 0x00007fe9f00173e0 DEOPT UNPACKING pc=0x00007fe9d9644099 sp=0x00007fe9f41aa318 mode 2
 Event: 15.607 Thread 0x00007fe9f00173e0 DEOPT PACKING pc=0x00007fe9d9f90769 sp=0x00007fe9f41aa3d0
@@ -1452,7 +1452,7 @@ ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsysca
 
 VM Arguments:
 jvm_args: -javaagent:/usr/share/idea/lib/idea_rt.jar=45541:/usr/share/idea/bin -Dfile.encoding=UTF-8 
-java_command: djankcraft.minecraft54.Main
+java_command: minecraft54.minecraft54.Main
 java_class_path (initial): /home/user/Documents/JAVA PROJECTS/Djankcraft/out/production/Djankcraft:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-assimp-natives-linux.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-assimp-natives-windows-x86.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-assimp-natives-windows.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-assimp.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-bgfx-natives-linux.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-bgfx-natives-windows-x86.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-bgfx-natives-windows.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-bgfx.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-cuda.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-egl.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-glfw-natives-linux.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-glfw-natives-windows-x86.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-glfw-natives-windows.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-glfw.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-jawt.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-jemalloc-natives-linux.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-jemalloc-natives-windows-x86.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-jemalloc-natives-windows.jar:/home/
 Launcher Type: SUN_STANDARD
 

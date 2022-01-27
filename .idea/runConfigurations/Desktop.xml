@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Desktop" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="djankcraft.minecraft54.Main" />
+    <option name="MAIN_CLASS_NAME" value="minecraft54.minecraft54.Main" />
     <module name="Minecraft54" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/assets" />
     <method v="2">

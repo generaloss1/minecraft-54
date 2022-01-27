@@ -18,7 +18,7 @@
 
 ---------------  S U M M A R Y ------------
 
-Command Line: -javaagent:/usr/share/idea/lib/idea_rt.jar=40689:/usr/share/idea/bin -Dfile.encoding=UTF-8 djankcraft.minecraft54.Main
+Command Line: -javaagent:/usr/share/idea/lib/idea_rt.jar=40689:/usr/share/idea/bin -Dfile.encoding=UTF-8 minecraft54.minecraft54.Main
 
 Host: AMD Ryzen 5 2600X Six-Core Processor, 12 cores, 15G, Arch Linux
 Time: Thu Jan 27 20:31:56 2022 +12 elapsed time: 21.673058 seconds (0d 0h 0m 21s)
@@ -33,10 +33,10 @@ C  0x00000000411eae42
 
 Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
 J 1717  org.lwjgl.opengl.GL11C.glDrawArrays(III)V (0 bytes) @ 0x00007f4f9119b96f [0x00007f4f9119b920+0x000000000000004f]
-J 2095 c1 djankcraft.minecraft54.World.render()V (708 bytes) @ 0x00007f4f89f69bdc [0x00007f4f89f679a0+0x000000000000223c]
-J 1997 c1 djankcraft.minecraft54.screens.GameScreen.render()V (692 bytes) @ 0x00007f4f89f22e3c [0x00007f4f89f22b60+0x00000000000002dc]
-j  djankcraft.engine.app.AppCfg.init(Ldjankcraft/engine/app/AppListener;)V+243
-j  djankcraft.minecraft54.Main.main([Ljava/lang/String;)V+154
+J 2095 c1 minecraft54.minecraft54.World.render()V (708 bytes) @ 0x00007f4f89f69bdc [0x00007f4f89f679a0+0x000000000000223c]
+J 1997 c1 minecraft54.minecraft54.screens.GameScreen.render()V (692 bytes) @ 0x00007f4f89f22e3c [0x00007f4f89f22b60+0x00000000000002dc]
+j  minecraft54.engine.app.AppCfg.init(Ldjankcraft/engine/app/AppListener;)V+243
+j  minecraft54.minecraft54.Main.main([Ljava/lang/String;)V+154
 v  ~StubRoutines::call_stub
 
 siginfo: si_signo: 11 (SIGSEGV), si_code: 1 (SEGV_MAPERR), si_addr: 0x0000000000000000
@@ -416,7 +416,7 @@ Event: 20.924 Thread 0x00007f4fa01f9020 2117       3       java.io.ObjectInputSt
 Event: 20.924 Thread 0x00007f4fa01f9020 nmethod 2117 0x00007f4f89f78b90 code [0x00007f4f89f78d20, 0x00007f4f89f78e50]
 Event: 20.925 Thread 0x00007f4fa01f9020 2120       3       java.io.ObjectInputStream$HandleTable::clear (50 bytes)
 Event: 20.925 Thread 0x00007f4fa01f9020 nmethod 2120 0x00007f4f89f78f10 code [0x00007f4f89f79140, 0x00007f4f89f79a20]
-Event: 20.981 Thread 0x00007f4fa01f9020 2121       3       djankcraft.minecraft54.Entity::isOnCeil (40 bytes)
+Event: 20.981 Thread 0x00007f4fa01f9020 2121       3       minecraft54.minecraft54.Entity::isOnCeil (40 bytes)
 Event: 20.982 Thread 0x00007f4fa01f9020 nmethod 2121 0x00007f4f89f79d10 code [0x00007f4f89f79f00, 0x00007f4f89f7a380]
 Event: 21.647 Thread 0x00007f4fa01f9020 2122       3       java.io.ObjectOutputStream$HandleTable::clear (27 bytes)
 Event: 21.647 Thread 0x00007f4fa01f9020 nmethod 2122 0x00007f4f89f7a610 code [0x00007f4f89f7a7e0, 0x00007f4f89f7ac50]
@@ -1271,7 +1271,7 @@ ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsysca
 
 VM Arguments:
 jvm_args: -javaagent:/usr/share/idea/lib/idea_rt.jar=40689:/usr/share/idea/bin -Dfile.encoding=UTF-8 
-java_command: djankcraft.minecraft54.Main
+java_command: minecraft54.minecraft54.Main
 java_class_path (initial): /home/user/Documents/JAVA PROJECTS/Djankcraft/out/production/Djankcraft:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-assimp-natives-linux.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-assimp-natives-windows-x86.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-assimp-natives-windows.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-assimp.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-bgfx-natives-linux.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-bgfx-natives-windows-x86.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-bgfx-natives-windows.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-bgfx.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-cuda.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-egl.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-glfw-natives-linux.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-glfw-natives-windows-x86.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-glfw-natives-windows.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-glfw.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-jawt.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-jemalloc-natives-linux.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-jemalloc-natives-windows-x86.jar:/home/user/Documents/JAVA PROJECTS/Djankcraft/deps/lwjgl-release-3.3.0-custom/lwjgl-jemalloc-natives-windows.jar:/home/
 Launcher Type: SUN_STANDARD
 
