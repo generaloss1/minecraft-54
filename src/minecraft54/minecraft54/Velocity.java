@@ -1,16 +1,17 @@
 package minecraft54.minecraft54;
 
 import minecraft54.engine.math.vectors.Vector3;
+import minecraft54.engine.math.vectors.Vector3d;
 
 public class Velocity{
 
 
-    private final Vector3 value;
-    private float max;
+    private final Vector3d value;
+    private double max;
 
 
     public Velocity(){
-        value=new Vector3();
+        value=new Vector3d();
         max=1;
     }
 
@@ -20,7 +21,7 @@ public class Velocity{
     }
 
 
-    public Velocity collidedAxesToZero(Vector3 collidedMovement){
+    public Velocity collidedAxesToZero(Vector3d collidedMovement){
         if(value.x!=0 && collidedMovement.x==0)
             value.x=0;
 
@@ -34,7 +35,7 @@ public class Velocity{
     }
 
     public Velocity clampToMax(){
-        Vector3 nor=value.clone().nor().module();
+        Vector3d nor=value.clone().nor().module();
         if(value.x>max*nor.x)
             value.x=max*nor.x;
         else if(value.x<-max*nor.x)
@@ -52,10 +53,10 @@ public class Velocity{
         return this;
     }
 
-    public Velocity reduce(float reduce){
-        Vector3 nor=value.clone().nor().module();
+    public Velocity reduce(double reduce){
+        Vector3d nor=value.clone().nor().module();
 
-        float r=reduce*nor.x;
+        double r=reduce*nor.x;
         if(value.x>0){
             if(value.x>=r)
                 value.x-=r;
@@ -97,8 +98,10 @@ public class Velocity{
         return this;
     }
 
-
     public Velocity add(Vector3 v){
+        return this;
+    }
+    public Velocity add(Vector3d v){
         return this;
     }
     public Velocity add(float x,float y,float z){
@@ -109,11 +112,11 @@ public class Velocity{
     }
 
 
-    public Vector3 get(){
+    public Vector3d get(){
         return value;
     }
 
-    public float max(){
+    public double max(){
         return max;
     }
 

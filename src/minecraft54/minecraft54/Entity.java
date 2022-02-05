@@ -2,6 +2,7 @@ package minecraft54.minecraft54;
 
 import minecraft54.engine.math.Maths;
 import minecraft54.engine.math.vectors.Vector3;
+import minecraft54.engine.math.vectors.Vector3d;
 import minecraft54.engine.physics.Collider;
 import minecraft54.engine.physics.CubeHitbox;
 import minecraft54.minecraft54.screens.GameScreen;
@@ -32,33 +33,42 @@ public class Entity{
     public void update(){
         velocity.clampToMax();
 
-        hitbox.move( velocity.get().clone() .add(new Vector3(0,(jumpVelocity+gravityVelocity),0)) .mul(Main.getDeltaTime()) );
+        if(!noClip){
 
-        Vector3 collidedMove=Collider.getCollidedMove(hitbox,hitboxList());
-        hitbox.getPosition().add(collidedMove);
-        velocity.collidedAxesToZero(collidedMove).reduce(velocity.max()/30);
+            hitbox.move(velocity.get().clone().add(new Vector3(0,(jumpVelocity+gravityVelocity),0)).mul(Main.getDeltaTime()));
 
-        if(isOnGround()){
-            gravityVelocity=0;
-            if(jumping){
-                jumping=false;
-                jumpVelocity=0;
+            Vector3d collidedMove=Collider.getCollidedMove(hitbox,hitboxList());
+            hitbox.getPosition().add(collidedMove);
+            velocity.collidedAxesToZero(collidedMove).reduce(velocity.max()/30);
+
+            if(isOnGround()){
+                gravityVelocity=0;
+                if(jumping){
+                    jumping=false;
+                    jumpVelocity=0;
+                }
+            }else{
+                if(!noGravity)
+                    gravityVelocity-=2*(jumpHeight)/(jumpDuration*jumpDuration*Main.getFPS()/4);
+
+                if(isOnCeil() && jumping){
+                    jumping=false;
+                    jumpVelocity=0;
+                    gravityVelocity=0;
+                }
             }
-        }else{
-            if(!noGravity)
-                gravityVelocity-=2*(jumpHeight)/(jumpDuration*jumpDuration*Main.getFPS()/4);
 
-            if(isOnCeil() && jumping){
-                jumping=false;
+            if(noGravity || GameScreen.world.getChunk(Maths.floor(hitbox.getPosition().x/16f),Maths.floor(hitbox.getPosition().z/16f))==null){
                 jumpVelocity=0;
                 gravityVelocity=0;
             }
+
+        }else{
+            hitbox.move(velocity.get().clone().mul(Main.getDeltaTime()));
+            hitbox.getPosition().add(hitbox.getMove());
+            velocity.reduce(velocity.max()/30);
         }
 
-        if(noGravity || GameScreen.world.getChunk(Maths.floor(hitbox.getPosition().x/16f),Maths.floor(hitbox.getPosition().z/16f))==null){
-            jumpVelocity=0;
-            gravityVelocity=0;
-        }
     }
 
 
@@ -86,7 +96,7 @@ public class Entity{
         return Collider.getCollidedMove(h,blockList).y==0;
     }
 
-    public boolean isOnGround(float mx,float my,float mz){
+    public boolean isOnGround(double mx,double my,double mz){
         List<CubeHitbox> blockList=hitboxList();
         CubeHitbox h=hitbox.clone();
         h.move(new Vector3(0,-Float.MIN_VALUE,0).add(mx,my,mz));
@@ -103,11 +113,11 @@ public class Entity{
 
     public List<CubeHitbox> hitboxList(){
         List<CubeHitbox> blockList=new ArrayList<>();
-        Vector3 pos=hitbox.getPosition();
+        Vector3d pos=hitbox.getPosition();
         int offset=10;
-        for(int x=Math.round(pos.x-1-offset); x<pos.x+1+offset; x++)
-            for(int y=Math.round(pos.y-1-offset); y<pos.y+3+offset; y++)
-                for(int z=Math.round(pos.z-1-offset); z<pos.z+1+offset; z++){
+        for(int x=Maths.round(pos.x-1-offset); x<pos.x+1+offset; x++)
+            for(int y=Maths.round(pos.y-1-offset); y<pos.y+3+offset; y++)
+                for(int z=Maths.round(pos.z-1-offset); z<pos.z+1+offset; z++){
                     int id=GameScreen.world.getBlock(x,y,z);
                     if(id!=-1 && id!=Block.AIR.id && id!=Block.WATER.id && id!=Block.STILL_WATER.id && id!=Block.GRASS.id)
                         blockList.add(new CubeHitbox(new Vector3(x,y,z),new Vector3(x+1,y+1,z+1)));

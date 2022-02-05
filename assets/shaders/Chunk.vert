@@ -1,4 +1,4 @@
-#version 400
+#version 460
 
 in layout(location=0) vec3 pos;
 in layout(location=1) vec3 uv;

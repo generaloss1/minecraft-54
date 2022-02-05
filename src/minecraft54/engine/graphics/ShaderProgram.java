@@ -7,7 +7,7 @@ import minecraft54.engine.utils.Color;
 
 import java.util.HashMap;
 
-import static org.lwjgl.opengl.GL33.*;
+import static org.lwjgl.opengl.GL46.*;
 
 public class ShaderProgram{
 

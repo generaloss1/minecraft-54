@@ -5,6 +5,7 @@ import minecraft54.engine.math.EulerAngle;
 import minecraft54.engine.math.Maths;
 import minecraft54.engine.math.Matrix4;
 import minecraft54.engine.math.vectors.Vector3;
+import minecraft54.engine.math.vectors.Vector3d;
 import minecraft54.engine.utils.Assets;
 import minecraft54.minecraft54.generator.Generator;
 import org.json.JSONObject;
@@ -110,27 +111,31 @@ public class World{
 
 
     public void render(){
+        Vector3d camPos=Controls.getPosition();
+
         ShaderProgram shader=Assets.getShader("chunk");
         shader.bind();
         shader.setUniform("u_world",Controls.CAMERA.getView());
         shader.setUniform("u_proj",Controls.CAMERA.getProjection());
         shader.setUniform("u_texture",Assets.getTexture3d("blocks"));
 
-        shader.setUniform("u_camPos",Controls.CAMERA.getPosition());
+        shader.setUniform("u_camPos",new Vector3(camPos));
 
-        Vector3 camPos=Controls.CAMERA.getPosition();
+
         if( (getBlock(Maths.floor(camPos.x),Maths.floor(camPos.y),Maths.floor(camPos.z))==Block.WATER.id) || (getBlock(Maths.floor(camPos.x),Maths.floor(camPos.y),Maths.floor(camPos.z))==Block.STILL_WATER.id && camPos.y-Math.floor(camPos.y)<=1-1.5/16) )
             shader.setUniform("underWater",1);
         else
             shader.setUniform("underWater",0);
 
-        int playerChunkX=Math.round(Controls.CAMERA.getPosition().x/Chunk.WIDTH_X);
-        int playerChunkZ=Math.round(Controls.CAMERA.getPosition().z/Chunk.WIDTH_Z);
+        int playerChunkX=Maths.round(Controls.getPosition().x/Chunk.WIDTH_X);
+        int playerChunkZ=Maths.round(Controls.getPosition().z/Chunk.WIDTH_Z);
 
         for(int i=0; i<chunks.size(); i++){
             Chunk chunk=chunks.get(i);
             if(chunk!=null && chunk.x>=playerChunkX-Minecraft54.RENDER_DISTANCE && chunk.x<playerChunkX+Minecraft54.RENDER_DISTANCE && chunk.z>=playerChunkZ-Minecraft54.RENDER_DISTANCE && chunk.z<playerChunkZ+Minecraft54.RENDER_DISTANCE){
-                shader.setUniform("u_model",new Matrix4().translate(chunk.x*Chunk.WIDTH_X,0,chunk.z*Chunk.WIDTH_Z));
+                shader.setUniform("u_model",new Matrix4().translate(
+                        (float)(chunk.x*16-camPos.x), 0, (float)(chunk.z*16-camPos.z)
+                ));
                 glEnable(GL_CULL_FACE);
                 if(chunk.mesh1!=null)
                     chunk.mesh1.render();
@@ -144,7 +149,9 @@ public class World{
         for(int i=0; i<chunks.size(); i++){
             Chunk chunk=chunks.get(i);
             if(chunk!=null && chunk.x>=playerChunkX-Minecraft54.RENDER_DISTANCE && chunk.x<playerChunkX+Minecraft54.RENDER_DISTANCE && chunk.z>=playerChunkZ-Minecraft54.RENDER_DISTANCE && chunk.z<playerChunkZ+Minecraft54.RENDER_DISTANCE){
-                shader.setUniform("u_model",new Matrix4().translate(chunk.x*Chunk.WIDTH_X,0,chunk.z*Chunk.WIDTH_Z));
+                shader.setUniform("u_model",new Matrix4().translate(
+                        (float)(chunk.x*16-camPos.x), 0, (float)(chunk.z*16-camPos.z)
+                ));
                 if(chunk.mesh4!=null)
                     chunk.mesh4.render();
             }
@@ -153,7 +160,9 @@ public class World{
         for(int i=0; i<chunks.size(); i++){
             Chunk chunk=chunks.get(i);
             if(chunk!=null && chunk.x>=playerChunkX-Minecraft54.RENDER_DISTANCE && chunk.x<playerChunkX+Minecraft54.RENDER_DISTANCE && chunk.z>=playerChunkZ-Minecraft54.RENDER_DISTANCE && chunk.z<playerChunkZ+Minecraft54.RENDER_DISTANCE){
-                shader.setUniform("u_model",new Matrix4().translate(chunk.x*Chunk.WIDTH_X,0,chunk.z*Chunk.WIDTH_Z));
+                shader.setUniform("u_model",new Matrix4().translate(
+                        (float)(chunk.x*16-camPos.x), 0, (float)(chunk.z*16-camPos.z)
+                ));
                 glDisable(GL_CULL_FACE);
                 if(chunk.mesh3!=null)
                     chunk.mesh3.render();
@@ -175,8 +184,8 @@ public class World{
             }
         }
 
-        int playerChunkX=Math.round(Controls.CAMERA.getPosition().x/Chunk.WIDTH_X);
-        int playerChunkZ=Math.round(Controls.CAMERA.getPosition().z/Chunk.WIDTH_Z);
+        int playerChunkX=Maths.round(Controls.getPosition().x/Chunk.WIDTH_X);
+        int playerChunkZ=Maths.round(Controls.getPosition().z/Chunk.WIDTH_Z);
 
         for(int i=0; i<chunks.size(); i++){
             Chunk chunk=chunks.get(i);
@@ -257,18 +266,8 @@ public class World{
     }
 
 
-    public static int fi(int index){
-        return index>=0 && index<Chunk.WIDTH_X?
-                    index
-                :
-                    index>0?
-                                index-(index/Chunk.WIDTH_X)*Chunk.WIDTH_X
-                            :
-                                index-(index/Chunk.WIDTH_X-1)*Chunk.WIDTH_X;
-    }
-
     public static int fixedIndex(int index){
-        return fi(fi(index));
+        return index&15;
     }
 
 
@@ -334,7 +333,6 @@ public class World{
             if(!statsFolder.exists())
                 statsFolder.mkdirs();
 
-            Vector3 camPos=Controls.CAMERA.getPosition();
             EulerAngle camRot=Controls.CAMERA.getRotation();
 
             JSONObject stats=new JSONObject();
@@ -344,6 +342,7 @@ public class World{
             stats.put("yaw",camRot.getYaw());
             stats.put("pitch",camRot.getPitch());
             stats.put("roll",camRot.getRoll());
+            stats.put("gameMode",player.gameMode());
 
             File statsFile=new File(worldPath+"/stats/"+player.name+".json");
             if(!statsFile.exists())
@@ -368,6 +367,7 @@ public class World{
 
             player.getHitbox().getPosition().set(new Vector3(stats.getFloat("x"),stats.getFloat("y"),stats.getFloat("z")));
             Controls.CAMERA.setRotation(stats.getFloat("yaw"),stats.getFloat("pitch"),stats.getFloat("roll"));
+            player.setGameMode(GameMode.valueOf(stats.getString("gameMode")));
 
             return true;
         }catch(Exception e){

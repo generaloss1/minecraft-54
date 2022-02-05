@@ -4,9 +4,7 @@ import minecraft54.engine.math.vectors.Vector3;
 
 public class EulerAngle{
 
-    private float pitch;
-    private float yaw;
-    private float roll;
+    private float pitch,yaw,roll;
 
     public EulerAngle(){
         this(0,0,0);

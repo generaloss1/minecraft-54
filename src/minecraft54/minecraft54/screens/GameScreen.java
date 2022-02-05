@@ -5,7 +5,9 @@ import minecraft54.engine.graphics.OrthographicCamera;
 import minecraft54.engine.graphics.Renderer;
 import minecraft54.engine.graphics.SpriteBatch;
 import minecraft54.engine.graphics.TrueTypeFont;
+import minecraft54.engine.math.Maths;
 import minecraft54.engine.math.vectors.Vector3;
+import minecraft54.engine.math.vectors.Vector3d;
 import minecraft54.engine.utils.Assets;
 import minecraft54.minecraft54.*;
 import minecraft54.minecraft54.events.EventProcessor;
@@ -13,6 +15,7 @@ import minecraft54.minecraft54.events.EventsListener;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
 
+import static minecraft54.minecraft54.GameMode.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class GameScreen implements AppScreen, EventsListener{
@@ -33,8 +36,9 @@ public class GameScreen implements AppScreen, EventsListener{
         player=new Player(Minecraft54.ACCOUNT_NAME);
         player.setCanFly(true);
         player.setJumpBoost(1);
+        player.setGameMode(CREATIVE);
 
-        Controls.CAMERA.setPosition(new Vector3(0,84,0));
+        Controls.setPosition(new Vector3d(0,84,0));
 
         Minecraft54.tickThread.start();
         EventProcessor.listeners.add(this);
@@ -61,6 +65,7 @@ public class GameScreen implements AppScreen, EventsListener{
         sb.drawText(font,"pos: "+player.getHitbox().getPosition(),10,Main.window.getHeight()-(10+font.getFontHeight())*4);
         sb.drawText(font,"dir: "+Controls.CAMERA.getDirection(),10,Main.window.getHeight()-(10+font.getFontHeight())*5);
         sb.drawText(font,"world: "+world.name,10,Main.window.getHeight()-(10+font.getFontHeight())*6);
+        sb.drawText(font,"game mode: "+player.gameMode(),10,Main.window.getHeight()-(10+font.getFontHeight())*7);
         sb.setAlpha(1);
 
         sb.draw(Assets.getTexture("crosshair"),Main.window.getWidth()/2f-(Main.window.getWidth()/50f/Main.window.getWidth()*Main.window.getHeight()/2),Main.window.getHeight()/2f-(Main.window.getHeight()/50f/2),Main.window.getWidth()/50f/Main.window.getWidth()*Main.window.getHeight(),Main.window.getHeight()/50f);
@@ -88,8 +93,8 @@ public class GameScreen implements AppScreen, EventsListener{
         }
 
         new Thread(()->{
-            int playerChunkX=Math.round(Controls.CAMERA.getPosition().x/Chunk.WIDTH_X);
-            int playerChunkZ=Math.round(Controls.CAMERA.getPosition().z/Chunk.WIDTH_Z);
+            int playerChunkX=Maths.round(Controls.getPosition().x/Chunk.WIDTH_X);
+            int playerChunkZ=Maths.round(Controls.getPosition().z/Chunk.WIDTH_Z);
             for(int i=playerChunkX-Minecraft54.RENDER_DISTANCE; i<playerChunkX+Minecraft54.RENDER_DISTANCE; i++)
                 for(int j=playerChunkZ-Minecraft54.RENDER_DISTANCE; j<playerChunkZ+Minecraft54.RENDER_DISTANCE; j++){
                     Chunk chunk=world.getChunk(i,j);
@@ -118,6 +123,17 @@ public class GameScreen implements AppScreen, EventsListener{
         if(Main.keyboard.isKeyReleased(GLFW_KEY_F11)){
             Controls.ignoreRotation();
             Main.window.toggleFullscreen();
+        }
+
+        if(Main.keyboard.isKeyPressed(GLFW_KEY_F3) && Main.keyboard.isKeyDown(GLFW_KEY_F4)){
+            player.setGameMode(
+                    switch(player.gameMode()){
+                        case CREATIVE -> SURVIVAL;
+                        case SURVIVAL -> SPECTATOR;
+                        case SPECTATOR -> ADVENTURE;
+                        case ADVENTURE -> CREATIVE;
+                    }
+            );
         }
     }
 

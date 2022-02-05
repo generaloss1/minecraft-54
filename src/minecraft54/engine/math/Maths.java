@@ -99,6 +99,10 @@ public class Maths{
         return Math.max(min,Math.min(v,max));
     }
 
+    public static double clamp(double v,double min,double max){
+        return Math.max(min,Math.min(v,max));
+    }
+
     public static float random(){
         return (float)Math.random();
     }

@@ -12,6 +12,7 @@ public class Player extends Entity{
     public String name;
     private boolean canFly;
     private boolean flying;
+    private GameMode gameMode;
 
 
     public Player(String name){
@@ -22,14 +23,14 @@ public class Player extends Entity{
 
 
     public void controls(Keyboard keyboard){
-        float cam_speed=getVelocity().max()/10;
+        double cam_speed=getVelocity().max()/10;
         Vector3 controlMoveVel=Controls.CAMERA.getDefaultMove(new Vector3(
                 keyboard.isKeyPressed(GLFW_KEY_W)?cam_speed:keyboard.isKeyPressed(GLFW_KEY_S)?-cam_speed:0,
                 flying?(keyboard.isKeyPressed(GLFW_KEY_SPACE) ? cam_speed:keyboard.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? -cam_speed:0):0,
                 keyboard.isKeyPressed(GLFW_KEY_D)?cam_speed:keyboard.isKeyPressed(GLFW_KEY_A)?-cam_speed:0
         ));
 
-        if(isOnGround()){
+        if(isOnGround() && gameMode!=GameMode.SPECTATOR){
             if(flying)
                 flying=false;
 
@@ -75,7 +76,7 @@ public class Player extends Entity{
 
         getVelocity().get().add(controlMoveVel);
 
-        Controls.CAMERA.setPosition(getHitbox().getPosition().clone().add(getEye()));
+        Controls.setPosition(getHitbox().getPosition().clone().add(getEye()));
 
         if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL) && getVelocity().get().x!=0 && getVelocity().get().z!=0)
             Controls.CAMERA.setFOV(Controls.CAMERA.getFOV()<Minecraft54.FOV+8?Controls.CAMERA.getFOV()+1:Minecraft54.FOV+8);
@@ -88,12 +89,37 @@ public class Player extends Entity{
         getVelocity().setMax((float)speed);
     }
 
+    public void setGameMode(GameMode gameMode){
+        if(this.gameMode==gameMode)
+            return;
+        this.gameMode=gameMode;
+
+        if(gameMode==GameMode.SPECTATOR){
+            setNoClip(true);
+            setFlying(true);
+            setCanFly(true);
+        }else{
+            setNoClip(false);
+            if(gameMode==GameMode.CREATIVE){
+                setCanFly(true);
+            }else if(gameMode==GameMode.SURVIVAL || gameMode==GameMode.ADVENTURE){
+                setCanFly(false);
+            }
+        }
+    }
+
+    public GameMode gameMode(){
+        return gameMode;
+    }
+
 
     public boolean isCanFly(){
         return canFly;
     }
     public void setCanFly(boolean canFly){
         this.canFly=canFly;
+        if(!canFly && flying)
+            flying=false;
     }
 
     public boolean isFlying(){
