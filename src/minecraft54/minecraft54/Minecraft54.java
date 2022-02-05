@@ -18,12 +18,13 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Minecraft54 implements AppListener{
 
 
-    public static float FOV=110;
+    public static float FOV=90;
     public static int TICK_RATE=20;
     public static Color CURSOR_COLOR_1=new Color(0,0.6f,0.2f,1);
     public static Color CURSOR_COLOR_2=new Color(0.75f,1,0.81f,1);
-    public static int RENDER_DISTANCE=3;
+    public static int RENDER_DISTANCE=1;
     public static String ACCOUNT_NAME="GeneralPashon";
+    public static boolean AMBIENT_OCCLUSION=true;
 
     public static String GAME_PATH=".minecraft54";
     public static String HOME_PATH=System.getProperty("user.home");

@@ -26,6 +26,7 @@ public class GameScreen implements AppScreen, EventsListener{
     OrthographicCamera cam;
     public static World world;
     public static Player player;
+    private boolean showHud;
 
 
     public void create(){
@@ -57,18 +58,20 @@ public class GameScreen implements AppScreen, EventsListener{
         world.update();
         world.render();
 
-        TrueTypeFont font=Assets.getTTF("font6");
-        sb.setAlpha(0.5f);
-        sb.drawText(font,"vsync: "+Main.window.isVSync()+", fps: "+Math.round(Main.cfg.FPS),10,Main.window.getHeight()-10-font.getFontHeight());
-        sb.drawText(font,"tps: "+Math.round(Minecraft54.TPS),10,Main.window.getHeight()-(10+font.getFontHeight())*2);
-        sb.drawText(font,"seed: "+world.seed,10,Main.window.getHeight()-(10+font.getFontHeight())*3);
-        sb.drawText(font,"pos: "+player.getHitbox().getPosition(),10,Main.window.getHeight()-(10+font.getFontHeight())*4);
-        sb.drawText(font,"dir: "+Controls.CAMERA.getDirection(),10,Main.window.getHeight()-(10+font.getFontHeight())*5);
-        sb.drawText(font,"world: "+world.name,10,Main.window.getHeight()-(10+font.getFontHeight())*6);
-        sb.drawText(font,"game mode: "+player.gameMode(),10,Main.window.getHeight()-(10+font.getFontHeight())*7);
-        sb.setAlpha(1);
+        if(showHud){
+            TrueTypeFont font=Assets.getTTF("font6");
+            sb.setAlpha(0.5f);
+            sb.drawText(font,"fps: "+Math.round(Main.cfg.FPS)+", vsync: "+Main.window.isVSync(),10,Main.window.getHeight()-10-font.getFontHeight());
+            sb.drawText(font,"tps: "+Math.round(Minecraft54.TPS),10,Main.window.getHeight()-(10+font.getFontHeight())*2);
+            sb.drawText(font,"seed: "+world.seed,10,Main.window.getHeight()-(10+font.getFontHeight())*3);
+            sb.drawText(font,"pos: "+player.getHitbox().getPosition(),10,Main.window.getHeight()-(10+font.getFontHeight())*4);
+            sb.drawText(font,"dir: "+Controls.CAMERA.getDirection(),10,Main.window.getHeight()-(10+font.getFontHeight())*5);
+            sb.drawText(font,"world: "+world.name,10,Main.window.getHeight()-(10+font.getFontHeight())*6);
+            sb.drawText(font,"game mode: "+player.gameMode(),10,Main.window.getHeight()-(10+font.getFontHeight())*7);
+            sb.setAlpha(1);
 
-        sb.draw(Assets.getTexture("crosshair"),Main.window.getWidth()/2f-(Main.window.getWidth()/50f/Main.window.getWidth()*Main.window.getHeight()/2),Main.window.getHeight()/2f-(Main.window.getHeight()/50f/2),Main.window.getWidth()/50f/Main.window.getWidth()*Main.window.getHeight(),Main.window.getHeight()/50f);
+            sb.draw(Assets.getTexture("crosshair"),Main.window.getWidth()/2f-(Main.window.getWidth()/50f/Main.window.getWidth()*Main.window.getHeight()/2),Main.window.getHeight()/2f-(Main.window.getHeight()/50f/2),Main.window.getWidth()/50f/Main.window.getWidth()*Main.window.getHeight(),Main.window.getHeight()/50f);
+        }
 
         sb.render(cam);
 
@@ -109,8 +112,10 @@ public class GameScreen implements AppScreen, EventsListener{
         new Thread(()->{
             for(int i=0; i<world.chunks.size(); i++){
                 Chunk chunk=world.chunks.get(i);
-                if(chunk!=null && chunk.isChanged)
+                if(chunk!=null && (chunk.isChanged || chunk.ambientOcclusion!=Minecraft54.AMBIENT_OCCLUSION)){
+                    chunk.ambientOcclusion=Minecraft54.AMBIENT_OCCLUSION;
                     chunk.buildMeshes();
+                }
             }
         }).start();
 
@@ -135,6 +140,11 @@ public class GameScreen implements AppScreen, EventsListener{
                     }
             );
         }
+        if(Main.keyboard.isKeyReleased(GLFW_KEY_F1))
+            showHud=!showHud;
+        if(Main.keyboard.isKeyReleased(GLFW_KEY_F2))
+            Minecraft54.AMBIENT_OCCLUSION=!Minecraft54.AMBIENT_OCCLUSION;
+
     }
 
     public void tick(){

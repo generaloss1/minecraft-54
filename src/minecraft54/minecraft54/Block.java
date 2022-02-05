@@ -74,9 +74,9 @@ public class Block{
 
     public static final Block AIR,GRASS_BLOCK,DIRT,STONE,SAND,OAK_LOG,OAK_LEAVES,BIRCH_LOG,WATER,STILL_WATER,GLASS,GRASS,COBBLESTONE,PLANKS,CHEST,OAK_STAIRS;
     static{
-        float gcr=0.4f;float lcr=0.2f;
+        float gcr=0.85f;float lcr=0.2f;
         float gcg=0.9f;float lcg=0.9f;
-        float gcb=0.3f;float lcb=0.1f;
+        float gcb=0.65f;float lcb=0.1f;
 
         float wymax=1.5f/16f;
 
@@ -154,7 +154,7 @@ public class Block{
                 .setSide(5,BlockTextureModel.quad(7)) // mz
         );
         OAK_LEAVES.setShowFor(ALL,id);
-        OAK_LEAVES.setColor(0.45f*lcr,0.8f*lcg,0.45f*lcb,1);
+        OAK_LEAVES.setColor(0.7f*lcr,0.8f*lcg,0.7f*lcb,1);
 
         id++;
         BIRCH_LOG=new Block(id,BlockModel.cube,new BlockTextureModel()

@@ -60,7 +60,7 @@ public class Player extends Entity{
         }
 
         if(isJumping())
-            controlMoveVel.div(1.7f);
+            controlMoveVel.div(2f);
 
         if(flying){
             setNoGravity(true);

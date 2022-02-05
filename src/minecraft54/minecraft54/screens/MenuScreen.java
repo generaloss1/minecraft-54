@@ -4,6 +4,7 @@ import minecraft54.engine.app.AppScreen;
 import minecraft54.engine.graphics.OrthographicCamera;
 import minecraft54.engine.graphics.SpriteBatch;
 import minecraft54.engine.gui.*;
+import minecraft54.engine.utils.Assets;
 import minecraft54.minecraft54.Main;
 import minecraft54.minecraft54.MouseCursor;
 
@@ -44,7 +45,7 @@ public class MenuScreen implements AppScreen{
     public void render(){
         cam.update();
 
-        //sb.draw(Assets.getTexture("background"),0,0,Main.window.getWidth(),Main.window.getHeight());
+        sb.draw(Assets.getTexture("background"),0,0,Main.window.getWidth(),Main.window.getHeight());
 
         layout.update(Main.mouse,Main.keyboard,Main.window);
         layout.render(sb);

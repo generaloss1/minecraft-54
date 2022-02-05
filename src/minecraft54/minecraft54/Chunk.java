@@ -24,6 +24,7 @@ public class Chunk{
     public int x,z;
     public World world;
     public boolean isChanged,isGenerated;
+    public boolean ambientOcclusion;
 
 
     public Chunk(World world,int x,int z){
@@ -182,374 +183,378 @@ public class Chunk{
 
 
             //Ambient Occlusion
-            
-            float ao=0.65f;
 
-            for(int pos:checkSides){
-                int side=pos%6;
-                int z=(pos-side)/6%WIDTH_Z;
-                int y=(pos-z*6-side)/6/WIDTH_Z%HEIGHT;
-                int x=(pos-y*6*WIDTH_Z-z*6-side)/6/WIDTH_Z/HEIGHT;
+            if(ambientOcclusion){
 
-                if(side==0 && x+1<WIDTH_X){
-                    if(y-1>-1){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z)*6+2];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12*4,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-                    if(y+1<HEIGHT){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z)*6+3];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12*4,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-                    if(z-1>-1){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z-1)*6+4];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                        }
-                    }
-                    if(z+1<WIDTH_Z){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z+1)*6+5];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12*4,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
+                float ao=0.7f;
 
-                    if(y-1>-1 && z-1>-1){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+2];
-                        if(cSide!=0)
-                            vertList1.set(cSide+10+12*4,ao);
-                    }
-                    if(y+1<HEIGHT && z-1>-1){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+3];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-                    if(y-1>-1 && z+1<WIDTH_Z){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+2];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-                    if(y+1<HEIGHT && z+1<WIDTH_Z){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+3];
-                        if(cSide!=0)
-                            vertList1.set(cSide+10+12*4,ao);
-                    }
-                }
+                for(int pos: checkSides){
+                    int side=pos%6;
+                    int z=(pos-side)/6%WIDTH_Z;
+                    int y=(pos-z*6-side)/6/WIDTH_Z%HEIGHT;
+                    int x=(pos-y*6*WIDTH_Z-z*6-side)/6/WIDTH_Z/HEIGHT;
 
-                if(side==1 && x-1>-1){
-                    if(y-1>-1){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z)*6+2];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                        }
-                    }
-                    if(y+1<HEIGHT){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z)*6+3];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                        }
-                    }
-                    if(z-1>-1){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z-1)*6+4];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12*4,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-                    if(z+1<WIDTH_Z){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z+1)*6+5];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                        }
-                    }
-
-                    if(y-1>-1 && z-1>-1){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+2];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                        }
-                    }
-                    if(y+1<HEIGHT && z-1>-1){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+3];
-                        if(cSide!=0)
-                            vertList1.set(cSide+10+12,ao);
-                    }
-                    if(y-1>-1 && z+1<WIDTH_Z){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+2];
-                        if(cSide!=0)
-                            vertList1.set(cSide+10+12,ao);
-                    }
-                    if(y+1<HEIGHT && z+1<WIDTH_Z){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+3];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                        }
-                    }
-                }
-
-                if(side==2 && y+1<HEIGHT){
-                    if(x-1>-1){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z)*6];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-                    if(x+1<WIDTH_X){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z)*6+1];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-                    if(z-1>-1){
-                        int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+4];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-                    if(z+1<WIDTH_Z){
-                        int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+5];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-
-                    if(x-1>-1 && z-1>-1){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12,ao);
-                        }else{
-                            cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+4];
+                    if(side==0 && x+1<WIDTH_X){
+                        if(y-1>-1){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z)*6+2];
                             if(cSide!=0){
-                                vertList1.set(cSide+10     ,ao);
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12*4,ao);
                                 vertList1.set(cSide+10+12*5,ao);
                             }
                         }
-                    }
-                    if(x+1<WIDTH_X && z-1>-1){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+1];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }else{
-                            cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+4];
+                        if(y+1<HEIGHT){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z)*6+3];
                             if(cSide!=0){
-                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12*4,ao);
+                                vertList1.set(cSide+10+12*5,ao);
                             }
                         }
-                    }
-                    if(x-1>-1 && z+1<WIDTH_Z){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }else{
-                            cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+5];
+                        if(z-1>-1){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z-1)*6+4];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                            }
+                        }
+                        if(z+1<WIDTH_Z){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z+1)*6+5];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12*4,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }
+                        }
+
+                        if(y-1>-1 && z-1>-1){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+2];
                             if(cSide!=0)
-                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*4,ao);
                         }
-                    }
-                    if(x+1<WIDTH_X && z+1<WIDTH_Z){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+1];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12,ao);
-                        }else{
-                            cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+5];
+                        if(y+1<HEIGHT && z-1>-1){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+3];
                             if(cSide!=0){
-                                vertList1.set(cSide+10     ,ao);
+                                vertList1.set(cSide+10,ao);
                                 vertList1.set(cSide+10+12*5,ao);
                             }
                         }
-                    }
-                }
-
-                if(side==3 && y-1>-1){
-                    if(x-1>-1){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z)*6];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                            vertList1.set(cSide+10+12*4,ao);
+                        if(y-1>-1 && z+1<WIDTH_Z){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+2];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }
                         }
-                    }
-                    if(x+1<WIDTH_X){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z)*6+1];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                            vertList1.set(cSide+10+12*4,ao);
-                        }
-                    }
-                    if(z-1>-1){
-                        int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+4];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                            vertList1.set(cSide+10+12*4,ao);
-                        }
-                    }
-                    if(z+1<WIDTH_Z){
-                        int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+5];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                            vertList1.set(cSide+10+12*4,ao);
-                        }
-                    }
-
-                    if(x-1>-1 && z-1>-1){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                        }else{
-                            cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+4];
+                        if(y+1<HEIGHT && z+1<WIDTH_Z){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+3];
                             if(cSide!=0)
                                 vertList1.set(cSide+10+12*4,ao);
                         }
                     }
-                    if(x+1<WIDTH_X && z-1>-1){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+1];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*4,ao);
-                        }else{
-                            cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+4];
+
+                    if(side==1 && x-1>-1){
+                        if(y-1>-1){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z)*6+2];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                            }
+                        }
+                        if(y+1<HEIGHT){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z)*6+3];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                            }
+                        }
+                        if(z-1>-1){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z-1)*6+4];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12*4,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }
+                        }
+                        if(z+1<WIDTH_Z){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z+1)*6+5];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                            }
+                        }
+
+                        if(y-1>-1 && z-1>-1){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+2];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                            }
+                        }
+                        if(y+1<HEIGHT && z-1>-1){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+3];
+                            if(cSide!=0)
+                                vertList1.set(cSide+10+12,ao);
+                        }
+                        if(y-1>-1 && z+1<WIDTH_Z){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+2];
+                            if(cSide!=0)
+                                vertList1.set(cSide+10+12,ao);
+                        }
+                        if(y+1<HEIGHT && z+1<WIDTH_Z){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+3];
                             if(cSide!=0){
                                 vertList1.set(cSide+10+12*2,ao);
                                 vertList1.set(cSide+10+12*3,ao);
                             }
                         }
                     }
-                    if(x-1>-1 && z+1<WIDTH_Z){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*4,ao);
-                        }else{
-                            cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+5];
+
+                    if(side==2 && y+1<HEIGHT){
+                        if(x-1>-1){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z)*6];
                             if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }
+                        }
+                        if(x+1<WIDTH_X){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z)*6+1];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }
+                        }
+                        if(z-1>-1){
+                            int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+4];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }
+                        }
+                        if(z+1<WIDTH_Z){
+                            int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+5];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }
+                        }
+
+                        if(x-1>-1 && z-1>-1){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12,ao);
+                            }else{
+                                cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+4];
+                                if(cSide!=0){
+                                    vertList1.set(cSide+10,ao);
+                                    vertList1.set(cSide+10+12*5,ao);
+                                }
+                            }
+                        }
+                        if(x+1<WIDTH_X && z-1>-1){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+1];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }else{
+                                cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+4];
+                                if(cSide!=0){
+                                    vertList1.set(cSide+10+12,ao);
+                                }
+                            }
+                        }
+                        if(x-1>-1 && z+1<WIDTH_Z){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }else{
+                                cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+5];
+                                if(cSide!=0)
+                                    vertList1.set(cSide+10+12,ao);
+                            }
+                        }
+                        if(x+1<WIDTH_X && z+1<WIDTH_Z){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+1];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12,ao);
+                            }else{
+                                cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+5];
+                                if(cSide!=0){
+                                    vertList1.set(cSide+10,ao);
+                                    vertList1.set(cSide+10+12*5,ao);
+                                }
+                            }
+                        }
+                    }
+
+                    if(side==3 && y-1>-1){
+                        if(x-1>-1){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z)*6];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                                vertList1.set(cSide+10+12*4,ao);
+                            }
+                        }
+                        if(x+1<WIDTH_X){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z)*6+1];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                                vertList1.set(cSide+10+12*4,ao);
+                            }
+                        }
+                        if(z-1>-1){
+                            int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+4];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                                vertList1.set(cSide+10+12*4,ao);
+                            }
+                        }
+                        if(z+1<WIDTH_Z){
+                            int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+5];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                                vertList1.set(cSide+10+12*4,ao);
+                            }
+                        }
+
+                        if(x-1>-1 && z-1>-1){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                            }else{
+                                cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+4];
+                                if(cSide!=0)
+                                    vertList1.set(cSide+10+12*4,ao);
+                            }
+                        }
+                        if(x+1<WIDTH_X && z-1>-1){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+1];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12*4,ao);
+                            }else{
+                                cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+4];
+                                if(cSide!=0){
+                                    vertList1.set(cSide+10+12*2,ao);
+                                    vertList1.set(cSide+10+12*3,ao);
+                                }
+                            }
+                        }
+                        if(x-1>-1 && z+1<WIDTH_Z){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12*4,ao);
+                            }else{
+                                cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+5];
+                                if(cSide!=0){
+                                    vertList1.set(cSide+10+12*2,ao);
+                                    vertList1.set(cSide+10+12*3,ao);
+                                }
+                            }
+                        }
+                        if(x+1<WIDTH_X && z+1<WIDTH_Z){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+1];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                            }else{
+                                cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+5];
+                                if(cSide!=0)
+                                    vertList1.set(cSide+10+12*4,ao);
+                            }
+                        }
+                    }
+
+                    if(side==4 && z+1<WIDTH_Z){
+                        if(y-1>-1){
+                            int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+2];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }
+                        }
+                        if(y+1<HEIGHT){
+                            int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+3];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                                vertList1.set(cSide+10+12*4,ao);
+                            }
+                        }
+                        if(x-1>-1){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z+1)*6];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12*4,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }
+                        }
+                        if(x+1<WIDTH_Z){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z+1)*6+1];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12,ao);
                                 vertList1.set(cSide+10+12*2,ao);
                                 vertList1.set(cSide+10+12*3,ao);
                             }
                         }
                     }
-                    if(x+1<WIDTH_X && z+1<WIDTH_Z){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+1];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                        }else{
-                            cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+5];
-                            if(cSide!=0)
+
+                    if(side==5 && z-1>-1){
+                        if(y-1>-1){
+                            int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+2];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
                                 vertList1.set(cSide+10+12*4,ao);
+                            }
+                        }
+                        if(y+1<HEIGHT){
+                            int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+3];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }
+                        }
+                        if(x-1>-1){
+                            int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z-1)*6];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10+12,ao);
+                                vertList1.set(cSide+10+12*2,ao);
+                                vertList1.set(cSide+10+12*3,ao);
+                            }
+                        }
+                        if(x+1<WIDTH_Z){
+                            int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z-1)*6+1];
+                            if(cSide!=0){
+                                vertList1.set(cSide+10,ao);
+                                vertList1.set(cSide+10+12*4,ao);
+                                vertList1.set(cSide+10+12*5,ao);
+                            }
                         }
                     }
-                }
 
-                if(side==4 && z+1<WIDTH_Z){
-                    if(y-1>-1){
-                        int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z+1)*6+2];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-                    if(y+1<HEIGHT){
-                        int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z+1)*6+3];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                            vertList1.set(cSide+10+12*4,ao);
-                        }
-                    }
-                    if(x-1>-1){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z+1)*6];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12*4,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-                    if(x+1<WIDTH_Z){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z+1)*6+1];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                        }
-                    }
-                }
-
-                if(side==5 && z-1>-1){
-                    if(y-1>-1){
-                        int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y-1)*6*WIDTH_Z+(z-1)*6+2];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                            vertList1.set(cSide+10+12*4,ao);
-                        }
-                    }
-                    if(y+1<HEIGHT){
-                        int cSide=AOSides[(x)*6*WIDTH_Z*HEIGHT+(y+1)*6*WIDTH_Z+(z-1)*6+3];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
-                    if(x-1>-1){
-                        int cSide=AOSides[(x-1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z-1)*6];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10+12  ,ao);
-                            vertList1.set(cSide+10+12*2,ao);
-                            vertList1.set(cSide+10+12*3,ao);
-                        }
-                    }
-                    if(x+1<WIDTH_Z){
-                        int cSide=AOSides[(x+1)*6*WIDTH_Z*HEIGHT+(y)*6*WIDTH_Z+(z-1)*6+1];
-                        if(cSide!=0){
-                            vertList1.set(cSide+10     ,ao);
-                            vertList1.set(cSide+10+12*4,ao);
-                            vertList1.set(cSide+10+12*5,ao);
-                        }
-                    }
                 }
 
             }
 
             isBuild=true;
-            //System.out.println(faces+" faces, "+(System.currentTimeMillis()-millis)/1000f+" sec.");
+            System.out.println(faces+" faces, "+(System.currentTimeMillis()-millis)/1000f+" sec.");
         }
     }
 

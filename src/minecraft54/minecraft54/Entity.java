@@ -156,6 +156,9 @@ public class Entity{
     public boolean isJumping(){
         return jumping;
     }
+    public void cancelJump(){
+        jumping=false;
+    }
 
 
 }
