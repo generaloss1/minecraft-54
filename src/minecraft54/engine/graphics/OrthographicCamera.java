@@ -3,7 +3,7 @@ package minecraft54.engine.graphics;
 import minecraft54.engine.io.Window;
 import minecraft54.engine.math.Matrix4;
 import minecraft54.engine.math.vectors.Vector2;
-import minecraft54.engine.math.vectors.Vector3;
+import minecraft54.engine.math.vectors.Vector3f;
 
 public class OrthographicCamera{
 
@@ -40,7 +40,7 @@ public class OrthographicCamera{
     public void update(){
         projection.setIdentity().setToOrtho2D(0,0,width,height);
 
-        Matrix4 translationMatrix=new Matrix4().translate(new Vector3(position).mul(-1));
+        Matrix4 translationMatrix=new Matrix4().translate(new Vector3f(position).mul(-1));
         Matrix4 rotationMatrix=Matrix4.rotated(rotation,0,0,1);
 
         view=Matrix4.mul(translationMatrix,rotationMatrix);

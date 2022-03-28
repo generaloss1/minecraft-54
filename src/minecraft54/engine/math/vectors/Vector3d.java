@@ -38,7 +38,7 @@ public class Vector3d{
         z=v.z;
     }
 
-    public Vector3d(Vector3 v){
+    public Vector3d(Vector3f v){
         x=v.x;
         y=v.y;
         z=v.z;
@@ -88,7 +88,7 @@ public class Vector3d{
         return this;
     }
 
-    public Vector3d set(Vector3 v){
+    public Vector3d set(Vector3f v){
         x=v.x;
         y=v.y;
         z=v.z;
@@ -105,13 +105,31 @@ public class Vector3d{
     public int x(){
         return Maths.round(x);
     }
-
     public int y(){
         return Maths.round(y);
     }
-
     public int z(){
         return Maths.round(z);
+    }
+
+    public int xf(){
+        return Maths.floor(x);
+    }
+    public int yf(){
+        return Maths.floor(y);
+    }
+    public int zf(){
+        return Maths.floor(z);
+    }
+
+    public int xc(){
+        return Maths.ceil(x);
+    }
+    public int yc(){
+        return Maths.ceil(y);
+    }
+    public int zc(){
+        return Maths.ceil(z);
     }
 
     public Vector3d add(double xyz){
@@ -149,7 +167,7 @@ public class Vector3d{
         return this;
     }
 
-    public Vector3d add(Vector3 v){
+    public Vector3d add(Vector3f v){
         x+=v.x;
         y+=v.y;
         z+=v.z;
@@ -197,7 +215,7 @@ public class Vector3d{
         return this;
     }
 
-    public Vector3d sub(Vector3 v){
+    public Vector3d sub(Vector3f v){
         x-=v.x;
         y-=v.y;
         z-=v.z;
@@ -245,7 +263,7 @@ public class Vector3d{
         return this;
     }
 
-    public Vector3d mul(Vector3 v){
+    public Vector3d mul(Vector3f v){
         x*=v.x;
         y*=v.y;
         z*=v.z;
@@ -287,7 +305,7 @@ public class Vector3d{
         return this;
     }
 
-    public Vector3d div(Vector3 v){
+    public Vector3d div(Vector3f v){
         x/=v.x;
         y/=v.y;
         z/=v.z;

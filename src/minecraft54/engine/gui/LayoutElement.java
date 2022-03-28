@@ -1,10 +1,12 @@
 package minecraft54.engine.gui;
 
+import minecraft54.engine.audio.SoundManager;
 import minecraft54.engine.graphics.SpriteBatch;
 import minecraft54.engine.io.Keyboard;
 import minecraft54.engine.io.Mouse;
 import minecraft54.engine.io.Window;
 import minecraft54.engine.math.Maths;
+import minecraft54.engine.utils.Assets;
 
 import java.util.UUID;
 
@@ -70,6 +72,9 @@ public abstract class LayoutElement{
     }
 
     public void updateCallbacks(Mouse mouse,Window window){
+        if(!window.isFocused())
+            return;
+
         float tx=mouse.getX();
         float ty=window.getHeight()-mouse.getY();
 
@@ -87,8 +92,10 @@ public abstract class LayoutElement{
         if(touchCallback!=null){
             if(touched){
                 touchCallback.touched(this);
-                if(!oldTouched)
+                if(!oldTouched){
                     touchCallback.touchOn(this);
+                    SoundManager.play("random_click",0.3f);
+                }
             }else if(oldTouched && !cancelledTouch)
                 touchCallback.touchOff(this);
         }

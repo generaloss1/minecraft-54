@@ -1,5 +1,6 @@
 package minecraft54.engine.app;
 
+import minecraft54.engine.audio.SoundManager;
 import minecraft54.engine.io.Keyboard;
 import minecraft54.engine.io.Mouse;
 import minecraft54.engine.io.Window;
@@ -60,11 +61,13 @@ public class AppCfg{
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             listener.update();
+            SoundManager.update();
             if(screen!=null)
                 screen.render();
             mouse.reset();
             keyboard.reset();
             window.update();
+
         }
 
         window.hide();

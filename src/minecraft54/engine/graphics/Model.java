@@ -1,12 +1,12 @@
 package minecraft54.engine.graphics;
 
 import minecraft54.engine.math.Matrix4;
-import minecraft54.engine.math.vectors.Vector3;
+import minecraft54.engine.math.vectors.Vector3f;
 
 public class Model{
 
 
-    private final Vector3 position,rotation,scale;
+    private final Vector3f position,rotation,scale;
 
     public Mesh mesh;
     public Material material;
@@ -20,9 +20,9 @@ public class Model{
         this.mesh=mesh;
         this.material=material;
 
-        position=new Vector3();
-        rotation=new Vector3();
-        scale=new Vector3(1);
+        position=new Vector3f();
+        rotation=new Vector3f();
+        scale=new Vector3f(1);
 
         modelView=new Matrix4();
         isReqCalcMat=false;
@@ -32,9 +32,9 @@ public class Model{
         this.mesh=new Mesh(model.mesh);
         this.material=new Material(model.material);
 
-        position=new Vector3(model.position);
-        rotation=new Vector3(model.rotation);
-        scale=new Vector3(model.scale);
+        position=new Vector3f(model.position);
+        rotation=new Vector3f(model.rotation);
+        scale=new Vector3f(model.scale);
 
         modelView=new Matrix4(model.modelView);
         isReqCalcMat=model.isReqCalcMat;
@@ -55,7 +55,7 @@ public class Model{
     }
 
 
-    public void setPos(Vector3 pos){
+    public void setPos(Vector3f pos){
         position.set(pos);
         isReqCalcMat=true;
     }
@@ -63,7 +63,7 @@ public class Model{
         position.set(x,y,z);
         isReqCalcMat=true;
     }
-    public void translate(Vector3 tran){
+    public void translate(Vector3f tran){
         position.add(tran);
         isReqCalcMat=true;
     }
@@ -72,7 +72,7 @@ public class Model{
         isReqCalcMat=true;
     }
 
-    public void setRotation(Vector3 rot){
+    public void setRotation(Vector3f rot){
         rotation.set(rot);
         isReqCalcMat=true;
     }
@@ -80,7 +80,7 @@ public class Model{
         rotation.set(x,y,z);
         isReqCalcMat=true;
     }
-    public void rotate(Vector3 rot){
+    public void rotate(Vector3f rot){
         rotation.add(rot);
         isReqCalcMat=true;
     }
@@ -89,7 +89,7 @@ public class Model{
         isReqCalcMat=true;
     }
 
-    public void setScale(Vector3 scl){
+    public void setScale(Vector3f scl){
         scale.set(scl);
         isReqCalcMat=true;
     }
@@ -97,7 +97,7 @@ public class Model{
         scale.set(x,y,z);
         isReqCalcMat=true;
     }
-    public void scale(Vector3 scl){
+    public void scale(Vector3f scl){
         scale.add(scl);
         isReqCalcMat=true;
     }
@@ -111,15 +111,15 @@ public class Model{
     }
 
 
-    public Vector3 getPos(){
+    public Vector3f getPos(){
         return position;
     }
 
-    public Vector3 getRotation(){
+    public Vector3f getRotation(){
         return rotation;
     }
 
-    public Vector3 getScale(){
+    public Vector3f getScale(){
         return scale;
     }
 

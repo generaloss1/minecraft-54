@@ -2,84 +2,81 @@
   {
     "id": "btt1",
     "type": "Button",
-    "size": [0.5, 0.15],
+    "size": [0.7, 0.1],
     "texture1ID": "button1_n",
     "texture2ID": "button1_a",
     "texture3ID": "button1_p",
-    "pos": [0.3, -0.4],
-    "gravity": "CENTER_UP"
-  },
-  {
+    "pos": [0, 0.12],
+    "gravity": "CENTER"
+  },{
     "id": "btt1txt",
     "type": "Text",
-    "size": [0.5, 0.15],
+    "size": [0.7, 0.1],
     "fontID": "font3",
-    "text": "Setting",
-    "pos": [0.3, -0.4],
-    "gravity": "CENTER_UP",
+    "text": "Singleplayer",
+    "pos": [0, 0.12],
+    "gravity": "CENTER",
     "color": [0.55, 0.55, 0.7, 1]
   },
 
   {
     "id": "btt2",
     "type": "Button",
-    "size": [0.5, 0.15],
+    "size": [0.7, 0.1],
     "texture1ID": "button1_n",
     "texture2ID": "button1_a",
     "texture3ID": "button1_p",
-    "pos": [-0.3, -0.4],
-    "gravity": "CENTER_UP"
-  },
-  {
+    "pos": [0, 0.01],
+    "gravity": "CENTER"
+  },{
     "id": "btt2txt",
     "type": "Text",
-    "size": [0.5, 0.15],
+    "size": [0.7, 0.1],
     "fontID": "font3",
-    "text": "Play",
-    "pos": [-0.3, -0.4],
-    "gravity": "CENTER_UP",
+    "text": "Multiplayer",
+    "pos": [0, 0.01],
+    "gravity": "CENTER",
     "color": [0.55, 0.55, 0.7, 1]
   },
 
   {
     "id": "btt3",
     "type": "Button",
-    "size": [0.5, 0.15],
+    "size": [0.7, 0.1],
     "texture1ID": "button1_n",
     "texture2ID": "button1_a",
     "texture3ID": "button1_p",
-    "pos": [0.3, -0.6],
-    "gravity": "CENTER_UP"
-  },
-  {
+    "pos": [0, -0.10],
+    "gravity": "CENTER"
+  },{
     "id": "btt3txt",
     "type": "Text",
-    "size": [0.5, 0.15],
+    "size": [0.7, 0.1],
     "fontID": "font3",
-    "text": "Exit",
-    "pos": [0.3, -0.6],
-    "gravity": "CENTER_UP",
+    "text": "Settings",
+    "pos": [0, -0.10],
+    "gravity": "CENTER",
     "color": [0.55, 0.55, 0.7, 1]
   },
 
   {
     "id": "btt4",
     "type": "Button",
-    "size": [0.5, 0.15],
+    "size": [0.7, 0.1],
     "texture1ID": "button1_n",
     "texture2ID": "button1_a",
     "texture3ID": "button1_p",
-    "pos": [-0.3, -0.6],
-    "gravity": "CENTER_UP"
-  },
-  {
+    "pos": [0, -0.21],
+    "gravity": "CENTER"
+  },{
     "id": "btt4txt",
     "type": "Text",
-    "size": [0.5, 0.15],
+    "size": [0.7, 0.1],
     "fontID": "font3",
-    "text": "Button",
-    "pos": [-0.3, -0.6],
-    "gravity": "CENTER_UP",
+    "text": "Exit",
+    "pos": [0, -0.21],
+    "gravity": "CENTER",
     "color": [0.55, 0.55, 0.7, 1]
   }
+
 ]

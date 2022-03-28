@@ -10,7 +10,7 @@ out VO{
     vec3 uv;
     vec4 color;
     float id;
-    noperspective float ao;
+    float ao;
 } vo;
 
 void main(void){

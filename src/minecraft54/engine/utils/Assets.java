@@ -1,5 +1,6 @@
 package minecraft54.engine.utils;
 
+import minecraft54.engine.audio.SoundBuffer;
 import minecraft54.engine.graphics.ShaderProgram;
 import minecraft54.engine.graphics.Texture;
 import minecraft54.engine.graphics.Texture3D;
@@ -87,16 +88,22 @@ public class Assets{
 
 
 
-    /*public static HashMap<String,Sound> sounds=new HashMap<>();
+    public static HashMap<String,SoundBuffer> sounds=new HashMap<>();
     public static List<String> sounds_ids=new ArrayList<>();
 
-    public static void loadSound(String path,String id){
-        Sound sound=Gdx.audio.newSound(Gdx.files.internal(path));
+    public static boolean loadSound(String path,String id){
+        File file=new File(path);
+        if(!file.exists()){
+            System.err.println("Sound load error: "+path+" is not exists.");
+            return false;
+        }
+        SoundBuffer sound=new SoundBuffer(path);
         sounds.put(id,sound);
         sounds_ids.add(id);
+        return true;
     }
 
-    public static Sound getSound(String id){
+    public static SoundBuffer getSound(String id){
         return sounds.get(id);
     }
 
@@ -108,7 +115,7 @@ public class Assets{
 
 
 
-    public static HashMap<String,Music> musics=new HashMap<>();
+    /*public static HashMap<String,Music> musics=new HashMap<>();
     public static List<String> musics_ids=new ArrayList<>();
 
     public static void loadMusic(String path,String id){
@@ -195,7 +202,7 @@ public class Assets{
         disposeTextures3d();
         //disposeTextureRegs();
         disposeTTFs();
-        //disposeSounds();
+        disposeSounds();
         //disposeMusics();
         disposeShaders();
     }

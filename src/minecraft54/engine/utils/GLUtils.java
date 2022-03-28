@@ -1,11 +1,10 @@
 package minecraft54.engine.utils;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.openal.*;
 
-import static org.lwjgl.opengl.GL11C.*;
-import static org.lwjgl.opengl.GL11C.GL_DOUBLE;
-import static org.lwjgl.opengl.GL20C.GL_BOOL;
-import static org.lwjgl.opengl.GL30C.GL_HALF_FLOAT;
+import static org.lwjgl.openal.ALC10.*;
+import static org.lwjgl.opengl.GL30C.*;
 
 public class GLUtils{
 
@@ -13,6 +12,18 @@ public class GLUtils{
         GLFWErrorCallback.createPrint(System.err).set();
         if(!org.lwjgl.glfw.GLFW.glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW");
+    }
+
+    public static void initAL(){
+        String defaultDeviceName=alcGetString(0,ALC_DEFAULT_DEVICE_SPECIFIER);
+        long device=alcOpenDevice(defaultDeviceName);
+
+        int[] attributes={0};
+        long context=alcCreateContext(device,attributes);
+        alcMakeContextCurrent(context);
+
+        ALCCapabilities alcCapabilities=ALC.createCapabilities(device);
+        AL.createCapabilities(alcCapabilities);
     }
 
     public static int getGLTypeSize(int type) throws IllegalArgumentException{

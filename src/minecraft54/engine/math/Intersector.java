@@ -1,8 +1,7 @@
 package minecraft54.engine.math;
 
-import minecraft54.engine.math.vectors.Vector3;
 import minecraft54.engine.math.vectors.Vector3d;
-import minecraft54.engine.physics.CubeHitbox;
+import minecraft54.engine.physics.HitboxAabb;
 
 public class Intersector{
 
@@ -64,10 +63,16 @@ public class Intersector{
     }
 
 
-    public static boolean aabbAabb(CubeHitbox a,CubeHitbox b){
+    public static boolean aabbAabb(HitboxAabb a,HitboxAabb b){
         return (a.getPosA().x<=b.getPosB().x && a.getPosB().x>=b.getPosA().x) &&
                (a.getPosA().y<=b.getPosB().y && a.getPosB().y>=b.getPosA().y) &&
                (a.getPosA().z<=b.getPosB().z && a.getPosB().z>=b.getPosA().z);
+    }
+
+    public static boolean aabbAabbNS(HitboxAabb a,HitboxAabb b){
+        return (a.getPosA().x<b.getPosB().x && a.getPosB().x>b.getPosA().x) &&
+                (a.getPosA().y<b.getPosB().y && a.getPosB().y>b.getPosA().y) &&
+                (a.getPosA().z<b.getPosB().z && a.getPosB().z>b.getPosA().z);
     }
 
 

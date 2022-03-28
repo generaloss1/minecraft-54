@@ -1,5 +1,6 @@
 package minecraft54.engine.graphics;
 
+import minecraft54.engine.utils.FastArrayList;
 import minecraft54.engine.utils.GLUtils;
 
 import java.util.List;
@@ -97,7 +98,7 @@ public class Mesh{
         glBindVertexArray(0);
     }
 
-    public void setVertices(List<Float> verticesList){
+    public void setVertices(FastArrayList<Float> verticesList){
         vertices=new float[verticesList.size()];
         for(int i=0; i<vertices.length; i++)
             vertices[i]=verticesList.get(i);

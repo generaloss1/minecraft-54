@@ -45,15 +45,18 @@ public class Layout extends LayoutElement{
     public void render(SpriteBatch batch){
         for(String k:ids){
             LayoutElement e=elements.get(k);
-            if(!e.isHidden())
+            if(e!=null && !e.isHidden())
                 e.render(batch);
         }
     }
 
     public void update(Mouse mouse,Keyboard keyboard,Window window){
         setSize(window.getWidth(),window.getHeight());
-        for(String k:ids)
-            elements.get(k).update(mouse,keyboard,window);
+        for(String k:ids){
+            LayoutElement e=elements.get(k);
+            if(e!=null)
+                e.update(mouse,keyboard,window);
+        }
     }
 
 
@@ -96,6 +99,16 @@ public class Layout extends LayoutElement{
                         text.setGravity(Gravity.parseGravity(jsonElement.getString("gravity")));
                         text.setColor((float)jsonColor.getDouble(0),(float)jsonColor.getDouble(1),(float)jsonColor.getDouble(2),(float)jsonColor.getDouble(3));
                         addElement(id,text);
+                    }
+                    case "TextField"->{
+                        JSONArray jsonPos=jsonElement.getJSONArray("pos");
+                        JSONArray jsonColor=jsonElement.getJSONArray("color");
+
+                        TextField textField=new TextField(jsonSize.getDouble(0),jsonSize.getDouble(1),jsonElement.getString("fontID"),jsonElement.getString("text"),jsonElement.getInt("maxSymbols"));
+                        textField.setPos(jsonPos.getDouble(0),jsonPos.getDouble(1));
+                        textField.setGravity(Gravity.parseGravity(jsonElement.getString("gravity")));
+                        textField.setColor((float)jsonColor.getDouble(0),(float)jsonColor.getDouble(1),(float)jsonColor.getDouble(2),(float)jsonColor.getDouble(3));
+                        addElement(id,textField);
                     }
                 }
             }

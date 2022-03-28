@@ -4,12 +4,12 @@ import minecraft54.engine.math.EulerAngle;
 import minecraft54.engine.math.Maths;
 import minecraft54.engine.math.Matrix4;
 import minecraft54.engine.math.Quaternion;
-import minecraft54.engine.math.vectors.Vector3;
+import minecraft54.engine.math.vectors.Vector3f;
 
 public class PerspectiveCamera{
 
 
-    private Vector3 position;
+    private Vector3f position;
     private EulerAngle rotation;
     private Matrix4 projection,view;
 
@@ -24,7 +24,7 @@ public class PerspectiveCamera{
         this.far=far;
         this.field_of_view=field_of_view;
 
-        position=new Vector3();
+        position=new Vector3f();
         rotation=new EulerAngle();
 
         update();
@@ -32,37 +32,37 @@ public class PerspectiveCamera{
 
     public void update(){
         projection=new Matrix4().setToPerspectiveSphere(width,height,near,far,field_of_view);
+        view=Matrix4.mul( getRotationMatrix(), new Matrix4().translate(position.clone().mul(-1)) );
+    }
 
-        Matrix4 translationMatrix=new Matrix4().translate(position.clone().mul(-1));
 
+    public Matrix4 getRotationMatrix(){
         Quaternion q1=new Quaternion().setEulerAngles(0,rotation.getYaw(),0);
         Quaternion q2=new Quaternion().setEulerAngles(rotation.getPitch(),0,0);
         Quaternion q3=new Quaternion().setEulerAngles(0,0,rotation.getRoll());
-        Matrix4 rotationMatrix=q3.mul(q1.mul(q2)).toMatrix();
-
-        view=Matrix4.mul(rotationMatrix,translationMatrix);
+        return q3.mul(q1.mul(q2)).toMatrix();
     }
 
 
     public void move(float x,float y,float z){
         position.add(x,y,z);
     }
+
     public void moveY(float y){
         position.y+=y;
     }
 
-    public Vector3 getDefaultMove(float camX,float y,float camZ){
-        return new Vector3(
+    public Vector3f getDefaultMove(float camX,float y,float camZ){
+        return new Vector3f(
                 camX*Maths.cos((rotation.getPitch()+90)*Maths.toRadians) + camZ*Maths.cos(rotation.getPitch()*Maths.toRadians),
                 y,
                 camX*Maths.sin((rotation.getPitch()+90)*Maths.toRadians) + camZ*Maths.sin(rotation.getPitch()*Maths.toRadians)
         );
     }
 
-    public Vector3 getDefaultMove(Vector3 v){
+    public Vector3f getDefaultMove(Vector3f v){
         return getDefaultMove(v.x,v.y,v.z);
     }
-
     public void defaultMoveX(float value){
         position.add(
                 value*Maths.cos((rotation.getPitch()+90)*Maths.toRadians),
@@ -70,6 +70,7 @@ public class PerspectiveCamera{
                 value*Maths.sin((rotation.getPitch()+90)*Maths.toRadians)
         );
     }
+
     public void defaultMoveZ(float value){
         position.add(
                 value*Maths.cos(rotation.getPitch()*Maths.toRadians),
@@ -77,7 +78,6 @@ public class PerspectiveCamera{
                 value*Maths.sin(rotation.getPitch()*Maths.toRadians)
         );
     }
-
     public void moveAlongCamX(float value){
         position.add(
                 value*Maths.cos((rotation.getPitch()+90)*Maths.toRadians)*Maths.cos(rotation.getYaw()*Maths.toRadians),
@@ -92,6 +92,7 @@ public class PerspectiveCamera{
                 -value*Maths.cos((rotation.getPitch())*Maths.toRadians)*Maths.sin((rotation.getYaw())*Maths.toRadians)*Maths.cos((rotation.getRoll())*Maths.toRadians)+value*Maths.cos((rotation.getRoll())*Maths.toRadians)
         );
     }*/
+
     public void moveAlongCamZ(float value){
         position.add(
                 value*Maths.cos(rotation.getPitch()*Maths.toRadians)*Maths.cos(rotation.getRoll()*Maths.toRadians),
@@ -101,8 +102,8 @@ public class PerspectiveCamera{
     }
 
 
-    public Vector3 getDirection(){
-        return new Vector3(
+    public Vector3f getDirection(){
+        return new Vector3f(
                 Math.sin(Maths.toRadians*(rotation.getPitch()+180))*Math.cos(Maths.toRadians*rotation.getYaw()),
                 Math.sin(Maths.toRadians*rotation.getYaw()),
                 -Math.cos(Maths.toRadians*(rotation.getPitch()+180))*Math.cos(Maths.toRadians*rotation.getYaw())
@@ -121,10 +122,10 @@ public class PerspectiveCamera{
         return projection;
     }
 
-    public Vector3 getPosition(){
+    public Vector3f getPosition(){
         return position;
     }
-    public void setPosition(Vector3 position){
+    public void setPosition(Vector3f position){
         this.position=position;
     }
     public void translate(float x,float y,float z){

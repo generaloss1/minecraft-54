@@ -1,6 +1,6 @@
 package minecraft54.engine.math;
 
-import minecraft54.engine.math.vectors.Vector3;
+import minecraft54.engine.math.vectors.Vector3f;
 
 public class EulerAngle{
 
@@ -18,8 +18,8 @@ public class EulerAngle{
         this.roll=roll;
     }
 
-    public Vector3 toVector(){
-        Vector3 result=new Vector3();
+    public Vector3f toVector(){
+        Vector3f result=new Vector3f();
 
         float yawTemp=yaw*Maths.toRadians;
         float pitchTemp=pitch*Maths.toRadians;
@@ -32,8 +32,8 @@ public class EulerAngle{
         return result;
     }
 
-    public void toAngles(Vector3 direction){
-        Vector3 dir=new Vector3(direction);
+    public void toAngles(Vector3f direction){
+        Vector3f dir=new Vector3f(direction);
         dir.nor();
 
         float yawTemp=(float)Math.atan2(dir.x,dir.z);

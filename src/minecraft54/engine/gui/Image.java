@@ -21,8 +21,7 @@ public class Image extends LayoutElement{
     }
 
     public void render(SpriteBatch batch){
-        int width=Math.round(getRenderWidth()*((float)texture.getWidth()/texture.getHeight()));
-        batch.draw(texture,Math.round(getRenderX()-(width-getRenderWidth())/2f),getRenderY(),width,getRenderHeight());
+        batch.draw(texture,getRenderX(),getRenderY(),getRenderWidth(),getRenderHeight());
     }
 
     public void update(Mouse mouse,Keyboard keyboard,Window window){

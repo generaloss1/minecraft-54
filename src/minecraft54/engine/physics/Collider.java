@@ -1,6 +1,5 @@
 package minecraft54.engine.physics;
 
-import minecraft54.engine.math.vectors.Vector3;
 import minecraft54.engine.math.vectors.Vector3d;
 
 import java.util.List;
@@ -8,25 +7,25 @@ import java.util.List;
 public class Collider{
 
 
-    public static void collidedMove(CubeHitbox h,List<CubeHitbox> h2){
+    public static void collidedMove(HitboxAabb h,List<HitboxAabb> h2){
         Vector3d move=h.getMove();
         if(move.isZero())
             return;
 
         double x=move.x;
-        for(CubeHitbox h1:h2)
+        for(HitboxAabb h1:h2)
             if(x!=0)
                 x=offsetX(x,h,h1);
         h.getPosition().x+=x;
 
         double y=move.y;
-        for(CubeHitbox h1:h2)
+        for(HitboxAabb h1:h2)
             if(y!=0)
                 y=offsetY(y,h,h1);
         h.getPosition().y+=y;
 
         double z=move.z;
-        for(CubeHitbox h1:h2)
+        for(HitboxAabb h1:h2)
             if(z!=0)
                 z=offsetZ(z,h,h1);
         h.getPosition().z+=z;
@@ -34,27 +33,27 @@ public class Collider{
         h.getMove().zero();
     }
 
-    public static Vector3d getCollidedMove(CubeHitbox h,List<CubeHitbox> h2){
+    public static Vector3d getCollidedMove(HitboxAabb h,List<HitboxAabb> h2){
         Vector3d move=h.getMove();
         if(move.isZero())
             return move;
 
-        CubeHitbox hc=h.clone();
+        HitboxAabb hc=h.clone();
 
         double x=move.x;
-        for(CubeHitbox h1:h2)
+        for(HitboxAabb h1:h2)
             if(x!=0)
                 x=offsetX(x,hc,h1);
         hc.getPosition().x+=x;
 
         double y=move.y;
-        for(CubeHitbox h1:h2)
+        for(HitboxAabb h1:h2)
             if(y!=0)
                 y=offsetY(y,hc,h1);
         hc.getPosition().y+=y;
 
         double z=move.z;
-        for(CubeHitbox h1:h2)
+        for(HitboxAabb h1:h2)
             if(z!=0)
                 z=offsetZ(z,hc,h1);
         hc.getPosition().z+=z;
@@ -63,7 +62,7 @@ public class Collider{
     }
 
 
-    public static double offsetX(double move,CubeHitbox h,CubeHitbox h2){
+    public static double offsetX(double move,HitboxAabb h,HitboxAabb h2){
         if(move==0)
             return 0;
         if(h2.getPosB().y>h.getPosA().y && h2.getPosA().y<h.getPosB().y && h2.getPosB().z>h.getPosA().z && h2.getPosA().z<h.getPosB().z)
@@ -83,7 +82,7 @@ public class Collider{
         return move;
     }
 
-    public static double offsetY(double move,CubeHitbox h,CubeHitbox h2){
+    public static double offsetY(double move,HitboxAabb h,HitboxAabb h2){
         if(move==0)
             return 0;
         if(h2.getPosB().x>h.getPosA().x && h2.getPosA().x<h.getPosB().x && h2.getPosB().z>h.getPosA().z && h2.getPosA().z<h.getPosB().z)
@@ -103,7 +102,7 @@ public class Collider{
         return move;
     }
 
-    public static double offsetZ(double move,CubeHitbox h,CubeHitbox h2){
+    public static double offsetZ(double move,HitboxAabb h,HitboxAabb h2){
         if(move==0)
             return 0;
         if(h2.getPosB().x>h.getPosA().x && h2.getPosA().x<h.getPosB().x && h2.getPosB().y>h.getPosA().y && h2.getPosA().y<h.getPosB().y)
@@ -111,7 +110,7 @@ public class Collider{
                 double hMin=Math.min(h2.getPosA().z,h2.getPosB().z);
                 double hMax=Math.max(h.getPosA().z,h.getPosB().z);
                 double offset=hMin-hMax;
-                CubeHitbox h1=h.clone();
+                HitboxAabb h1=h.clone();
                 h1.getPosition().add(0,0,offset);
                 if(offset>=0 && move>offset)
                     return offset;

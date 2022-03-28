@@ -1,7 +1,7 @@
 package minecraft54.engine.math;
 
 import minecraft54.engine.math.vectors.Vector2;
-import minecraft54.engine.math.vectors.Vector3;
+import minecraft54.engine.math.vectors.Vector3f;
 
 import java.awt.*;
 
@@ -67,12 +67,12 @@ public class Maths{
         return new Vector2((float)Math.cos(a*toRadians),(float)Math.sin(a*toRadians));
     }
 
-    public static float angle(float x,float y){
+    public static float angleDeg(float x,float y){
         return (float)Math.atan2(y,x)*toDegrees+180;
     }
 
-    public static float angleBetweenVectors(Vector2 v1,Vector2 v2){
-        return angle(v1.x-v2.x,v1.y-v2.y);
+    public static float angleBetweenVectorsDeg(Vector2 v1,Vector2 v2){
+        return angleDeg(v1.x-v2.x,v1.y-v2.y);
     }
 
     public static int module(int i){
@@ -123,8 +123,8 @@ public class Maths{
         return (float)Math.random()*(max-min)+min;
     }
 
-    public static Vector3 cross(Vector3 v1,Vector3 v2){
-        return new Vector3(v1.y*v2.z-v1.z*v2.y,v1.z*v2.x-v1.x*v2.z,v1.x*v2.y-v1.y*v2.x);
+    public static Vector3f cross(Vector3f v1,Vector3f v2){
+        return new Vector3f(v1.y*v2.z-v1.z*v2.y,v1.z*v2.x-v1.x*v2.z,v1.x*v2.y-v1.y*v2.x);
     }
 
     public static long randomSeed(int c){

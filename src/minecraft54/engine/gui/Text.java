@@ -7,6 +7,8 @@ import minecraft54.engine.io.Mouse;
 import minecraft54.engine.io.Window;
 import minecraft54.engine.utils.Assets;
 import minecraft54.engine.utils.Color;
+import minecraft54.main.Main;
+import org.lwjgl.glfw.GLFW;
 
 public class Text extends LayoutElement{
 

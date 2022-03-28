@@ -1,5 +1,7 @@
 package minecraft54.engine.graphics;
 
+import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
@@ -75,15 +77,15 @@ public class Texture3D{
         glBindTexture(GL_TEXTURE_2D_ARRAY,id);
         glTexStorage3D(GL_TEXTURE_2D_ARRAY,1,GL_RGBA8,width,height,file.length);
 
-        glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAX_LEVEL,1);
+
         glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 
         //float amount=Math.min(4f,glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT));
         //glTexParameterf(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAX_ANISOTROPY,amount);
-
-        glTexParameterf(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAX_LEVEL,1);
 
         for(int z=0; z<file.length; z++){
             String f=file[z];

@@ -1,0 +1,81 @@
+[
+  {
+    "id": "btt1",
+    "type": "Image",
+    "size": [0.6, 0.1],
+    "textureID": "button1_p",
+    "pos": [0, -0.1],
+    "gravity": "CENTER_UP"
+  },{
+    "id": "btt1txt",
+    "type": "TextField",
+    "size": [0.6, 0.1],
+    "fontID": "font3",
+    "text": "New World",
+    "pos": [0, -0.1],
+    "gravity": "CENTER_UP",
+    "color": [0.55, 0.55, 0.7, 1],
+    "maxSymbols": 16
+  },
+
+  {
+    "id": "btt2",
+    "type": "Button",
+    "size": [0.7, 0.1],
+    "texture1ID": "button1_n",
+    "texture2ID": "button1_a",
+    "texture3ID": "button1_p",
+    "pos": [-0.4, -0.4],
+    "gravity": "CENTER_UP"
+  },{
+    "id": "btt2txt",
+    "type": "Text",
+    "size": [0.7, 0.1],
+    "fontID": "font3",
+    "text": "",
+    "pos": [-0.4, -0.4],
+    "gravity": "CENTER_UP",
+    "color": [0.55, 0.55, 0.7, 1]
+  },
+
+  {
+    "id": "btt3",
+    "type": "Button",
+    "size": [0.7, 0.1],
+    "texture1ID": "button1_n",
+    "texture2ID": "button1_a",
+    "texture3ID": "button1_p",
+    "pos": [0.4, -0.4],
+    "gravity": "CENTER_UP"
+  },{
+    "id": "btt3txt",
+    "type": "Text",
+    "size": [0.7, 0.1],
+    "fontID": "font3",
+    "text": "",
+    "pos": [0.4, -0.4],
+    "gravity": "CENTER_UP",
+    "color": [0.55, 0.55, 0.7, 1]
+  },
+
+  {
+    "id": "btt4",
+    "type": "Button",
+    "size": [0.7, 0.1],
+    "texture1ID": "button1_n",
+    "texture2ID": "button1_a",
+    "texture3ID": "button1_p",
+    "pos": [0, 0.1],
+    "gravity": "CENTER_DOWN"
+  },{
+    "id": "btt4txt",
+    "type": "Text",
+    "size": [0.7, 0.1],
+    "fontID": "font3",
+    "text": "Done",
+    "pos": [0, 0.1],
+    "gravity": "CENTER_DOWN",
+    "color": [0.55, 0.55, 0.7, 1]
+  }
+
+]

@@ -2,7 +2,7 @@ package minecraft54.engine.graphics;
 
 import minecraft54.engine.math.Matrix4;
 import minecraft54.engine.math.vectors.Vector2;
-import minecraft54.engine.math.vectors.Vector3;
+import minecraft54.engine.math.vectors.Vector3f;
 import minecraft54.engine.utils.Color;
 
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public class ShaderProgram{
         glLinkProgram(programId);
         glValidateProgram(programId);
         if(glGetProgrami(programId,GL_VALIDATE_STATUS)==GL_FALSE)
-            System.err.println("Warning validating shader code: "+glGetProgramInfoLog(programId,4096));
+            System.err.println("Shader: "+glGetShaderInfoLog(programId,1024));
 
         glDetachShader(programId,vertexShaderId);
         glDetachShader(programId,fragmentShaderId);
@@ -107,7 +107,7 @@ public class ShaderProgram{
         glUniform2f(uniforms.get(uniformName),v.x,v.y);
     }
 
-    public void setUniform(String uniformName,Vector3 v){
+    public void setUniform(String uniformName,Vector3f v){
         glUniform3f(uniforms.get(uniformName),v.x,v.y,v.z);
     }
 

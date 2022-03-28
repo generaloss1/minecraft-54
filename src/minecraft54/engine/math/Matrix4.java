@@ -1,6 +1,7 @@
 package minecraft54.engine.math;
 
-import minecraft54.engine.math.vectors.Vector3;
+import minecraft54.engine.math.vectors.Vector3f;
+import minecraft54.engine.math.vectors.Vector3d;
 
 public class Matrix4{
 
@@ -292,7 +293,25 @@ public class Matrix4{
         return this;
     }
 
-    public Matrix4 translate(Vector3 vector3){
+    public Matrix4 translate(double x,double y,double z){
+        val[m03]+=val[m00]*x+val[m01]*y+val[m02]*z;
+        val[m13]+=val[m10]*x+val[m11]*y+val[m12]*z;
+        val[m23]+=val[m20]*x+val[m21]*y+val[m22]*z;
+        val[m33]+=val[m30]*x+val[m31]*y+val[m32]*z;
+
+        return this;
+    }
+
+    public Matrix4 translate(Vector3f vector3){
+        val[m03]+=val[m00]*vector3.x+val[m01]*vector3.y+val[m02]*vector3.z;
+        val[m13]+=val[m10]*vector3.x+val[m11]*vector3.y+val[m12]*vector3.z;
+        val[m23]+=val[m20]*vector3.x+val[m21]*vector3.y+val[m22]*vector3.z;
+        val[m33]+=val[m30]*vector3.x+val[m31]*vector3.y+val[m32]*vector3.z;
+
+        return this;
+    }
+
+    public Matrix4 translate(Vector3d vector3){
         val[m03]+=val[m00]*vector3.x+val[m01]*vector3.y+val[m02]*vector3.z;
         val[m13]+=val[m10]*vector3.x+val[m11]*vector3.y+val[m12]*vector3.z;
         val[m23]+=val[m20]*vector3.x+val[m21]*vector3.y+val[m22]*vector3.z;
@@ -302,7 +321,7 @@ public class Matrix4{
     }
 
 
-    public Matrix4 scale(Vector3 scl){
+    public Matrix4 scale(Vector3f scl){
         val[m00]=scl.x;
         val[m11]=scl.y;
         val[m22]=scl.z;
@@ -311,7 +330,7 @@ public class Matrix4{
     }
 
 
-    public static Matrix4 translated(Vector3 translate){
+    public static Matrix4 translated(Vector3f translate){
         Matrix4 result=new Matrix4();
 
         result.val[m30]=translate.x;
