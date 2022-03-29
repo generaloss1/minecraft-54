@@ -1,8 +1,6 @@
 package minecraft54.main;
 
 import minecraft54.engine.app.AppListener;
-import minecraft54.engine.audio.SoundBuffer;
-import minecraft54.engine.audio.SoundSource;
 import minecraft54.engine.graphics.*;
 import minecraft54.engine.gui.Text;
 import minecraft54.engine.net.Packet;
@@ -32,7 +30,7 @@ public class Minecraft54 implements AppListener{
     public static int RENDER_DISTANCE=4;
     public static String ACCOUNT_NAME="GeneralPashon";
 
-    public static String GAME_PATH=".minecraft54";
+    public static String GAME_FOLDER=".minecraft54";
     public static String HOME_PATH=System.getProperty("user.home");
 
 
@@ -49,7 +47,7 @@ public class Minecraft54 implements AppListener{
         { // Create Files
             try{
 
-                File saves=new File(HOME_PATH+"/"+GAME_PATH+"/saves");
+                File saves=new File(HOME_PATH+"/"+GAME_FOLDER+"/saves");
                 if(!saves.exists())
                     saves.mkdirs();
 

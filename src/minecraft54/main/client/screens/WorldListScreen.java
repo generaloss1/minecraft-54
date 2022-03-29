@@ -5,12 +5,10 @@ import minecraft54.engine.graphics.OrthographicCamera;
 import minecraft54.engine.graphics.SpriteBatch;
 import minecraft54.engine.gui.*;
 import minecraft54.engine.gui.Button;
-import minecraft54.engine.math.Maths;
 import minecraft54.engine.utils.Assets;
 import minecraft54.main.*;
 import minecraft54.main.client.controls.Controls;
 import minecraft54.main.client.world.World;
-import minecraft54.main.server.generator.Generator;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -70,7 +68,7 @@ public class WorldListScreen implements AppScreen{
     public void updateWorldList(){
         layout1.elements.clear();
 
-        File saves=new File(Minecraft54.HOME_PATH+"/"+Minecraft54.GAME_PATH+"/saves");
+        File saves=new File(Minecraft54.HOME_PATH+"/"+Minecraft54.GAME_FOLDER+"/saves");
         File[] worlds=saves.listFiles();
         if(worlds!=null){
             for(int i=0,n=0; i<worlds.length; i++){

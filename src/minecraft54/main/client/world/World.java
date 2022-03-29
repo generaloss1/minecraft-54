@@ -18,7 +18,6 @@ import org.json.JSONObject;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.Scanner;
-import java.util.UUID;
 
 import static org.lwjgl.opengl.GL11C.*;
 
@@ -40,9 +39,9 @@ public class World{
 
     public boolean load(String worldFolder){
         try{
-            worldPath=Minecraft54.HOME_PATH+"/"+Minecraft54.GAME_PATH+"/saves/"+worldFolder;
+            worldPath=Minecraft54.HOME_PATH+"/"+Minecraft54.GAME_FOLDER+"/saves/"+worldFolder;
             File worldFile=new File(worldPath);
-            if(!worldFile.exists())
+            if(!worldFile.exists() || !worldFile.isDirectory())
                 return false;
 
             File propertiesFile=new File(worldPath+"/properties");
@@ -67,9 +66,9 @@ public class World{
 
     public void create(String name,Generator generator,long seed){
         this.name=name;
-        String worldFolder=name+"_"+UUID.randomUUID();
+        String worldFolder=getWorldFolderName(name);
         try{
-            worldPath=Minecraft54.HOME_PATH+"/"+Minecraft54.GAME_PATH+"/saves/"+worldFolder;
+            worldPath=Minecraft54.HOME_PATH+"/"+Minecraft54.GAME_FOLDER+"/saves/"+worldFolder;
             File worldFile=new File(worldPath);
             if(!worldFile.exists()) // create world folder
                 worldFile.mkdirs();
@@ -112,6 +111,17 @@ public class World{
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public String getWorldFolderName(String name){
+        if(!new File(Minecraft54.HOME_PATH+"/"+Minecraft54.GAME_FOLDER+"/saves/"+name).exists())
+            return name;
+
+        int i=1;
+        while(new File(Minecraft54.HOME_PATH+"/"+Minecraft54.GAME_FOLDER+"/saves/"+name+" ("+i+")").exists())
+            i++;
+
+        return name+" ("+i+")";
     }
 
 
