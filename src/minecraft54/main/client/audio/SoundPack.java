@@ -1,9 +1,8 @@
 package minecraft54.main.client.audio;
 
-import minecraft54.engine.audio.SoundBuffer;
-import minecraft54.engine.audio.SoundManager;
 import minecraft54.engine.math.Maths;
 import minecraft54.engine.utils.Assets;
+import minecraft54.main.Options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class SoundPack{
     }
     public void addStep(String... soundIds){
         for(String soundId: soundIds)
-            step.add(new Sound(Assets.getSound(soundId)).setVolume(0.3f));
+            step.add(new Sound(Assets.getSound(soundId)));
     }
 
     public void addPlace(float pitch,String... soundIds){
@@ -63,17 +62,17 @@ public class SoundPack{
     public void playPlace(){
         int size=place.size();
         if(size!=0)
-            place.get(Maths.random(0,size-1)).play();
+            place.get(Maths.random(0,size-1)).setVolume(Options.BLOCKS_VOLUME*Options.MASTER_VOLUME).play();
     }
     public void playDestroy(){
         int size=destroy.size();
         if(size!=0)
-            destroy.get(Maths.random(0,size-1)).play();
+            destroy.get(Maths.random(0,size-1)).setVolume(Options.BLOCKS_VOLUME*Options.MASTER_VOLUME).play();
     }
     public void playStep(){
         int size=step.size();
         if(size!=0)
-            step.get(Maths.random(0,size-1)).play();
+            step.get(Maths.random(0,size-1)).setVolume(0.15f*Options.PLAYERS_VOLUME*Options.MASTER_VOLUME).play();
     }
 
 

@@ -1,0 +1,129 @@
+[
+
+  {
+    "id": "slr1",
+    "type": "Slider",
+    "size": [0.8, 0.08],
+    "sliderSize": [0.032, 0.08],
+    "texture1ID": "button1_p",
+    "texture2ID": "slider1_n",
+    "texture3ID": "slider1_a",
+    "pos": [0, 0.225],
+    "gravity": "CENTER"
+  },{
+    "id": "slr1txt",
+    "type": "Text",
+    "size": [0.8, 0.08],
+    "fontID": "font3",
+    "text": "",
+    "pos": [0, 0.225],
+    "gravity": "CENTER",
+    "color": [1, 1, 1, 1]
+  },
+
+  {
+    "id": "slr2",
+    "type": "Slider",
+    "size": [0.8, 0.08],
+    "sliderSize": [0.032, 0.08],
+    "texture1ID": "button1_p",
+    "texture2ID": "slider1_n",
+    "texture3ID": "slider1_a",
+    "pos": [0, 0.135],
+    "gravity": "CENTER"
+  },{
+    "id": "slr2txt",
+    "type": "Text",
+    "size": [0.8, 0.08],
+    "fontID": "font3",
+    "text": "",
+    "pos": [0, 0.135],
+    "gravity": "CENTER",
+    "color": [1, 1, 1, 1]
+  },
+
+  {
+    "id": "slr3",
+    "type": "Slider",
+    "size": [0.8, 0.08],
+    "sliderSize": [0.032, 0.08],
+    "texture1ID": "button1_p",
+    "texture2ID": "slider1_n",
+    "texture3ID": "slider1_a",
+    "pos": [0, 0.045],
+    "gravity": "CENTER"
+  },{
+    "id": "slr3txt",
+    "type": "Text",
+    "size": [0.8, 0.08],
+    "fontID": "font3",
+    "text": "",
+    "pos": [0, 0.045],
+    "gravity": "CENTER",
+    "color": [1, 1, 1, 1]
+  },
+
+  {
+    "id": "slr4",
+    "type": "Slider",
+    "size": [0.8, 0.08],
+    "sliderSize": [0.032, 0.08],
+    "texture1ID": "button1_p",
+    "texture2ID": "slider1_n",
+    "texture3ID": "slider1_a",
+    "pos": [0, -0.045],
+    "gravity": "CENTER"
+  },{
+    "id": "slr4txt",
+    "type": "Text",
+    "size": [0.8, 0.08],
+    "fontID": "font3",
+    "text": "",
+    "pos": [0, -0.045],
+    "gravity": "CENTER",
+    "color": [1, 1, 1, 1]
+  },
+
+  {
+    "id": "slr5",
+    "type": "Slider",
+    "size": [0.8, 0.08],
+    "sliderSize": [0.032, 0.08],
+    "texture1ID": "button1_p",
+    "texture2ID": "slider1_n",
+    "texture3ID": "slider1_a",
+    "pos": [0, -0.135],
+    "gravity": "CENTER"
+  },{
+    "id": "slr5txt",
+    "type": "Text",
+    "size": [0.8, 0.08],
+    "fontID": "font3",
+    "text": "",
+    "pos": [0, -0.135],
+    "gravity": "CENTER",
+    "color": [1, 1, 1, 1]
+  },
+
+  {
+    "id": "slr6",
+    "type": "Slider",
+    "size": [0.8, 0.08],
+    "sliderSize": [0.032, 0.08],
+    "texture1ID": "button1_p",
+    "texture2ID": "slider1_n",
+    "texture3ID": "slider1_a",
+    "pos": [0, -0.225],
+    "gravity": "CENTER"
+  },{
+    "id": "slr6txt",
+    "type": "Text",
+    "size": [0.8, 0.08],
+    "fontID": "font3",
+    "text": "",
+    "pos": [0, -0.225],
+    "gravity": "CENTER",
+    "color": [1, 1, 1, 1]
+  }
+
+]

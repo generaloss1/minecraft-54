@@ -4,9 +4,9 @@ import minecraft54.engine.io.Keyboard;
 import minecraft54.engine.math.vectors.Vector3d;
 import minecraft54.engine.math.vectors.Vector3f;
 import minecraft54.engine.utils.Timer;
+import minecraft54.main.Options;
 import minecraft54.main.client.controls.Controls;
 import minecraft54.main.Main;
-import minecraft54.main.Minecraft54;
 import minecraft54.main.client.screens.GameScreen;
 import minecraft54.main.client.world.Block;
 import minecraft54.main.client.world.BlockData;
@@ -108,30 +108,20 @@ public class Player extends Entity{
 
         getVelocity().get().add(controlMoveVel);
 
-        Controls.setPosition(getHitbox().getPosition().clone().add(getEye()));
-
         if(!Main.keyboard.isKeyPressed(GLFW_KEY_C)){
-            if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL) && getVelocity().get().x!=0 && getVelocity().get().z!=0)
-                Controls.interpolateFov(Minecraft54.FOV+10);
-            else
-                Controls.interpolateFov(Minecraft54.FOV);
+            if(Main.keyboard.isKeyDown(GLFW_KEY_LEFT_CONTROL) && getVelocity().get().x!=0 && getVelocity().get().z!=0)
+                Controls.interpolateFov(Options.FOV+10);
+            else if(Main.keyboard.isKeyReleased(GLFW_KEY_LEFT_CONTROL))
+                Controls.interpolateFov(Options.FOV);
         }
         if(Main.keyboard.isKeyDown(GLFW_KEY_C))
-            Controls.fov=Minecraft54.FOV/4;
+            Controls.fov=Options.FOV/4;
         else if(Main.keyboard.isKeyReleased(GLFW_KEY_C))
-            Controls.fov=Minecraft54.FOV;
-        if(Main.keyboard.isKeyDown(org.lwjgl.glfw.GLFW.GLFW_KEY_MINUS)){
-            float f=Controls.fov-5;
-            Controls.interpolateFov(f);
-            Minecraft54.FOV=f;
-        }
-        if(Main.keyboard.isKeyDown(GLFW.GLFW_KEY_EQUAL)){
-            float f=Controls.fov+5;
-            Controls.interpolateFov(f);
-            Minecraft54.FOV=f;
-        }
+            Controls.fov=Options.FOV;
 
         ((GameScreen)Main.cfg.getScreen("game")).playerMoved(this);
+
+        Controls.setPosition(getHitbox().getPosition().clone().add(getEye()));
     }
 
 

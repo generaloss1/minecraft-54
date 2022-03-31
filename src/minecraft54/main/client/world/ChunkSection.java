@@ -166,12 +166,12 @@ public class ChunkSection extends ChunkSectionData{
                         //Block mz_block=Block.fromId.get(mz);
 
                         boolean[] sides=new boolean[]{
-                                ( px_block==null || ( (blockData.sides[1]==null || !blockData.sides[1].interruptNeighbors.contains(px_block.getParentBlockId())) && (px_block.sides[1]==null || px_block.isTransparent() || px_block.isTranslucent()) )),
-                                ( mx_block==null || ( (blockData.sides[0]==null || !blockData.sides[0].interruptNeighbors.contains(mx_block.getParentBlockId())) && (mx_block.sides[0]==null || mx_block.isTransparent() || mx_block.isTranslucent()) )),
-                                ( mz_block==null || ( (blockData.sides[2]==null || !blockData.sides[2].interruptNeighbors.contains(mz_block.getParentBlockId())) && (mz_block.sides[2]==null || mz_block.isTransparent() || mz_block.isTranslucent()) )),
-                                ( pz_block==null || ( (blockData.sides[3]==null || !blockData.sides[3].interruptNeighbors.contains(pz_block.getParentBlockId())) && (pz_block.sides[3]==null || pz_block.isTransparent() || pz_block.isTranslucent()) )),
-                                ( py_block==null || ( (blockData.sides[5]==null || !blockData.sides[5].interruptNeighbors.contains(py_block.getParentBlockId())) && (py_block.sides[5]==null || py_block.isTransparent() || py_block.isTranslucent()) )),
-                                ( my_block==null || ( (blockData.sides[4]==null || !blockData.sides[4].interruptNeighbors.contains(my_block.getParentBlockId())) && (my_block.sides[4]==null || my_block.isTransparent() || my_block.isTranslucent()) )),
+                                ( px_block!=null && (px_block.getParentBlockId()==0 || ( (blockData.sides[1]==null || !blockData.sides[1].interruptNeighbors.contains(px_block.getParentBlockId())) && (px_block.sides[1]==null || px_block.isTransparent() || px_block.isTranslucent()) ))),
+                                ( mx_block!=null && (mx_block.getParentBlockId()==0 || ( (blockData.sides[0]==null || !blockData.sides[0].interruptNeighbors.contains(mx_block.getParentBlockId())) && (mx_block.sides[0]==null || mx_block.isTransparent() || mx_block.isTranslucent()) ))),
+                                ( mz_block!=null && (mz_block.getParentBlockId()==0 || ( (blockData.sides[2]==null || !blockData.sides[2].interruptNeighbors.contains(mz_block.getParentBlockId())) && (mz_block.sides[2]==null || mz_block.isTransparent() || mz_block.isTranslucent()) ))),
+                                ( pz_block!=null && (pz_block.getParentBlockId()==0 || ( (blockData.sides[3]==null || !blockData.sides[3].interruptNeighbors.contains(pz_block.getParentBlockId())) && (pz_block.sides[3]==null || pz_block.isTransparent() || pz_block.isTranslucent()) ))),
+                                ( py_block!=null && (py_block.getParentBlockId()==0 || ( (blockData.sides[5]==null || !blockData.sides[5].interruptNeighbors.contains(py_block.getParentBlockId())) && (py_block.sides[5]==null || py_block.isTransparent() || py_block.isTranslucent()) ))),
+                                ( my_block!=null && (my_block.getParentBlockId()==0 || ( (blockData.sides[4]==null || !blockData.sides[4].interruptNeighbors.contains(my_block.getParentBlockId())) && (my_block.sides[4]==null || my_block.isTransparent() || my_block.isTranslucent()) ))),
                                 true
                         };
 

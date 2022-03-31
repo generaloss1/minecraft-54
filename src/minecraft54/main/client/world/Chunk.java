@@ -3,6 +3,7 @@ package minecraft54.main.client.world;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.Objects;
 
 public class Chunk{
 
@@ -128,7 +129,6 @@ public class Chunk{
 
 
     public void save(){
-
         try{
             File chunkFile=new File(world.worldPath+"/chunks/"+x+":"+z);
             chunkFile.createNewFile();
@@ -151,6 +151,16 @@ public class Chunk{
 
         for(ChunkSection section: sections)
             section.dispose();
+    }
+
+
+
+    @Override
+    public boolean equals(Object o){
+        if(o==null || getClass()!=o.getClass())
+            return false;
+        Chunk chunk=(Chunk)o;
+        return x==chunk.x && z==chunk.z && generated==chunk.generated && init==chunk.init;
     }
 
 

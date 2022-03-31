@@ -24,7 +24,7 @@ public class Main{
 
         cfg=new AppCfg();
 
-        window=new Window(1280,720,"Minecraft54",true,true);
+        window=new Window(925,530,"Minecraft 54",true,true);
         keyboard=new Keyboard(window);
         mouse=new Mouse(window);
 

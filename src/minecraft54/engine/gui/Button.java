@@ -32,7 +32,7 @@ public class Button extends LayoutElement{
     }
 
     public void update(Mouse mouse,Keyboard keyboard,Window window){
-        updateRenderValues();
+        updateRenderValues(window);
         updateCallbacks(mouse,window);
     }
 

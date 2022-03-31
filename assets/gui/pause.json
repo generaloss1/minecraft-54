@@ -1,4 +1,5 @@
 [
+
   {
     "id": "btt1",
     "type": "Button",
@@ -13,7 +14,7 @@
     "type": "Text",
     "size": [0.8, 0.08],
     "fontID": "font3",
-    "text": "Singleplayer",
+    "text": "Resume",
     "pos": [0, 0.135],
     "gravity": "CENTER",
     "color": [1, 1, 1, 1]
@@ -33,7 +34,7 @@
     "type": "Text",
     "size": [0.8, 0.08],
     "fontID": "font3",
-    "text": "Multiplayer",
+    "text": "Settings",
     "pos": [0, 0.045],
     "gravity": "CENTER",
     "color": [1, 1, 1, 1]
@@ -53,28 +54,8 @@
     "type": "Text",
     "size": [0.8, 0.08],
     "fontID": "font3",
-    "text": "Settings",
+    "text": "Save and exit",
     "pos": [0, -0.045],
-    "gravity": "CENTER",
-    "color": [1, 1, 1, 1]
-  },
-
-  {
-    "id": "btt4",
-    "type": "Button",
-    "size": [0.8, 0.08],
-    "texture1ID": "button1_n",
-    "texture2ID": "button1_a",
-    "texture3ID": "button1_p",
-    "pos": [0, -0.135],
-    "gravity": "CENTER"
-  },{
-    "id": "btt4txt",
-    "type": "Text",
-    "size": [0.8, 0.08],
-    "fontID": "font3",
-    "text": "Exit",
-    "pos": [0, -0.135],
     "gravity": "CENTER",
     "color": [1, 1, 1, 1]
   }

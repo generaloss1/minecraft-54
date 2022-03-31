@@ -3,51 +3,51 @@
     {
         "id": "btt1",
         "type": "Button",
-        "size": [0.3, 0.1],
+        "size": [0.8, 0.08],
         "texture1ID": "button1_n",
         "texture2ID": "button1_a",
         "texture3ID": "button1_p",
-        "pos": [0.05, 0.1],
+        "pos": [0.05, 0.05],
         "gravity": "LEFT_DOWN"
     },{
         "id": "btt1txt",
         "type": "Text",
-        "size": [0.3, 0.1],
+        "size": [0.8, 0.08],
         "fontID": "font3",
         "text": "Update",
-        "pos": [0.05, 0.1],
+        "pos": [0.05, 0.05],
         "gravity": "LEFT_DOWN",
-        "color": [0.55, 0.55, 0.7, 1]
+        "color": [1, 1, 1, 1]
     },
 
     {
         "id": "btt2",
         "type": "Button",
-        "size": [0.3, 0.1],
+        "size": [0.8, 0.08],
         "texture1ID": "button1_n",
         "texture2ID": "button1_a",
         "texture3ID": "button1_p",
-        "pos": [0.35, 0.1],
+        "pos": [0.875, 0.05],
         "gravity": "LEFT_DOWN"
     },{
         "id": "btt2txt",
         "type": "Text",
-        "size": [0.3, 0.1],
+        "size": [0.8, 0.08],
         "fontID": "font3",
         "text": "Connect",
-        "pos": [0.35, 0.1],
+        "pos": [0.875, 0.05],
         "gravity": "LEFT_DOWN",
-        "color": [0.55, 0.55, 0.7, 1]
+        "color": [1, 1, 1, 1]
     },
 
     {
         "id": "serverInfo",
         "type": "Text",
-        "size": [1, 0.15],
+        "size": [0.8, 0.08],
         "fontID": "font3",
         "text": "ServerInfo: null",
-        "pos": [0, -0.5],
-        "gravity": "CENTER_UP",
+        "pos": [0, 0],
+        "gravity": "CENTER",
         "color": [0, 0, 0, 1]
     }
 

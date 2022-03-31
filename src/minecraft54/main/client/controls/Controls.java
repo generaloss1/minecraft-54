@@ -7,25 +7,23 @@ import minecraft54.engine.math.Frustum;
 import minecraft54.engine.math.Matrix4;
 import minecraft54.engine.math.vectors.Vector3d;
 import minecraft54.main.Main;
-import minecraft54.main.Minecraft54;
-import org.lwjgl.glfw.GLFW;
+import minecraft54.main.Options;
 
 public class Controls{
 
 
     public static PerspectiveCamera CAMERA;
     public static Frustum frustum;
-    public static float SENSITIVITY=85;
     private static boolean ignoreRotation;
     private static final Vector3d position=new Vector3d();
-    public static float fov=Minecraft54.FOV;
+    public static float fov=Options.FOV;
     private static float ifov=fov;
     public static float i=0.5f;
     private static boolean interpolation;
 
 
     static{
-        CAMERA=new PerspectiveCamera(Main.window.getWidth()/2,Main.window.getHeight()/2,0.1f,1000f,Minecraft54.FOV);
+        CAMERA=new PerspectiveCamera(Main.window.getWidth()/2,Main.window.getHeight()/2,0.1f,1000f,Options.FOV);
         frustum=new Frustum(CAMERA.getView().val,CAMERA.getProjection().val);
     }
 
@@ -56,6 +54,7 @@ public class Controls{
                 interpolation=false;
             }
         }
+
         CAMERA.setFOV(fov);
 
         if(window.isFocused()){
@@ -66,11 +65,11 @@ public class Controls{
 
             float dx=halfW-x;
             float dy=halfH-y;
-            float rotX=dx/window.getWidth()*SENSITIVITY;
-            float rotY=dy/window.getHeight()*SENSITIVITY;
+            float rotX=dx/window.getWidth()*Options.SENSITIVITY;
+            float rotY=dy/window.getHeight()*Options.SENSITIVITY;
 
             if(mouse.isVisible()){
-                mouse.hide();
+                mouse.show(false);
                 ignoreRotation=true;
             }
 
@@ -89,7 +88,7 @@ public class Controls{
             CAMERA.getRotation().constrain();
 
         }else if(!mouse.isVisible())
-            mouse.show();
+            mouse.show(true);
 
 
         frustum.setFrustum(Matrix4.mul(

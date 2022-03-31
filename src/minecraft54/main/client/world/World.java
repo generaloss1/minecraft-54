@@ -8,6 +8,7 @@ import minecraft54.engine.math.vectors.Vector3f;
 import minecraft54.engine.math.vectors.Vector3d;
 import minecraft54.engine.utils.Assets;
 import minecraft54.engine.utils.FastArrayList;
+import minecraft54.main.Options;
 import minecraft54.main.client.controls.Controls;
 import minecraft54.main.util.GameMode;
 import minecraft54.main.Minecraft54;
@@ -101,7 +102,7 @@ public class World{
             stats.put("pitch",0f);
             stats.put("roll",0f);
             stats.put("gameMode",GameMode.SURVIVAL);
-            File statsFile=new File(worldPath+"/stats/"+Minecraft54.ACCOUNT_NAME+".json");
+            File statsFile=new File(worldPath+"/stats/"+Options.ACCOUNT_NAME+".json");
             if(!statsFile.exists())
                 statsFile.createNewFile();
             PrintWriter out=new PrintWriter(new FileOutputStream(statsFile));
@@ -208,6 +209,8 @@ public class World{
 
 
 
+    public FastArrayList<Chunk> removeChunksStack=new FastArrayList<>();
+
     public void update(){
         new Thread(()->{
             int playerChunkX=Maths.round(Controls.getPosition().x/Chunk.WIDTH_X);
@@ -215,13 +218,18 @@ public class World{
 
             for(int i=0; i<chunks.size(); i++){
                 Chunk chunk=chunks.get(i);
-                if(chunk!=null && (chunk.x<playerChunkX-Minecraft54.RENDER_DISTANCE-1 || chunk.x>=playerChunkX+Minecraft54.RENDER_DISTANCE+1 || chunk.z<playerChunkZ-Minecraft54.RENDER_DISTANCE-1 || chunk.z>=playerChunkZ+Minecraft54.RENDER_DISTANCE+1)){
-                    chunk.save();
-
-                    chunks.remove(chunk);
-                }
+                if(chunk!=null && !removeChunksStack.contains(chunk) && (chunk.x<playerChunkX-Options.RENDER_DISTANCE-1 || chunk.x>=playerChunkX+Options.RENDER_DISTANCE+1 || chunk.z<playerChunkZ-Options.RENDER_DISTANCE-1 || chunk.z>=playerChunkZ+Options.RENDER_DISTANCE+1))
+                    removeChunksStack.add(chunk);
             }
         }).start();
+
+        for(int i=0; i<removeChunksStack.size(); i++){
+            Chunk chunk=removeChunksStack.get(i);
+            //chunk.save();
+            chunk.dispose();
+            chunks.remove(chunk);
+            removeChunksStack.remove(i);
+        }
     }
 
     public void setBlock(short id,int x,int y,int z,boolean updateNeighbors){

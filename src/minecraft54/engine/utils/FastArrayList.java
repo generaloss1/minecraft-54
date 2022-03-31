@@ -73,7 +73,7 @@ public class FastArrayList<T>{
         return -1;
     }
 
-    public void remove(T n){
+    public synchronized void remove(T n){
         for(int i=0; i<elementsInArray; i++){
             if(n.equals(arrayList[i])){
                 arrayList[i]=null;
@@ -82,6 +82,12 @@ public class FastArrayList<T>{
                 return;
             }
         }
+    }
+
+    public synchronized void remove(int i){
+        arrayList[i]=null;
+        elementsInArray--;
+        copyArray(false);
     }
 
     public void clear(){

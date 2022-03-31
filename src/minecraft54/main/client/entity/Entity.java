@@ -9,6 +9,7 @@ import minecraft54.engine.physics.HitboxAabb;
 import minecraft54.engine.physics.Velocity;
 import minecraft54.main.Main;
 import minecraft54.main.Minecraft54;
+import minecraft54.main.Options;
 import minecraft54.main.client.screens.GameScreen;
 
 import java.util.ArrayList;
@@ -53,9 +54,9 @@ public class Entity{
                 if(velocityY<0){
                     double fallHeight=fallUpperY-hitbox.getPosition().y;
                     if(fallHeight>7)
-                        SoundManager.play("damage_fallbig");
+                        SoundManager.play("damage_fallbig",Options.PLAYERS_VOLUME*Options.MASTER_VOLUME);
                     else if(fallHeight>3)
-                        SoundManager.play("damage_fallsmall",0.3f);
+                        SoundManager.play("damage_fallsmall",Options.PLAYERS_VOLUME*Options.MASTER_VOLUME);
                 }
                 gravityVelocity=0;
                 if(jumping){

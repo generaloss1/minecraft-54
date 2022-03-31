@@ -26,12 +26,9 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Minecraft54 implements AppListener{
 
 
-    public static float FOV=110;
-    public static int RENDER_DISTANCE=4;
-    public static String ACCOUNT_NAME="GeneralPashon";
-
     public static String GAME_FOLDER=".minecraft54";
     public static String HOME_PATH=System.getProperty("user.home");
+    public static String OPTIONS_PATH=HOME_PATH+"/"+GAME_FOLDER+"/options.json";
 
 
     private static Server server;
@@ -58,16 +55,19 @@ public class Minecraft54 implements AppListener{
 
         { // Load Textures
             Assets.loadTexture(new Texture(new PixmapRGB(1,1).setPixel(0,0,1,1,1)),"white");
-            Assets.loadTexture("textures/ui/cursor_0.png","cursor0");
-            Assets.loadTexture("textures/ui/cursor_1.png","cursor1");
             Assets.loadTexture("textures/ui/crosshair.png","crosshair");
 
             Assets.loadTexture("textures/ui/button1.png","button1_n");
             Assets.loadTexture("textures/ui/button1_selected.png","button1_a");
             Assets.loadTexture("textures/ui/button1_pressed.png","button1_p");
+
+            Assets.loadTexture("textures/ui/slider1.png","slider1_n");
+            Assets.loadTexture("textures/ui/slider1_selected.png","slider1_a");
+            Assets.loadTexture("textures/ui/slider1_pressed.png","slider1_p");
+
             Assets.loadTexture("textures/ui/background.png","background");
 
-            String blocks="textures/blocks3/";
+            String blocks="textures/blocks/";
             Assets.loadTexture3d(new Texture3D(16,16,
                     blocks+"grass_block_side.png", // 0
                     blocks+"grass_block_top.png",
@@ -104,6 +104,11 @@ public class Minecraft54 implements AppListener{
 
         { // Load Sounds
             // step
+            Assets.loadSound("sounds/step/gravel1.ogg","step_gravel1");
+            Assets.loadSound("sounds/step/gravel2.ogg","step_gravel2");
+            Assets.loadSound("sounds/step/gravel3.ogg","step_gravel3");
+            Assets.loadSound("sounds/step/gravel4.ogg","step_gravel4");
+
             Assets.loadSound("sounds/step/grass1.ogg","step_grass1");
             Assets.loadSound("sounds/step/grass2.ogg","step_grass2");
             Assets.loadSound("sounds/step/grass3.ogg","step_grass3");
@@ -132,6 +137,11 @@ public class Minecraft54 implements AppListener{
             Assets.loadSound("sounds/step/wood6.ogg","step_wood6");
 
             // dig
+            Assets.loadSound("sounds/dig/gravel1.ogg","dig_gravel1");
+            Assets.loadSound("sounds/dig/gravel2.ogg","dig_gravel2");
+            Assets.loadSound("sounds/dig/gravel3.ogg","dig_gravel3");
+            Assets.loadSound("sounds/dig/gravel4.ogg","dig_gravel4");
+
             Assets.loadSound("sounds/dig/grass1.ogg","dig_grass1");
             Assets.loadSound("sounds/dig/grass2.ogg","dig_grass2");
             Assets.loadSound("sounds/dig/grass3.ogg","dig_grass3");
@@ -171,7 +181,7 @@ public class Minecraft54 implements AppListener{
             Assets.loadTTF(ttf1,"font1");
             TrueTypeFont ttf2=new TrueTypeFont("fonts/digit.ttf",size);
             Assets.loadTTF(ttf2,"font2");
-            TrueTypeFont ttf3=new TrueTypeFont("fonts/minecraft.ttf",40);
+            TrueTypeFont ttf3=new TrueTypeFont("fonts/minecraft.ttf",25);
             Assets.loadTTF(ttf3,"font3");
             TrueTypeFont ttf4=new TrueTypeFont("fonts/trashco.ttf",32);
             Assets.loadTTF(ttf4,"font4");
@@ -193,12 +203,17 @@ public class Minecraft54 implements AppListener{
             Main.cfg.addScreen("game",new GameScreen());
             Main.cfg.addScreen("serverList",new ServerListScreen());
             Main.cfg.addScreen("worldCreate",new WorldCreateScreen());
+            Main.cfg.addScreen("settings",new SettingsScreen());
+
             Main.cfg.setScreen("menu");
+        }
+
+        { // Load Settings Options
+            Options.load();
         }
 
         { // Defining Blocks
             short id=0;
-            AIR=new Block(id);
             BlockData blockData; // AIR
             SoundPack soundPack;
 
@@ -207,6 +222,10 @@ public class Minecraft54 implements AppListener{
             float grassR=0.45f,grassG=0.75f,grassB=0.35f;
             float leavesR=0.3f,leavesG=0.7f,leavesB=0.15f;
             float waterR=0.1f,waterG=0.4f,waterB=0.8f;
+
+
+            AIR=new Block(id);
+            AIR.addData(0,new BlockData(0,0,false,true,true));
 
 
             id++;
@@ -241,9 +260,9 @@ public class Minecraft54 implements AppListener{
             DIRT=new Block(id);
             blockData=BlockManager.blockDataSolid(id,0,2);
             soundPack=new SoundPack();
-            soundPack.addPlace(0.75f,"dig_grass1","dig_grass2","dig_grass3","dig_grass4");
-            soundPack.addDestroy(0.75f,"dig_grass1","dig_grass2","dig_grass3","dig_grass4");
-            soundPack.addStep("step_grass1","step_grass2","step_grass3","step_grass4","step_grass5","step_grass6");
+            soundPack.addPlace(0.75f,"dig_gravel1","dig_gravel2","dig_gravel3","dig_gravel4");
+            soundPack.addDestroy(0.75f,"dig_gravel1","dig_gravel2","dig_gravel3","dig_gravel4");
+            soundPack.addStep("step_gravel1","step_gravel2","step_gravel3","step_gravel4");
             blockData.setSounds(soundPack);
             DIRT.addData(0,blockData); // DIRT
 
@@ -263,7 +282,7 @@ public class Minecraft54 implements AppListener{
             PLANKS=new Block(id);
             blockData=BlockManager.blockDataSolid(id,0,14);
             soundPack=new SoundPack();
-            soundPack.addPlace(0.75f,"dig_wood1","dig_wood2","dig_wood3","dig_wood4");
+            soundPack.addPlace("dig_wood1","dig_wood2","dig_wood3","dig_wood4");
             soundPack.addDestroy(0.75f,"dig_wood1","dig_wood2","dig_wood3","dig_wood4");
             soundPack.addStep("step_wood1","step_wood2","step_wood3","step_wood4","step_wood5","step_wood6");
             blockData.setSounds(soundPack);
@@ -398,7 +417,7 @@ public class Minecraft54 implements AppListener{
             FLOWER.addData(1,blockData); // DANDELION
 
 
-            BlockManager.addBlocks(STONE,GRASS_BLOCK,DIRT,COBBLESTONE,PLANKS,WATER,WATER_STILL,SAND,LOG,LEAVES,GLASS,GRASS,FLOWER);
+            BlockManager.addBlocks(AIR,STONE,GRASS_BLOCK,DIRT,COBBLESTONE,PLANKS,WATER,WATER_STILL,SAND,LOG,LEAVES,GLASS,GRASS,FLOWER);
         }
 
         { // Server init

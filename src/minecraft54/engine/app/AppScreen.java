@@ -6,6 +6,6 @@ public interface AppScreen{
     void render();
     void resize(int width,int height);
     void dispose();
-    void onSet();
+    void onSet(String arg);
 
 }

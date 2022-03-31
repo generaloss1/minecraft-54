@@ -318,6 +318,9 @@ public class SpriteBatch{
     }
 
 
+    public void resetColor(){
+        color.set(1,1,1,1);
+    }
     public void setColor(Color color){
         this.color.set(color);
     }

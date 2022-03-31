@@ -78,11 +78,15 @@ public class AppCfg{
     }
 
 
-    public void setScreen(String screenId){
+    public void setScreen(String screenId,String arg){
         AppScreen scr=screens.get(screenId);
         screen=scr;
-        scr.onSet();
+        scr.onSet(arg);
         currentScreen=screenId;
+    }
+
+    public void setScreen(String screenId){
+        setScreen(screenId,null);
     }
 
     public AppScreen getScreen(String id){

@@ -21,14 +21,19 @@ public class Layout extends LayoutElement{
 
 
     public Layout(){
-        super(0,0);
+        super(1,1);
+        elements=new HashMap<>();
+    }
+
+    public Layout(double width,double height){
+        super(width,height);
         elements=new HashMap<>();
     }
 
 
     public void addElement(String id,LayoutElement element){
+        element.setParent(this);
         elements.put(id,element);
-        element.setLayout(this);
         ids.add(id);
     }
 
@@ -51,7 +56,7 @@ public class Layout extends LayoutElement{
     }
 
     public void update(Mouse mouse,Keyboard keyboard,Window window){
-        setSize(window.getWidth(),window.getHeight());
+        updateWindowGravity();
         for(String k:ids){
             LayoutElement e=elements.get(k);
             if(e!=null)
@@ -109,6 +114,23 @@ public class Layout extends LayoutElement{
                         textField.setGravity(Gravity.parseGravity(jsonElement.getString("gravity")));
                         textField.setColor((float)jsonColor.getDouble(0),(float)jsonColor.getDouble(1),(float)jsonColor.getDouble(2),(float)jsonColor.getDouble(3));
                         addElement(id,textField);
+                    }
+                    case "ElementList"->{
+                        JSONArray jsonPos=jsonElement.getJSONArray("pos");
+
+                        ElementList textField=new ElementList(jsonSize.getDouble(0),jsonSize.getDouble(1),jsonElement.getString("textureID"));
+                        textField.setPos(jsonPos.getDouble(0),jsonPos.getDouble(1));
+                        textField.setGravity(Gravity.parseGravity(jsonElement.getString("gravity")));
+                        addElement(id,textField);
+                    }
+                    case "Slider"->{
+                        JSONArray jsonPos=jsonElement.getJSONArray("pos");
+                        JSONArray jsonSliderSize=jsonElement.getJSONArray("sliderSize");
+
+                        Slider button=new Slider(jsonSize.getDouble(0),jsonSize.getDouble(1),jsonSliderSize.getDouble(0),jsonSliderSize.getDouble(1),jsonElement.getString("texture1ID"),jsonElement.getString("texture2ID"),jsonElement.getString("texture3ID"));
+                        button.setPos(jsonPos.getDouble(0),jsonPos.getDouble(1));
+                        button.setGravity(Gravity.parseGravity(jsonElement.getString("gravity")));
+                        addElement(id,button);
                     }
                 }
             }

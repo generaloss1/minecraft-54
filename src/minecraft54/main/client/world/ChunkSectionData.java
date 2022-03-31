@@ -1,5 +1,7 @@
 package minecraft54.main.client.world;
 
+import minecraft54.main.Minecraft54;
+
 public class ChunkSectionData{
 
 
@@ -229,7 +231,7 @@ public class ChunkSectionData{
     BlockData getBlock(short lx,short ly,short lz){
         int idData=getIdData(lx,ly,lz);
         if(idData==0)
-            return null;
+            return Minecraft54.AIR.getBlockData();
         short id=(short)(idData%Short.MAX_VALUE);
         Block block=BlockManager.getBlockFromId(id);
         if(block==null)

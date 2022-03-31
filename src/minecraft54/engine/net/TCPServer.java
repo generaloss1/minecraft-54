@@ -181,6 +181,7 @@ public class TCPServer{
                     out.writeObject(packet);
                     out.flush();
                     out.reset();
+                }catch(SocketException ignored){
                 }catch(Exception e){
                     for(TCPServerListener l:server.listeners)
                         l.error(server,e);

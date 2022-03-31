@@ -1,6 +1,7 @@
 package minecraft54.main.client.screens;
 
 import minecraft54.engine.app.AppScreen;
+import minecraft54.engine.audio.SoundManager;
 import minecraft54.engine.graphics.OrthographicCamera;
 import minecraft54.engine.graphics.SpriteBatch;
 import minecraft54.engine.gui.Layout;
@@ -9,6 +10,7 @@ import minecraft54.engine.gui.TouchCallback;
 import minecraft54.engine.utils.Assets;
 import minecraft54.main.Main;
 import minecraft54.main.Minecraft54;
+import minecraft54.main.Options;
 import minecraft54.main.packets.PacketStatusInPing;
 import minecraft54.main.packets.PlayerLogIn;
 
@@ -31,7 +33,9 @@ public class ServerListScreen implements AppScreen{
         layout.load("gui/serverList.json");
 
         layout.getElement("btt1").setTouchCallback(new TouchCallback(){
-            public void touchOn(LayoutElement current){}
+            public void touchOn(LayoutElement current){
+                SoundManager.play("random_click",0.25f*Options.MASTER_VOLUME);
+            }
             public void touched(LayoutElement current){}
             public void touchOff(LayoutElement current){
                 Minecraft54.getClient().send(new PacketStatusInPing());
@@ -39,10 +43,12 @@ public class ServerListScreen implements AppScreen{
         });
 
         layout.getElement("btt2").setTouchCallback(new TouchCallback(){
-            public void touchOn(LayoutElement current){}
+            public void touchOn(LayoutElement current){
+                SoundManager.play("random_click",0.25f*Options.MASTER_VOLUME);
+            }
             public void touched(LayoutElement current){}
             public void touchOff(LayoutElement current){
-                Minecraft54.getClient().send(new PlayerLogIn(Minecraft54.ACCOUNT_NAME));
+                Minecraft54.getClient().send(new PlayerLogIn(Options.ACCOUNT_NAME));
             }
         });
 
@@ -75,7 +81,9 @@ public class ServerListScreen implements AppScreen{
         sb.dispose();
     }
 
-    public void onSet(){}
+    public void onSet(String arg){
+        layout.update(Main.mouse,Main.keyboard,Main.window);
+    }
 
 
 }

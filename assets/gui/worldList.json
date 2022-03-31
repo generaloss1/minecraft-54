@@ -1,0 +1,31 @@
+[
+  {
+    "id": "btt1",
+    "type": "Button",
+    "size": [0.8, 0.08],
+    "texture1ID": "button1_n",
+    "texture2ID": "button1_a",
+    "texture3ID": "button1_p",
+    "pos": [0.05, -0.05],
+    "gravity": "LEFT_UP"
+  },{
+    "id": "btt1txt",
+    "type": "Text",
+    "size": [0.8, 0.08],
+    "fontID": "font3",
+    "text": "Create World",
+    "pos": [0.05, -0.05],
+    "gravity": "LEFT_UP",
+    "color": [1, 1, 1, 1]
+  },
+
+  {
+    "id": "worldList",
+    "type": "ElementList",
+    "size": [0.8, 0.9],
+    "textureID": "button1_p",
+    "pos": [-0.05, -0.05],
+    "gravity": "RIGHT_UP"
+  }
+
+]

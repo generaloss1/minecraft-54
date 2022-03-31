@@ -14,14 +14,15 @@ public abstract class LayoutElement{
 
 
     private final UUID uuid;
-    private Layout layout;
 
     private int renderX,renderY,renderWidth,renderHeight, gravity;
-    private boolean show,allocated,oldAllocated,touched,oldTouched;
-    private double x,y,width,height;
+    private boolean show,allocated,oldAllocated,touched,oldTouched,touchedDown,touchedUp;
+    private double x,y,width,height,gravityX,gravityY;
 
     private TouchCallback touchCallback;
     private AllocateCallback allocateCallback;
+
+    private LayoutElement parent;
 
 
     public LayoutElement(double width,double height){
@@ -32,15 +33,11 @@ public abstract class LayoutElement{
     }
 
 
-    void updateRenderValues(){
-        Layout layout=getLayout();
-        if(layout==null)
-            return;
+    void updateRenderValues(LayoutElement parent,Window window){
+        double ww=parent.getRelativeWidth() *window.getWidth();
+        double wh=parent.getRelativeHeight()*window.getHeight();
 
-        int ww=(int)layout.getWidth();
-        int wh=(int)layout.getHeight();
-
-        float px=0,py=0;
+        double px=0,py=0;
         int gravity=getGravity();
 
         if(gravity==Gravity.RIGHT_DOWN)
@@ -65,10 +62,86 @@ public abstract class LayoutElement{
             py=wh-renderHeight;
         }
 
-        renderX=Maths.round(x()*wh + px);
-        renderY=Maths.round(y()*wh + py);
-        renderWidth=Maths.round(getWidth()*wh);
-        renderHeight=Maths.round(getHeight()*wh);
+        double wwh=parent.getRelativeWidth()*window.getHeight();
+
+        renderX=Maths.round(x*wh + px + parent.getRelativeX()*window.getWidth ());
+        renderY=Maths.round(y*wh + py + parent.getRelativeY()*window.getHeight());
+        renderWidth =Maths.round(width *wwh);
+        renderHeight=Maths.round(height*wh);
+    }
+
+    void updateRenderValues(Window window){
+        if(parent!=null){
+            updateRenderValues(parent,window);
+            return;
+        }
+
+        double ww=window.getWidth();
+        double wh=window.getHeight();
+        double wwh=window.getHeight();
+
+        double px=0,py=0;
+        int gravity=getGravity();
+
+        if(gravity==Gravity.RIGHT_DOWN)
+            px=ww-renderWidth;
+        else if(gravity==Gravity.LEFT_UP)
+            py=wh-renderHeight;
+        else if(gravity==Gravity.CENTER_DOWN)
+            px=ww/2f-renderWidth/2f;
+        else if(gravity==Gravity.LEFT_CENTER)
+            py=wh/2f-renderHeight/2f;
+        else if(gravity==Gravity.RIGHT_UP){
+            px=ww-renderWidth;
+            py=wh-renderHeight;
+        }else if(gravity==Gravity.CENTER){
+            px=ww/2f-renderWidth/2f;
+            py=wh/2f-renderHeight/2f;
+        }else if(gravity==Gravity.RIGHT_CENTER){
+            px=ww-renderWidth;
+            py=wh/2f-renderHeight/2f;
+        }else if(gravity==Gravity.CENTER_UP){
+            px=ww/2f-renderWidth/2f;
+            py=wh-renderHeight;
+        }
+
+        renderX=Maths.round(x*wh + px);
+        renderY=Maths.round(y*wh + py);
+        renderWidth =Maths.round(width *wwh);
+        renderHeight=Maths.round(height*wh);
+    }
+
+    void updateWindowGravity(){
+        double px=0,py=0;
+        int gravity=getGravity();
+
+        double rWidth=getRelativeWidth();
+        double rHeight=getRelativeHeight();
+
+        if(gravity==Gravity.RIGHT_DOWN)
+            px=1-rWidth;
+        else if(gravity==Gravity.LEFT_UP)
+            py=1-rHeight;
+        else if(gravity==Gravity.CENTER_DOWN)
+            px=1/2f-rWidth/2f;
+        else if(gravity==Gravity.LEFT_CENTER)
+            py=1/2f-rHeight/2f;
+        else if(gravity==Gravity.RIGHT_UP){
+            px=1-rWidth;
+            py=1-rHeight;
+        }else if(gravity==Gravity.CENTER){
+            px=1/2f-rWidth/2f;
+            py=1/2f-rHeight/2f;
+        }else if(gravity==Gravity.RIGHT_CENTER){
+            px=1-rWidth;
+            py=1/2f-rHeight/2f;
+        }else if(gravity==Gravity.CENTER_UP){
+            px=1/2f-rWidth/2f;
+            py=1-rHeight;
+        }
+
+        gravityX=px;
+        gravityY=py;
     }
 
     public void updateCallbacks(Mouse mouse,Window window){
@@ -88,16 +161,21 @@ public abstract class LayoutElement{
             touched=false;
         }
 
+        touchedDown=false;
+        touchedUp=false;
+
         TouchCallback touchCallback=getTouchCallback();
         if(touchCallback!=null){
             if(touched){
                 touchCallback.touched(this);
                 if(!oldTouched){
                     touchCallback.touchOn(this);
-                    SoundManager.play("random_click",0.3f);
+                    touchedDown=true;
                 }
-            }else if(oldTouched && !cancelledTouch)
+            }else if(oldTouched && !cancelledTouch){
                 touchCallback.touchOff(this);
+                touchedUp=true;
+            }
         }
 
         AllocateCallback allocateCallback=getAllocateCallback();
@@ -116,6 +194,14 @@ public abstract class LayoutElement{
 
     public boolean isTouched(){
         return touched;
+    }
+
+    public boolean isTouchedDown(){
+        return touchedDown;
+    }
+
+    public boolean isTouchedUp(){
+        return touchedUp;
     }
 
     public int getRenderX(){
@@ -212,12 +298,45 @@ public abstract class LayoutElement{
         return allocated;
     }
 
-    public void setLayout(Layout layout){
-        this.layout=layout;
+
+    public void setParent(LayoutElement parent){
+        this.parent=parent;
     }
-    public Layout getLayout(){
-        return layout;
+
+    public LayoutElement getParent(){
+        return parent;
     }
+
+    public double getRelativeX(){
+        if(parent==null)
+            if(getType().equals(Layout.class.getSimpleName()))
+                return gravityX;
+            else
+                return x;
+        return parent.getRelativeX()+x*parent.getRelativeWidth();
+    }
+
+    public double getRelativeY(){
+        if(parent==null)
+            if(getType().equals(Layout.class.getSimpleName()))
+                return gravityY;
+            else
+                return y;
+        return parent.getRelativeY()+y*parent.getRelativeHeight();
+    }
+
+    public double getRelativeWidth(){
+        if(parent==null)
+            return width;
+        return width*parent.getRelativeWidth();
+    }
+
+    public double getRelativeHeight(){
+        if(parent==null)
+            return height;
+        return height*parent.getRelativeHeight();
+    }
+
 
     public UUID getUUID(){
         return uuid;

@@ -71,7 +71,7 @@ public class TextField extends LayoutElement{
     }
 
     public void update(Mouse mouse,Keyboard keyboard,Window window){
-        updateRenderValues();
+        updateRenderValues(window);
         updateCallbacks(mouse,window);
 
         if(text.length()<maxSymbolCount){
@@ -92,7 +92,7 @@ public class TextField extends LayoutElement{
     }
 
     public String getType(){
-        return "Text";
+        return "TextField";
     }
 
 }

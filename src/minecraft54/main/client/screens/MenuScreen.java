@@ -1,12 +1,14 @@
 package minecraft54.main.client.screens;
 
 import minecraft54.engine.app.AppScreen;
+import minecraft54.engine.audio.SoundManager;
 import minecraft54.engine.graphics.OrthographicCamera;
 import minecraft54.engine.graphics.SpriteBatch;
 import minecraft54.engine.gui.*;
 import minecraft54.engine.utils.Assets;
 import minecraft54.main.Main;
 import minecraft54.main.Minecraft54;
+import minecraft54.main.Options;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -26,28 +28,36 @@ public class MenuScreen implements AppScreen{
         layout.load("gui/menu.json");
 
         layout.getElement("btt1").setTouchCallback(new TouchCallback(){
-            public void touchOn(LayoutElement current){}
+            public void touchOn(LayoutElement current){
+                SoundManager.play("random_click",0.25f*Options.MASTER_VOLUME);
+            }
             public void touched(LayoutElement current){}
             public void touchOff(LayoutElement current){
                 Main.cfg.setScreen("world list");
             }
         });
         layout.getElement("btt2").setTouchCallback(new TouchCallback(){
-            public void touchOn(LayoutElement current){}
+            public void touchOn(LayoutElement current){
+                SoundManager.play("random_click",0.25f*Options.MASTER_VOLUME);
+            }
             public void touched(LayoutElement current){}
             public void touchOff(LayoutElement current){
                 Main.cfg.setScreen("serverList");
             }
         });
         layout.getElement("btt3").setTouchCallback(new TouchCallback(){
-            public void touchOn(LayoutElement current){}
+            public void touchOn(LayoutElement current){
+                SoundManager.play("random_click",0.25f*Options.MASTER_VOLUME);
+            }
             public void touched(LayoutElement current){}
             public void touchOff(LayoutElement current){
-
+                Main.cfg.setScreen("settings");
             }
         });
         layout.getElement("btt4").setTouchCallback(new TouchCallback(){
-            public void touchOn(LayoutElement current){}
+            public void touchOn(LayoutElement current){
+                SoundManager.play("random_click",0.25f*Options.MASTER_VOLUME);
+            }
             public void touched(LayoutElement current){}
             public void touchOff(LayoutElement current){
                 System.exit(0);
@@ -82,7 +92,7 @@ public class MenuScreen implements AppScreen{
         sb.dispose();
     }
 
-    public void onSet(){}
+    public void onSet(String arg){}
 
 
 }

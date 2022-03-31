@@ -43,14 +43,9 @@ public class Mouse{
         Arrays.fill(down,false);
     }
 
-    public void hide(){
-        glfwSetInputMode(windowId,GLFW_CURSOR,GLFW_CURSOR_HIDDEN);
-        isVisible=false;
-    }
-
-    public void show(){
-        glfwSetInputMode(windowId,GLFW_CURSOR,GLFW_CURSOR_NORMAL);
-        isVisible=true;
+    public void show(boolean show){
+        glfwSetInputMode(windowId,GLFW_CURSOR,show?GLFW_CURSOR_NORMAL:GLFW_CURSOR_HIDDEN);
+        isVisible=show;
     }
 
     public boolean isVisible(){
@@ -59,6 +54,10 @@ public class Mouse{
 
     public void setPos(int x,int y){
         glfwSetCursorPos(windowId,x,y);
+    }
+
+    public void setPosCenter(Window window){
+        glfwSetCursorPos(windowId,window.getWidth()/2f,window.getHeight()/2f);
     }
 
     public int getScroll(){
@@ -138,6 +137,5 @@ public class Mouse{
         else
             return scroll;
     }
-
 
 }
