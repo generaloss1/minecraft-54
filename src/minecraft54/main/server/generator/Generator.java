@@ -52,9 +52,85 @@ public class Generator{
 
 
 
-    public static final Generator NORMAL,FLAT,NORMAL_OLD,VOID,TEST_1,TEST_2;
+    public static final Generator NORMAL,FLAT,NORMAL_OLD,VOID,TEST_1,TEST_2,TEST_3;
 
     static{
+
+        TEST_3=new Generator("Test-3 (Caves)",(Chunk chunk,long seed)->{
+
+            SimplexNoise noise0=new SimplexNoise(50,0.35f,(int)seed);
+            SimplexNoise noise1=new SimplexNoise(400,0.4f,(int)seed);
+            SimplexNoise noise2=new SimplexNoise(300,0.2f,(int)seed);
+            SimplexNoise noise3=new SimplexNoise(30,0.1f,(int)seed);
+            SimplexNoise noise4=new SimplexNoise(90,0.1f,(int)seed+1);
+
+            SimplexNoise sandGenNoise=new SimplexNoise(140,0.2f,(int)seed);
+            SimplexNoise treeGenNoise=new SimplexNoise(2,0.1f,(int)seed);
+            Random treeGenRandom=new Random(seed+chunk.x*1000L+chunk.z);
+
+            for(short lx=0; lx<Chunk.WIDTH_X; lx++)
+                for(short lz=0; lz<Chunk.WIDTH_Z; lz++){
+                    int gx=chunk.x*Chunk.WIDTH_X+lx;
+                    int gz=chunk.z*Chunk.WIDTH_Z+lz;
+                    for(int ly=128; ly>=0; ly--){
+                        double height=noise1.getNoise(gx,gz)*16+64;
+                        double noise3dGen=noise2.getNoise(gx,ly,gz);
+                        double noise3dGenCaves=noise3.getNoise(gx,ly,gz);
+                        double noise3dGenCaves2=noise4.getNoise(gx,ly,gz);
+                        double noiseGenCavesFloor=noise3.getNoise(gx,gz)*5+5;
+                        if((noise3dGen>ly/(height/2) || ly<=height) && (noise3dGenCaves<ly/((height*2.6)/2f) || noise3dGenCaves2>0.25 || ly<noiseGenCavesFloor))
+                            chunk.setBlock(Minecraft54.STONE.getBlockData(),lx,ly,lz,false);
+                    }
+                }
+
+            for(short lx=0; lx<Chunk.WIDTH_X; lx++)
+                for(short lz=0; lz<Chunk.WIDTH_Z; lz++){
+                    int gx=chunk.x*Chunk.WIDTH_X+lx;
+                    int gz=chunk.z*Chunk.WIDTH_Z+lz;
+                    for(int ly=128; ly>=0; ly--){
+                        if(chunk.getBlockId(lx,ly,lz)==1){
+                            boolean sand=sandGenNoise.getNoise(gx,gz)>0.5;
+
+                            if(sand && ly<64+noise0.getNoise(gx,gz)*2){
+                                int height=Maths.round(noise0.getNoise(lx,lz)*(5-3)+3);
+                                for(int dly=ly; dly>=ly-height; dly--){
+                                    if(chunk.getBlockId(lx,dly,lz)==0)
+                                        break;
+                                    chunk.setBlock(Minecraft54.SAND,lx,dly,lz,false);
+                                }
+                            }else{
+                                if(ly>=63)
+                                    chunk.setBlock(Minecraft54.GRASS_BLOCK,lx,ly,lz,false);
+                                else
+                                    chunk.setBlock(Minecraft54.DIRT,lx,ly,lz,false);
+                                int height=Maths.round(noise0.getNoise(lx,lz)*(5-3)+3);
+                                for(int dly=ly-1; dly>=ly-height; dly--){
+                                    if(chunk.getBlockId(lx,dly,lz)==0)
+                                        break;
+                                    chunk.setBlock(Minecraft54.DIRT,lx,dly,lz,false);
+                                }
+
+                                if(ly>=64){
+                                    if(treeGenNoise.getNoise(gx,gz)>0.94)
+                                        spawnTree(chunk,lx,lz,gx,ly,gz,treeGenRandom,Minecraft54.LOG.getBlockData((short)treeGenRandom.random(0,1)),Minecraft54.LEAVES.getBlockData());
+                                    else if(treeGenNoise.getNoise(gx,gz)>0.75){
+                                        if(treeGenRandom.random()>0.1)
+                                            chunk.setBlock(Minecraft54.GRASS,lx,ly+1,lz,false);
+                                        else
+                                            chunk.setBlock(Minecraft54.FLOWER.getBlockData((short)treeGenRandom.random(0,1)),lx,ly+1,lz,false);
+                                    }
+                                }
+                            }
+
+                            break;
+                        }else if(ly==63)
+                            chunk.setBlock(Minecraft54.WATER_STILL,lx,ly,lz,false);
+                        else if(ly<63)
+                            chunk.setBlock(Minecraft54.WATER,lx,ly,lz,false);
+                    }
+                }
+
+        });
 
         TEST_2=new Generator("Test-2",(Chunk chunk,long seed)->{
 
