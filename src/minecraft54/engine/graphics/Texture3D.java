@@ -112,11 +112,12 @@ public class Texture3D{
         glBindTexture(GL_TEXTURE_2D_ARRAY,id);
     }
 
+    public static void unbind(){
+        glBindTexture(GL_TEXTURE_2D_ARRAY,0);
+    }
+
     public void dispose(){
-        if(id!=0){
-            glDeleteTextures(id);
-            id=0;
-        }
+        glDeleteTextures(id);
     }
 
     public List<Pixmap> getPixmapList(){

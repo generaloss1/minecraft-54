@@ -4,10 +4,9 @@ import minecraft54.engine.app.AppScreen;
 import minecraft54.engine.audio.SoundManager;
 import minecraft54.engine.graphics.OrthographicCamera;
 import minecraft54.engine.graphics.SpriteBatch;
-import minecraft54.engine.gui.*;
-import minecraft54.engine.utils.Assets;
+import minecraft54.engine.ui.*;
+import minecraft54.engine.util.Assets;
 import minecraft54.main.Main;
-import minecraft54.main.Minecraft54;
 import minecraft54.main.Options;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -74,10 +73,10 @@ public class MenuScreen implements AppScreen{
         layout.update(Main.mouse,Main.keyboard,Main.window);
         layout.render(sb);
 
-        if(Main.keyboard.isKeyReleased(GLFW_KEY_ESCAPE))
+        if(Main.keyboard.isKeyDown(GLFW_KEY_ESCAPE))
             System.exit(0);
 
-        if(Main.keyboard.isKeyReleased(GLFW_KEY_F11))
+        if(Main.keyboard.isKeyDown(GLFW_KEY_F11))
             Main.window.toggleFullscreen();
 
         sb.render(cam);

@@ -1,10 +1,10 @@
 package minecraft54.main.client.controls;
 
 import minecraft54.engine.graphics.PerspectiveCamera;
-import minecraft54.engine.math.Intersector;
-import minecraft54.engine.math.Maths;
-import minecraft54.engine.math.vectors.Vector3f;
-import minecraft54.engine.math.vectors.Vector3d;
+import minecraft54.engine.maths.Intersector;
+import minecraft54.engine.maths.Maths;
+import minecraft54.engine.maths.vectors.Vector3f;
+import minecraft54.engine.maths.vectors.Vector3d;
 import minecraft54.main.Main;
 import minecraft54.main.Minecraft54;
 import minecraft54.main.client.screens.GameScreen;

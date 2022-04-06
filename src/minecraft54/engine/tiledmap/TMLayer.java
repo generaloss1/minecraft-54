@@ -2,7 +2,7 @@ package minecraft54.engine.tiledmap;
 
 import minecraft54.engine.graphics.OrthographicCamera;
 import minecraft54.engine.graphics.SpriteBatch;
-import minecraft54.engine.math.vectors.Vector2i;
+import minecraft54.engine.maths.vectors.Vector2i;
 
 import java.io.*;
 

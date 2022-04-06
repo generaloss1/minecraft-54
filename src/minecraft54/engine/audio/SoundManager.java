@@ -1,6 +1,6 @@
 package minecraft54.engine.audio;
 
-import minecraft54.engine.utils.Assets;
+import minecraft54.engine.util.Assets;
 import org.lwjgl.openal.AL10;
 
 import java.util.ArrayList;

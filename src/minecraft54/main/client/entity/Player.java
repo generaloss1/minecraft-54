@@ -1,9 +1,9 @@
 package minecraft54.main.client.entity;
 
 import minecraft54.engine.io.Keyboard;
-import minecraft54.engine.math.vectors.Vector3d;
-import minecraft54.engine.math.vectors.Vector3f;
-import minecraft54.engine.utils.Timer;
+import minecraft54.engine.maths.vectors.Vector3d;
+import minecraft54.engine.maths.vectors.Vector3f;
+import minecraft54.engine.util.Timer;
 import minecraft54.main.Options;
 import minecraft54.main.client.controls.Controls;
 import minecraft54.main.Main;
@@ -12,7 +12,6 @@ import minecraft54.main.client.world.Block;
 import minecraft54.main.client.world.BlockData;
 import minecraft54.main.client.world.BlockManager;
 import minecraft54.main.util.GameMode;
-import org.lwjgl.glfw.GLFW;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
@@ -25,7 +24,6 @@ public class Player extends Entity{
     private boolean flying;
     private GameMode gameMode;
     private final Timer stepTimer;
-    private float maxSpeed;
 
 
     public Player(String name){
@@ -84,7 +82,7 @@ public class Player extends Entity{
                 if(floorBlock!=null){
                     BlockData floorBlockData=floorBlock.getBlockData(GameScreen.world.getBlockData(pos.xf(),pos.yf()-1,pos.zf()));
                     if(floorBlockData!=null && floorBlockData.sounds!=null && stepTimer.getMillis()>1600*(1/getVelocity().get().len())){
-                        floorBlockData.sounds.playStep();
+                        floorBlockData.sounds.playStep(new Vector3f(getHitbox().getPosition()).add(0.5,0,0.5));
                         stepTimer.reset();
                     }
                 }

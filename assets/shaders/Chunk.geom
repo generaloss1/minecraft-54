@@ -3,19 +3,9 @@
 layout(triangle_strip,max_vertices=3)out;
 layout(triangles)in;
 
-in VO{
-    vec3 uv;
-    vec4 color;
-    float id;
-    float ao;
-} vo[];
+in VO{ vec3 uv; vec4 color; float id; float ao; } vertout[];
 
-out GO{
-    vec3 uv;
-    vec4 color;
-    float id;
-    float ao;
-} go;
+out GO{ vec3 uv; vec4 color; float id; float ao; } geomout;
 
 uniform mat4 u_world;
 uniform mat4 u_proj;
@@ -29,10 +19,10 @@ float dist(vec4 a,vec3 b){
 
 void main(void){
     for(int i=0; i<3; i++){
-        go.uv=vo[i].uv;
-        go.color=vo[i].color;
-        go.id=vo[i].id;
-        go.ao=vo[i].ao;
+        geomout.uv=vertout[i].uv;
+        geomout.color=vertout[i].color;
+        geomout.id=vertout[i].id;
+        geomout.ao=vertout[i].ao;
 
         vec4 newpos=gl_in[i].gl_Position;
         //newpos.y-=pow(dist(u_model*newpos,u_camPos)/10,3.14);

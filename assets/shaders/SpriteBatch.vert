@@ -1,23 +1,19 @@
-#version 400
+#version 460
 
-in layout(location=0) vec3 pos;
-in layout(location=1) vec2 uv;
-in layout(location=2) vec4 color;
-in layout(location=3) float tex;
+layout(location=0) in vec2 pos;
+layout(location=1) in vec2 uv;
+layout(location=2) in vec4 color;
+layout(location=3) in float tex;
 
-out VO{
-    vec2 uv;
-    vec4 color;
-    float tex;
-} vo;
+out VO{ vec2 uv; vec4 color; float tex; } vertout;
 
 uniform mat4 u_proj;
 uniform mat4 u_view;
 
 void main(void){
-    gl_Position=u_proj*u_view*vec4(pos,1.0);
+    gl_Position=u_proj*u_view*vec4(pos,0.0,1.0);
 
-    vo.uv=uv;
-    vo.color=color;
-    vo.tex=tex;
+    vertout.uv=uv;
+    vertout.color=color;
+    vertout.tex=tex;
 }

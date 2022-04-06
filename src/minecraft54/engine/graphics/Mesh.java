@@ -1,43 +1,25 @@
 package minecraft54.engine.graphics;
 
-import minecraft54.engine.utils.FastArrayList;
-import minecraft54.engine.utils.GLUtils;
-
-import java.util.List;
+import minecraft54.engine.util.FastArrayList;
+import minecraft54.engine.util.GLUtils;
 
 import static org.lwjgl.opengl.GL46C.*;
 
 public class Mesh{
 
-    private int mode,vertexSize,vertexCount;
-    private final int vao,vbo;
+    private int mode=GL_TRIANGLES,vertexCount;
     private float[] vertices;
     private final VertexAttribute[] attributes;
+    private final VertexBufferObject vbo;
+    private final VertexArrayObject vao;
 
     public Mesh(VertexAttribute... attributes){
         this.attributes=attributes;
         vertices=new float[0];
-        mode=GL_TRIANGLES;
 
-        vao=glGenVertexArrays();
-        glBindVertexArray(vao);
-
-        vbo=glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER,vbo);
-
-        for(int i=0; i<attributes.length; i++)
-            vertexSize+=attributes[i].getCount();
-
-        int point=0;
-        for(int i=0; i<attributes.length; i++){
-            VertexAttribute attribute=attributes[i];
-            glEnableVertexAttribArray(i);
-            int typeSize=GLUtils.getGLTypeSize(attribute.getType());
-            glVertexAttribPointer(i,attribute.getCount(),attribute.getType(),false,vertexSize*typeSize,point);
-            point+=attribute.getCount()*typeSize;
-        }
-
-        glBindVertexArray(0);
+        vao=new VertexArrayObject();
+        vbo=new VertexBufferObject();
+        vbo.enableAttributes(attributes);
     }
 
     public Mesh(Mesh mesh){
@@ -46,43 +28,19 @@ public class Mesh{
         mode=mesh.mode;
         vertexCount=mesh.vertexCount;
 
-        vao=glGenVertexArrays();
-        glBindVertexArray(vao);
-
-        vbo=glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER,vbo);
-        glBufferData(GL_ARRAY_BUFFER,vertices,GL_STATIC_DRAW);
-
-        for(int i=0; i<mesh.attributes.length; i++)
-            vertexSize+=attributes[i].getCount();
-
-        int point=0;
-        for(int i=0; i<attributes.length; i++){
-            VertexAttribute attribute=attributes[i];
-            glEnableVertexAttribArray(i);
-            int typeSize=GLUtils.getGLTypeSize(attribute.getType());
-            glVertexAttribPointer(i,attribute.getCount(),attribute.getType(),false,vertexSize*typeSize,point);
-            point+=attribute.getCount()*typeSize;
-        }
-
-        glBindVertexArray(0);
+        vao=new VertexArrayObject();
+        vbo=new VertexBufferObject();
+        vbo.enableAttributes(attributes);
+        vbo.setData(vertices,GL_DYNAMIC_DRAW);
     }
 
-    /*public void createEBO(){
-        ebo=glGenBuffers();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ebo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER,indices,GL_STATIC_DRAW);
-    }*/
-
     public void render(){
-        glBindVertexArray(vao);
-        glDrawArrays(mode,0,vertexCount);
-        glBindVertexArray(0);
+        vao.draw(mode,vertexCount);
     }
 
     public void dispose(){
-        glDeleteBuffers(vbo);
-        glDeleteVertexArrays(vao);
+        vbo.dispose();
+        vao.dispose();
     }
 
     public void setRenderMode(int mode){
@@ -91,32 +49,22 @@ public class Mesh{
 
     public void setVertices(float[] vertices){
         this.vertices=vertices.clone();
-
-        vertexCount=vertices.length/vertexSize;
-        glBindBuffer(GL_ARRAY_BUFFER,vbo);
-        glBufferData(GL_ARRAY_BUFFER,vertices,GL_STATIC_DRAW);
-        glBindVertexArray(0);
+        vertexCount=vertices.length/vbo.getVertexSize();
+        vbo.setData(vertices,GL_DYNAMIC_DRAW);
     }
 
-    public void setVertices(FastArrayList<Float> verticesList){
+    public boolean setVertices(FastArrayList<Float> verticesList){
         vertices=new float[verticesList.size()];
-        for(int i=0; i<vertices.length; i++)
-            vertices[i]=verticesList.get(i);
+        for(int i=0; i<vertices.length; i++){
+            Float v=verticesList.get(i);
+            if(v==null)
+                return false;
+            vertices[i]=v;
+        }
+        vertexCount=vertices.length/vbo.getVertexSize();
 
-        vertexCount=vertices.length/vertexSize;
-        glBindBuffer(GL_ARRAY_BUFFER,vbo);
-        glBufferData(GL_ARRAY_BUFFER,vertices,GL_STATIC_DRAW);
-        glBindVertexArray(0);
+        vbo.setData(vertices,GL_DYNAMIC_DRAW);
+        return true;
     }
-
-    public float[] getVertices(){
-        return vertices;
-    }
-
-    public int getVertexSize(){
-        return vertexSize;
-    }
-
-
 
 }

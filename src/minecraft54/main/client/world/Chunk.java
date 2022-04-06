@@ -1,8 +1,6 @@
 package minecraft54.main.client.world;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.Objects;
 
 public class Chunk{
@@ -16,7 +14,7 @@ public class Chunk{
 
     public final World world;
     public final int x,z;
-    public boolean generated;
+    public boolean generated,generation,init,loaded;
     public ChunkSection[] sections;
 
 
@@ -32,8 +30,6 @@ public class Chunk{
             sections[i]=new ChunkSection(this,i);
     }
 
-
-    public boolean init;
 
     public void init(){
         if(init)
@@ -128,6 +124,32 @@ public class Chunk{
 
 
 
+    public boolean load(){
+        try{
+            File chunkFile=new File(world.worldPath+"/chunks/"+x+":"+z);
+            if(chunkFile.exists() && chunkFile.canRead()){
+                ObjectInputStream in=new ObjectInputStream(new FileInputStream(chunkFile));
+
+                generated=in.readBoolean();
+                for(ChunkSection section:sections){
+                    section.notAirBlockCount=in.readShort();
+                    for(int i=0; i<section.blocks.length; i++)
+                        section.blocks[i]=in.readInt();
+                }
+
+                in.close();
+                changed(true);
+
+                loaded=true;
+
+                return true;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public void save(){
         try{
             File chunkFile=new File(world.worldPath+"/chunks/"+x+":"+z);
@@ -147,8 +169,6 @@ public class Chunk{
     }
 
     public void dispose(){
-        save();
-
         for(ChunkSection section: sections)
             section.dispose();
     }

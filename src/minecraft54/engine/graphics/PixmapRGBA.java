@@ -1,6 +1,6 @@
 package minecraft54.engine.graphics;
 
-import minecraft54.engine.utils.Color;
+import minecraft54.engine.util.Color;
 import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;

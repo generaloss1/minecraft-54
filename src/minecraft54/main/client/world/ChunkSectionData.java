@@ -43,10 +43,10 @@ public class ChunkSectionData{
 
             if(updateNeighbors){
                 Chunk xChunk=lx==0?
-                        chunk.world.getChunk(chunk.x-1,chunk.z)
+                        chunk.world.chunkProvider.getChunk(chunk.x-1,chunk.z)
                         :
                         lx==WIDTH_X-1?
-                                chunk.world.getChunk(chunk.x+1,chunk.z)
+                                chunk.world.chunkProvider.getChunk(chunk.x+1,chunk.z)
                                 :
                                 null;
                 if(xChunk!=null)
@@ -58,10 +58,10 @@ public class ChunkSectionData{
                     chunk.sections[y+1].changed=true;
 
                 Chunk zChunk=lz==0?
-                        chunk.world.getChunk(chunk.x,chunk.z-1)
+                        chunk.world.chunkProvider.getChunk(chunk.x,chunk.z-1)
                         :
                         lz==WIDTH_Z-1?
-                                chunk.world.getChunk(chunk.x,chunk.z+1)
+                                chunk.world.chunkProvider.getChunk(chunk.x,chunk.z+1)
                                 :
                                 null;
                 if(zChunk!=null)
@@ -88,10 +88,10 @@ public class ChunkSectionData{
 
             if(updateNeighbors){
                 Chunk xChunk=lx==0?
-                        chunk.world.getChunk(chunk.x-1,chunk.z)
+                        chunk.world.chunkProvider.getChunk(chunk.x-1,chunk.z)
                         :
                         lx==WIDTH_X-1?
-                                chunk.world.getChunk(chunk.x+1,chunk.z)
+                                chunk.world.chunkProvider.getChunk(chunk.x+1,chunk.z)
                                 :
                                 null;
                 if(xChunk!=null)
@@ -103,10 +103,10 @@ public class ChunkSectionData{
                     chunk.sections[y+1].changed=true;
 
                 Chunk zChunk=lz==0?
-                        chunk.world.getChunk(chunk.x,chunk.z-1)
+                        chunk.world.chunkProvider.getChunk(chunk.x,chunk.z-1)
                         :
                         lz==WIDTH_Z-1?
-                                chunk.world.getChunk(chunk.x,chunk.z+1)
+                                chunk.world.chunkProvider.getChunk(chunk.x,chunk.z+1)
                                 :
                                 null;
                 if(zChunk!=null)
@@ -132,10 +132,10 @@ public class ChunkSectionData{
 
             if(updateNeighbors){
                 Chunk xChunk=lx==0?
-                        chunk.world.getChunk(chunk.x-1,chunk.z)
+                        chunk.world.chunkProvider.getChunk(chunk.x-1,chunk.z)
                         :
                         lx==WIDTH_X-1?
-                                chunk.world.getChunk(chunk.x+1,chunk.z)
+                                chunk.world.chunkProvider.getChunk(chunk.x+1,chunk.z)
                                 :
                                 null;
                 if(xChunk!=null)
@@ -147,10 +147,10 @@ public class ChunkSectionData{
                     chunk.sections[y+1].changed=true;
 
                 Chunk zChunk=lz==0?
-                        chunk.world.getChunk(chunk.x,chunk.z-1)
+                        chunk.world.chunkProvider.getChunk(chunk.x,chunk.z-1)
                         :
                         lz==WIDTH_Z-1?
-                                chunk.world.getChunk(chunk.x,chunk.z+1)
+                                chunk.world.chunkProvider.getChunk(chunk.x,chunk.z+1)
                                 :
                                 null;
                 if(zChunk!=null)
@@ -169,10 +169,10 @@ public class ChunkSectionData{
 
             if(updateNeighbors){
                 Chunk xChunk=lx==0?
-                        chunk.world.getChunk(chunk.x-1,chunk.z)
+                        chunk.world.chunkProvider.getChunk(chunk.x-1,chunk.z)
                         :
                         lx==WIDTH_X-1?
-                                chunk.world.getChunk(chunk.x+1,chunk.z)
+                                chunk.world.chunkProvider.getChunk(chunk.x+1,chunk.z)
                                 :
                                 null;
                 if(xChunk!=null)
@@ -184,10 +184,10 @@ public class ChunkSectionData{
                     chunk.sections[y+1].changed=true;
 
                 Chunk zChunk=lz==0?
-                        chunk.world.getChunk(chunk.x,chunk.z-1)
+                        chunk.world.chunkProvider.getChunk(chunk.x,chunk.z-1)
                         :
                         lz==WIDTH_Z-1?
-                                chunk.world.getChunk(chunk.x,chunk.z+1)
+                                chunk.world.chunkProvider.getChunk(chunk.x,chunk.z+1)
                                 :
                                 null;
                 if(zChunk!=null)

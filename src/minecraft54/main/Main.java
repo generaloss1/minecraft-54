@@ -4,8 +4,7 @@ import minecraft54.engine.app.AppCfg;
 import minecraft54.engine.io.Keyboard;
 import minecraft54.engine.io.Mouse;
 import minecraft54.engine.io.Window;
-import minecraft54.engine.utils.GLUtils;
-import org.lwjgl.glfw.GLFW;
+import minecraft54.engine.util.GLUtils;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL46C.*;
@@ -44,8 +43,10 @@ public class Main{
 
         glEnable(GL_TEXTURE);
 
+        //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+
         glEnable(GL_MULTISAMPLE);
-        glfwWindowHint(GLFW.GLFW_SAMPLES,1);
+        glfwWindowHint(GLFW_SAMPLES,1);
 
         cfg.init(new Minecraft54());
     }

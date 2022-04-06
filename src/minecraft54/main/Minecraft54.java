@@ -2,13 +2,16 @@ package minecraft54.main;
 
 import minecraft54.engine.app.AppListener;
 import minecraft54.engine.graphics.*;
-import minecraft54.engine.gui.Text;
+import minecraft54.engine.particles.Particle;
+import minecraft54.engine.particles.ParticleBehavior;
+import minecraft54.engine.ui.Text;
 import minecraft54.engine.net.Packet;
 import minecraft54.engine.net.TCPClient;
 import minecraft54.engine.net.TCPClientListener;
-import minecraft54.engine.utils.Assets;
-import minecraft54.engine.utils.Utils;
+import minecraft54.engine.util.Assets;
+import minecraft54.engine.util.Utils;
 import minecraft54.main.client.audio.SoundPack;
+import minecraft54.main.client.controls.Controls;
 import minecraft54.main.client.screens.*;
 import minecraft54.main.client.world.BlockData;
 import minecraft54.main.client.world.BlockManager;
@@ -31,16 +34,28 @@ public class Minecraft54 implements AppListener{
     public static String OPTIONS_PATH=HOME_PATH+"/"+GAME_FOLDER+"/options.json";
 
 
-    private static Server server;
-    private static TCPClient client;
+    //public static Server server;
+    //public static TCPClient client;
 
     public static List<int[]> setBlockStack=new ArrayList<>();
 
-    public static Block AIR,STONE,GRASS_BLOCK,DIRT,COBBLESTONE,PLANKS,WATER,WATER_STILL,SAND,LOG,LEAVES,GLASS,GRASS,FLOWER;
+    public static Block AIR,STONE,GRASS_BLOCK,DIRT,COBBLESTONE,PLANKS,BEDROCK,WATER,WATER_STILL,SAND,LOG,LEAVES,GLASS,GRASS,FLOWER;
+
+    public static ParticleBehavior particleBehavior1;
 
 
     @Override
     public void create(){
+        { // Create particle behavior
+
+            particleBehavior1=current->{
+                current.getPosition().add(current.getVelocity().get()).y+=current.gravityVelocity;
+                current.getVelocity().reduce(0.005);
+                current.gravityVelocity-=0.005;
+            };
+
+        }
+
         { // Create Files
             try{
 
@@ -67,7 +82,9 @@ public class Minecraft54 implements AppListener{
 
             Assets.loadTexture("textures/ui/background.png","background");
 
-            String blocks="textures/blocks/";
+            Assets.loadTexture("textures/block/dirt.png","dirt");
+
+            String blocks="textures/block/";
             Assets.loadTexture3d(new Texture3D(16,16,
                     blocks+"grass_block_side.png", // 0
                     blocks+"grass_block_top.png",
@@ -82,18 +99,14 @@ public class Minecraft54 implements AppListener{
                     blocks+"glass.png",            // 10
                     blocks+"grass.png",
                     blocks+"cobblestone.png",
-                    blocks+"water_still.png",
+                    blocks+"water_overlay.png",
                     blocks+"oak_planks.png",
-                    blocks+"chest_front.png",
-                    blocks+"chest_side.png",
-                    blocks+"chest_top.png",
-                    blocks+"chest_back.png",
                     blocks+"grass_block_side_overlay.png",
-                    blocks+"poppy.png",               // 20
-                    blocks+"dandelion.png"/*,
+                    blocks+"poppy.png",
+                    blocks+"dandelion.png",
+                    blocks+"bedrock.png"/*,
                     blocks+".png"/*,
-                    blocks+".png"/*,
-                    blocks+".png"/*,
+                    blocks+".png"/*,                // 20
                     blocks+".png"/*,
                     blocks+".png"/*,
                     blocks+".png"/*,
@@ -242,10 +255,10 @@ public class Minecraft54 implements AppListener{
             id++;
             GRASS_BLOCK=new Block(id);
             blockData=new BlockData(id,0,true,false,false);
-            blockData.sides[Direction.NORTH.ordinal()]=new Block.BlockSide(Direction.NORTH,id,0,Utils.add(BlockManager.quad_vertices(1,1,1,1,0,1,1,0,0,1,1,0),BlockManager.quad_vertices(1,1,1,1,0,1,1,0,0,1,1,0)),new float[]{0,19},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
-            blockData.sides[Direction.SOUTH.ordinal()]=new Block.BlockSide(Direction.SOUTH,id,0,Utils.add(BlockManager.quad_vertices(0,1,0,0,0,0,0,0,1,0,1,1),BlockManager.quad_vertices(0,1,0,0,0,0,0,0,1,0,1,1)),new float[]{0,19},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
-            blockData.sides[Direction.EAST.ordinal() ]=new Block.BlockSide(Direction.EAST ,id,0,Utils.add(BlockManager.quad_vertices(0,1,1,0,0,1,1,0,1,1,1,1),BlockManager.quad_vertices(0,1,1,0,0,1,1,0,1,1,1,1)),new float[]{0,19},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
-            blockData.sides[Direction.WEST.ordinal() ]=new Block.BlockSide(Direction.WEST ,id,0,Utils.add(BlockManager.quad_vertices(1,1,0,1,0,0,0,0,0,0,1,0),BlockManager.quad_vertices(1,1,0,1,0,0,0,0,0,0,1,0)),new float[]{0,19},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
+            blockData.sides[Direction.NORTH.ordinal()]=new Block.BlockSide(Direction.NORTH,id,0,Utils.add(BlockManager.quad_vertices(1,1,1,1,0,1,1,0,0,1,1,0),BlockManager.quad_vertices(1,1,1,1,0,1,1,0,0,1,1,0)),new float[]{0,15},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
+            blockData.sides[Direction.SOUTH.ordinal()]=new Block.BlockSide(Direction.SOUTH,id,0,Utils.add(BlockManager.quad_vertices(0,1,0,0,0,0,0,0,1,0,1,1),BlockManager.quad_vertices(0,1,0,0,0,0,0,0,1,0,1,1)),new float[]{0,15},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
+            blockData.sides[Direction.EAST.ordinal() ]=new Block.BlockSide(Direction.EAST ,id,0,Utils.add(BlockManager.quad_vertices(0,1,1,0,0,1,1,0,1,1,1,1),BlockManager.quad_vertices(0,1,1,0,0,1,1,0,1,1,1,1)),new float[]{0,15},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
+            blockData.sides[Direction.WEST.ordinal() ]=new Block.BlockSide(Direction.WEST ,id,0,Utils.add(BlockManager.quad_vertices(1,1,0,1,0,0,0,0,0,0,1,0),BlockManager.quad_vertices(1,1,0,1,0,0,0,0,0,0,1,0)),new float[]{0,15},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
             blockData.sides[Direction.UP.ordinal()   ]=new Block.BlockSide(Direction.UP   ,id,0,          BlockManager.quad_vertices(1,1,1,1,1,0,0,1,0,0,1,1),                                                     new float[]{1},             BlockManager.quad_uvs(),                         new float[]{         grassBlockR,grassBlockG,grassBlockB,1});
             blockData.sides[Direction.DOWN.ordinal() ]=new Block.BlockSide(Direction.DOWN ,id,0,          BlockManager.quad_vertices(1,0,0,1,0,1,0,0,1,0,0,0),                                                     new float[]{2},             BlockManager.quad_uvs(),                         new float[]{1,1,1,1});
             soundPack=new SoundPack();
@@ -287,6 +300,17 @@ public class Minecraft54 implements AppListener{
             soundPack.addStep("step_wood1","step_wood2","step_wood3","step_wood4","step_wood5","step_wood6");
             blockData.setSounds(soundPack);
             PLANKS.addData(0,blockData); // OAK PLANKS
+
+
+            id++;
+            BEDROCK=new Block(id);
+            blockData=BlockManager.blockDataSolid(id,0,18);
+            soundPack=new SoundPack();
+            soundPack.addPlace(0.75f,"dig_stone1","dig_stone2","dig_stone3","dig_stone4");
+            soundPack.addDestroy(0.75f,"dig_stone1","dig_stone2","dig_stone3","dig_stone4");
+            soundPack.addStep("step_stone1","step_stone2","step_stone3","step_stone4","step_stone5","step_stone6");
+            blockData.setSounds(soundPack);
+            BEDROCK.addData(0,blockData); // OAK PLANKS
 
 
             id++;
@@ -396,7 +420,7 @@ public class Minecraft54 implements AppListener{
             blockData=new BlockData(id,0,false,false,false);
             blockData.sides[6]=new Block.BlockSide(Direction.UNKNOWN,id,1,
                     Utils.add( BlockManager.quad_vertices(1,1,1,1,0,1,0,0,0,0,1,0), BlockManager.quad_vertices(0,1,1,0,0,1,1,0,0,1,1,0) ),
-                    new float[]{20,20},
+                    new float[]{16,16},
                     Utils.add( BlockManager.quad_uvs(), BlockManager.quad_uvs() ),
                     new float[]{1,1,1,1, 1,1,1,1});
             soundPack=new SoundPack();
@@ -407,7 +431,7 @@ public class Minecraft54 implements AppListener{
             blockData=new BlockData(id,1,false,false,false);
             blockData.sides[6]=new Block.BlockSide(Direction.UNKNOWN,id,1,
                     Utils.add( BlockManager.quad_vertices(1,1,1,1,0,1,0,0,0,0,1,0), BlockManager.quad_vertices(0,1,1,0,0,1,1,0,0,1,1,0) ),
-                    new float[]{21,21},
+                    new float[]{17,17},
                     Utils.add( BlockManager.quad_uvs(), BlockManager.quad_uvs() ),
                     new float[]{1,1,1,1, 1,1,1,1});
             soundPack=new SoundPack();
@@ -417,9 +441,10 @@ public class Minecraft54 implements AppListener{
             FLOWER.addData(1,blockData); // DANDELION
 
 
-            BlockManager.addBlocks(AIR,STONE,GRASS_BLOCK,DIRT,COBBLESTONE,PLANKS,WATER,WATER_STILL,SAND,LOG,LEAVES,GLASS,GRASS,FLOWER);
+            BlockManager.addBlocks(AIR,STONE,GRASS_BLOCK,DIRT,COBBLESTONE,PLANKS,BEDROCK,WATER,WATER_STILL,SAND,LOG,LEAVES,GLASS,GRASS,FLOWER);
         }
 
+        /*
         { // Server init
             server=new Server();
             server.setMaxPlayers(54);
@@ -450,6 +475,7 @@ public class Minecraft54 implements AppListener{
             });
             client.connect("localhost",server.getPort());
         }
+        */
     }
 
 
@@ -457,26 +483,17 @@ public class Minecraft54 implements AppListener{
     public void update(){
         if(Main.keyboard.isKeyReleased(GLFW_KEY_V))
             Main.window.setVSync(!Main.window.isVSync());
-        if(Main.keyboard.isKeyReleased(GLFW_KEY_L))
-            client.disconnect("leave");
+        //if(Main.keyboard.isKeyReleased(GLFW_KEY_L))
+        //    client.disconnect("leave");
     }
 
 
     @Override
     public void dispose(){
         Assets.dispose();
-        client.disconnect("exit");
-        server.close();
-        GameScreen.chunkUpdateThread.interrupt();
-    }
-
-
-    public static Server getServer(){
-        return server;
-    }
-
-    public static TCPClient getClient(){
-        return client;
+        GameScreen.stopThreads();
+        //client.disconnect("exit");
+        //server.close();
     }
 
 

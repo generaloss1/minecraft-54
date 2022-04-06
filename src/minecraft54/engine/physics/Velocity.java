@@ -1,7 +1,7 @@
 package minecraft54.engine.physics;
 
-import minecraft54.engine.math.vectors.Vector3f;
-import minecraft54.engine.math.vectors.Vector3d;
+import minecraft54.engine.maths.vectors.Vector3f;
+import minecraft54.engine.maths.vectors.Vector3d;
 
 public class Velocity{
 

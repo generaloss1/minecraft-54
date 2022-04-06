@@ -1,11 +1,11 @@
 package minecraft54.main.client.entity;
 
 import minecraft54.engine.audio.SoundManager;
-import minecraft54.engine.math.Maths;
-import minecraft54.engine.math.vectors.Vector3f;
-import minecraft54.engine.math.vectors.Vector3d;
+import minecraft54.engine.maths.Maths;
+import minecraft54.engine.maths.vectors.Vector3f;
+import minecraft54.engine.maths.vectors.Vector3d;
 import minecraft54.engine.physics.Collider;
-import minecraft54.engine.physics.HitboxAabb;
+import minecraft54.engine.physics.Aabb;
 import minecraft54.engine.physics.Velocity;
 import minecraft54.main.Main;
 import minecraft54.main.Minecraft54;
@@ -18,7 +18,7 @@ import java.util.List;
 public class Entity{
 
 
-    private final HitboxAabb hitbox;
+    private final Aabb hitbox;
     private final Vector3f eye;
     private final Velocity velocity;
     private float jumpVelocity,gravityVelocity;
@@ -28,7 +28,7 @@ public class Entity{
 
 
     public Entity(Vector3f A,Vector3f B,Vector3f eye){
-        hitbox=new HitboxAabb(A,B);
+        hitbox=new Aabb(A,B);
         velocity=new Velocity();
         this.eye=eye;
         jumpHeight=1.25f;
@@ -74,7 +74,7 @@ public class Entity{
                 }
             }
 
-            if(noGravity || GameScreen.world.getChunk(Maths.floor(hitbox.getPosition().x/16f),Maths.floor(hitbox.getPosition().z/16f))==null){
+            if(noGravity || GameScreen.world.chunkProvider.getChunk(Maths.floor(hitbox.getPosition().x/16f),Maths.floor(hitbox.getPosition().z/16f))==null){
                 jumpVelocity=0;
                 gravityVelocity=0;
             }
@@ -106,29 +106,29 @@ public class Entity{
 
 
     public boolean isOnGround(){
-        List<HitboxAabb> blockList=hitboxList();
-        HitboxAabb h=hitbox.clone();
+        List<Aabb> blockList=hitboxList();
+        Aabb h=hitbox.clone();
         h.move(0,-Float.MIN_VALUE,0);
         return Collider.getCollidedMove(h,blockList).y==0;
     }
 
     public boolean isOnGround(double mx,double my,double mz){
-        List<HitboxAabb> blockList=hitboxList();
-        HitboxAabb h=hitbox.clone();
+        List<Aabb> blockList=hitboxList();
+        Aabb h=hitbox.clone();
         h.move(new Vector3f(0,-Float.MIN_VALUE,0).add(mx,my,mz));
         return Collider.getCollidedMove(h,blockList).y==0;
     }
 
     public boolean isOnCeil(){
-        List<HitboxAabb> blockList=hitboxList();
-        HitboxAabb h=hitbox.clone();
+        List<Aabb> blockList=hitboxList();
+        Aabb h=hitbox.clone();
         h.move(0,Float.MIN_VALUE,0);
         return Collider.getCollidedMove(h,blockList).y==0;
     }
 
 
-    public List<HitboxAabb> hitboxList(){
-        List<HitboxAabb> blockList=new ArrayList<>();
+    public List<Aabb> hitboxList(){
+        List<Aabb> blockList=new ArrayList<>();
         Vector3d pos=hitbox.getPosition();
         int offset=10;
         for(int x=Maths.round(pos.x-1-offset); x<pos.x+1+offset; x++)
@@ -136,13 +136,13 @@ public class Entity{
                 for(int z=Maths.round(pos.z-1-offset); z<pos.z+1+offset; z++){
                     int id=GameScreen.world.getBlockId(x,y,z);
                     if(id!=-1 && id!=Minecraft54.FLOWER.getId() && id!=Minecraft54.AIR.getId() && id!=Minecraft54.WATER.getId() && id!=Minecraft54.WATER_STILL.getId() && id!=Minecraft54.GRASS.getId())
-                        blockList.add(new HitboxAabb(new Vector3f(x,y,z),new Vector3f(x+1,y+1,z+1)));
+                        blockList.add(new Aabb(new Vector3f(x,y,z),new Vector3f(x+1,y+1,z+1)));
                 }
         return blockList;
     }
 
 
-    public HitboxAabb getHitbox(){
+    public Aabb getHitbox(){
         return hitbox;
     }
     public Vector3f getEye(){

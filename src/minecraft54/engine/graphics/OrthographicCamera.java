@@ -1,9 +1,9 @@
 package minecraft54.engine.graphics;
 
 import minecraft54.engine.io.Window;
-import minecraft54.engine.math.Matrix4;
-import minecraft54.engine.math.vectors.Vector2;
-import minecraft54.engine.math.vectors.Vector3f;
+import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.vectors.Vector2;
+import minecraft54.engine.maths.vectors.Vector3f;
 
 public class OrthographicCamera{
 

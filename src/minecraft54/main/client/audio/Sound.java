@@ -3,8 +3,8 @@ package minecraft54.main.client.audio;
 import minecraft54.engine.audio.SoundBuffer;
 import minecraft54.engine.audio.SoundManager;
 import minecraft54.engine.audio.SoundSource;
-import minecraft54.engine.math.vectors.Vector3f;
-import minecraft54.engine.utils.Assets;
+import minecraft54.engine.maths.vectors.Vector3f;
+import minecraft54.engine.util.Assets;
 
 public class Sound extends SoundBuffer{
 
@@ -59,6 +59,22 @@ public class Sound extends SoundBuffer{
 
     public Sound setRelative(boolean relative){
         this.relative=relative;
+        return this;
+    }
+
+    public Sound setSpeed(float x,float y,float z){
+        if(this.speed==null)
+            this.speed=new Vector3f(x,y,z);
+        else
+            this.speed.set(x,y,z);
+        return this;
+    }
+
+    public Sound setPosition(float x,float y,float z){
+        if(this.position==null)
+            this.position=new Vector3f(x,y,z);
+        else
+            this.position.set(x,y,z);
         return this;
     }
 

@@ -1,6 +1,8 @@
 package minecraft54.engine.app;
 
 import minecraft54.engine.audio.SoundManager;
+import minecraft54.engine.audio.SoundSource;
+import minecraft54.engine.graphics.*;
 import minecraft54.engine.io.Keyboard;
 import minecraft54.engine.io.Mouse;
 import minecraft54.engine.io.Window;
@@ -73,6 +75,14 @@ public class AppCfg{
         window.hide();
         for(String screenId:screens.keySet())
             screens.get(screenId).dispose();
+
+        VertexArrayObject.unbind();
+        VertexBufferObject.unbind();
+        ElementBufferObject.unbind();
+        ShaderProgram.unbind();
+        Texture.unbind();
+        Texture3D.unbind();
+
         listener.dispose();
         window.destroy();
     }

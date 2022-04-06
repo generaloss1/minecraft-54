@@ -4,9 +4,9 @@ import minecraft54.engine.app.AppScreen;
 import minecraft54.engine.audio.SoundManager;
 import minecraft54.engine.graphics.OrthographicCamera;
 import minecraft54.engine.graphics.SpriteBatch;
-import minecraft54.engine.gui.*;
-import minecraft54.engine.math.Maths;
-import minecraft54.engine.utils.Assets;
+import minecraft54.engine.ui.*;
+import minecraft54.engine.maths.Maths;
+import minecraft54.engine.util.Assets;
 import minecraft54.main.Main;
 import minecraft54.main.Options;
 import minecraft54.main.client.controls.Controls;
@@ -106,13 +106,13 @@ public class SettingsScreen implements AppScreen{
         layout.update(Main.mouse,Main.keyboard,Main.window);
         layout.render(sb);
 
-        if(Main.keyboard.isKeyReleased(GLFW_KEY_ESCAPE))
+        if(Main.keyboard.isKeyDown(GLFW_KEY_ESCAPE))
             if(escFunc)
                 Main.cfg.setScreen("game");
             else
                 Main.cfg.setScreen("menu");
 
-        if(Main.keyboard.isKeyReleased(GLFW_KEY_F11))
+        if(Main.keyboard.isKeyDown(GLFW_KEY_F11))
             Main.window.toggleFullscreen();
 
         sb.render(cam);

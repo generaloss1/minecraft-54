@@ -1,13 +1,13 @@
 #version 460
 
-out vec4 fragColor;
-
 in GO{
     vec3 uv;
     vec4 color;
     float id;
     float ao;
 } attr;
+
+out vec4 fragColor;
 
 uniform sampler2DArray u_texture;
 uniform int underWater;

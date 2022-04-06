@@ -1,6 +1,6 @@
 package minecraft54.engine.graphics;
 
-import minecraft54.engine.utils.Utils;
+import minecraft54.engine.util.Utils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL13C;
 import org.lwjgl.stb.STBTTBakedChar;

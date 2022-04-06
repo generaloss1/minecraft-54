@@ -1,9 +1,9 @@
 package minecraft54.engine.graphics;
 
-import minecraft54.engine.math.Matrix4;
-import minecraft54.engine.math.vectors.Vector2;
-import minecraft54.engine.math.vectors.Vector3f;
-import minecraft54.engine.utils.Color;
+import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.vectors.Vector2;
+import minecraft54.engine.maths.vectors.Vector3f;
+import minecraft54.engine.util.Color;
 
 import java.util.HashMap;
 
@@ -16,23 +16,16 @@ public class ShaderProgram{
 
 
     public ShaderProgram(String vertexCode,String fragmentCode){
-        programId=glCreateProgram();
-        if(programId==0){
-            System.out.println("Could not create shader");
-            return;
-        }
         int vertexShaderId=createShader(vertexCode,GL_VERTEX_SHADER);
         int fragmentShaderId=createShader(fragmentCode,GL_FRAGMENT_SHADER);
+
+        programId=glCreateProgram();
         glAttachShader(programId,vertexShaderId);
         glAttachShader(programId,fragmentShaderId);
-
         glLinkProgram(programId);
-        glValidateProgram(programId);
-        if(glGetProgrami(programId,GL_VALIDATE_STATUS)==GL_FALSE)
-            System.err.println("Shader: "+glGetShaderInfoLog(programId,1024));
-
-        glDetachShader(programId,vertexShaderId);
-        glDetachShader(programId,fragmentShaderId);
+        //glValidateProgram(programId);
+        //if(glGetProgrami(programId,GL_VALIDATE_STATUS)==GL_FALSE)
+        //    System.err.println("Shader: "+glGetShaderInfoLog(programId,1024));
 
         glDeleteShader(vertexShaderId);
         glDeleteShader(fragmentShaderId);
@@ -41,32 +34,33 @@ public class ShaderProgram{
     }
 
     public ShaderProgram(String vertexCode,String fragmentCode,String geometryCode){
-        programId=glCreateProgram();
-        if(programId==0){
-            System.out.println("Could not create shader");
-            return;
-        }
         int vertexShaderId=createShader(vertexCode,GL_VERTEX_SHADER);
         int fragmentShaderId=createShader(fragmentCode,GL_FRAGMENT_SHADER);
         int geometryShaderId=createShader(geometryCode,GL_GEOMETRY_SHADER);
+
+        programId=glCreateProgram();
         glAttachShader(programId,vertexShaderId);
         glAttachShader(programId,fragmentShaderId);
         glAttachShader(programId,geometryShaderId);
-
         glLinkProgram(programId);
-        glValidateProgram(programId);
-        if(glGetProgrami(programId,GL_VALIDATE_STATUS)==GL_FALSE)
-            System.err.println("Warning validating shader code: "+glGetProgramInfoLog(programId,4096));
-
-        glDetachShader(programId,vertexShaderId);
-        glDetachShader(programId,fragmentShaderId);
-        glDetachShader(programId,geometryShaderId);
+        //glValidateProgram(programId);
+        //if(glGetProgrami(programId,GL_VALIDATE_STATUS)==GL_FALSE)
+        //    System.err.println("Warning validating shader code: "+glGetProgramInfoLog(programId,4096));
 
         glDeleteShader(vertexShaderId);
         glDeleteShader(fragmentShaderId);
         glDeleteShader(geometryShaderId);
 
         uniforms=new HashMap<>();
+    }
+
+    protected int createShader(String shaderCode,int shaderType){
+        int shaderId=glCreateShader(shaderType);
+        glShaderSource(shaderId,shaderCode);
+        //glCompileShader(shaderId);
+        //if(glGetShaderi(shaderId,GL_COMPILE_STATUS)==GL_FALSE)
+        //    System.err.println("Error compiling shader code: "+glGetShaderInfoLog(shaderId,4096));
+        return shaderId;
     }
 
     public void addUniforms(String... names){
@@ -76,15 +70,6 @@ public class ShaderProgram{
 
     public void bindAttribute(int index,String name){
         glBindAttribLocation(programId,index,name);
-    }
-
-    protected int createShader(String shaderCode,int shaderType){
-        int shaderId=glCreateShader(shaderType);
-        glShaderSource(shaderId,shaderCode);
-        glCompileShader(shaderId);
-        if(glGetShaderi(shaderId,GL_COMPILE_STATUS)==GL_FALSE)
-            System.err.println("Error compiling shader code: "+glGetShaderInfoLog(shaderId,4096));
-        return shaderId;
     }
 
     public void setUniform(String uniformName,Matrix4 matrix4){
@@ -145,21 +130,20 @@ public class ShaderProgram{
         glUniform1iv(uniforms.get(uniformName),array);
     }
 
+    public int getId(){
+        return programId;
+    }
+
     public void bind(){
         glUseProgram(programId);
     }
 
-    public void unbind(){
+    public static void unbind(){
         glUseProgram(0);
     }
 
     public void dispose(){
-        unbind();
-        if(programId!=0)
-            glDeleteProgram(programId);
+        glDeleteProgram(programId);
     }
 
-    public int getProgramId(){
-        return programId;
-    }
 }

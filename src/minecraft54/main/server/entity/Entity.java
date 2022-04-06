@@ -1,7 +1,7 @@
 package minecraft54.main.server.entity;
 
-import minecraft54.engine.math.vectors.Vector3d;
-import minecraft54.engine.physics.HitboxAabb;
+import minecraft54.engine.maths.vectors.Vector3d;
+import minecraft54.engine.physics.Aabb;
 import minecraft54.main.util.Location;
 import minecraft54.main.server.world.World;
 
@@ -16,7 +16,7 @@ public interface Entity{
     void setVelocity(Vector3d var1);
     Vector3d getVelocity();
 
-    HitboxAabb getHitbox();
+    Aabb getHitbox();
     boolean isOnGround();
     boolean hasGravity();
     void setGravity(boolean var1);

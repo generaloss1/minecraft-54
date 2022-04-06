@@ -1,7 +1,8 @@
 package minecraft54.main.client.audio;
 
-import minecraft54.engine.math.Maths;
-import minecraft54.engine.utils.Assets;
+import minecraft54.engine.maths.Maths;
+import minecraft54.engine.maths.vectors.Vector3f;
+import minecraft54.engine.util.Assets;
 import minecraft54.main.Options;
 
 import java.util.ArrayList;
@@ -59,20 +60,20 @@ public class SoundPack{
     }
 
 
-    public void playPlace(){
+    public void playPlace(float x,float y,float z){
         int size=place.size();
         if(size!=0)
-            place.get(Maths.random(0,size-1)).setVolume(Options.BLOCKS_VOLUME*Options.MASTER_VOLUME).play();
+            place.get(Maths.random(0,size-1)).setVolume(Options.BLOCKS_VOLUME*Options.MASTER_VOLUME).setPosition(x,y,z).play();
     }
-    public void playDestroy(){
+    public void playDestroy(float x,float y,float z){
         int size=destroy.size();
         if(size!=0)
-            destroy.get(Maths.random(0,size-1)).setVolume(Options.BLOCKS_VOLUME*Options.MASTER_VOLUME).play();
+            destroy.get(Maths.random(0,size-1)).setVolume(Options.BLOCKS_VOLUME*Options.MASTER_VOLUME).setPosition(x,y,z).play();
     }
-    public void playStep(){
+    public void playStep(Vector3f pos){
         int size=step.size();
         if(size!=0)
-            step.get(Maths.random(0,size-1)).setVolume(0.15f*Options.PLAYERS_VOLUME*Options.MASTER_VOLUME).play();
+            step.get(Maths.random(0,size-1)).setVolume(0.15f*Options.PLAYERS_VOLUME*Options.MASTER_VOLUME).setPosition(pos).play();
     }
 
 

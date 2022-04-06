@@ -4,10 +4,10 @@ import minecraft54.engine.app.AppScreen;
 import minecraft54.engine.audio.SoundManager;
 import minecraft54.engine.graphics.OrthographicCamera;
 import minecraft54.engine.graphics.SpriteBatch;
-import minecraft54.engine.gui.Layout;
-import minecraft54.engine.gui.LayoutElement;
-import minecraft54.engine.gui.TouchCallback;
-import minecraft54.engine.utils.Assets;
+import minecraft54.engine.ui.Layout;
+import minecraft54.engine.ui.LayoutElement;
+import minecraft54.engine.ui.TouchCallback;
+import minecraft54.engine.util.Assets;
 import minecraft54.main.Main;
 import minecraft54.main.Minecraft54;
 import minecraft54.main.Options;
@@ -38,7 +38,7 @@ public class ServerListScreen implements AppScreen{
             }
             public void touched(LayoutElement current){}
             public void touchOff(LayoutElement current){
-                Minecraft54.getClient().send(new PacketStatusInPing());
+                //Minecraft54.client.send(new PacketStatusInPing());
             }
         });
 
@@ -48,7 +48,7 @@ public class ServerListScreen implements AppScreen{
             }
             public void touched(LayoutElement current){}
             public void touchOff(LayoutElement current){
-                Minecraft54.getClient().send(new PlayerLogIn(Options.ACCOUNT_NAME));
+                //Minecraft54.client.send(new PlayerLogIn(Options.ACCOUNT_NAME));
             }
         });
 
@@ -63,10 +63,10 @@ public class ServerListScreen implements AppScreen{
         layout.update(Main.mouse,Main.keyboard,Main.window);
         layout.render(sb);
 
-        if(Main.keyboard.isKeyReleased(GLFW_KEY_ESCAPE))
+        if(Main.keyboard.isKeyDown(GLFW_KEY_ESCAPE))
             Main.cfg.setScreen("menu");
 
-        if(Main.keyboard.isKeyReleased(GLFW_KEY_F11))
+        if(Main.keyboard.isKeyDown(GLFW_KEY_F11))
             Main.window.toggleFullscreen();
 
         sb.render(cam);

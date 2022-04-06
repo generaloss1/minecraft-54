@@ -1,11 +1,13 @@
 package minecraft54.main.client.controls;
 
+import minecraft54.engine.audio.SoundListener;
 import minecraft54.engine.graphics.PerspectiveCamera;
 import minecraft54.engine.io.Mouse;
 import minecraft54.engine.io.Window;
-import minecraft54.engine.math.Frustum;
-import minecraft54.engine.math.Matrix4;
-import minecraft54.engine.math.vectors.Vector3d;
+import minecraft54.engine.maths.Frustum;
+import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.vectors.Vector3d;
+import minecraft54.engine.maths.vectors.Vector3f;
 import minecraft54.main.Main;
 import minecraft54.main.Options;
 
@@ -43,6 +45,9 @@ public class Controls{
 
     public static void rotateCamera(Window window,Mouse mouse){
         CAMERA.getPosition().set(0,(float)position.y,0);
+
+        SoundListener.setPosition(position);
+        SoundListener.setOrientation(CAMERA.getDirection().mul(-1),new Vector3f(0,1,0));
 
         if(interpolation){
             if(fov>ifov+i)

@@ -1,23 +1,18 @@
 #version 460
 
-in layout(location=0) vec3 pos;
-in layout(location=1) vec3 uv;
-in layout(location=2) vec4 color;
-in layout(location=3) float id;
-in layout(location=4) float ao;
+layout(location=0) in vec3 pos;
+layout(location=1) in vec3 uv;
+layout(location=2) in vec4 color;
+layout(location=3) in float id;
+layout(location=4) in float ao;
 
-out VO{
-    vec3 uv;
-    vec4 color;
-    float id;
-    float ao;
-} vo;
+out VO{ vec3 uv;vec4 color;float id;float ao; } vertout;
 
 void main(void){
     gl_Position=vec4(pos,1.0);
 
-    vo.uv=uv;
-    vo.color=color;
-    vo.id=id;
-    vo.ao=ao;
+    vertout.uv=uv;
+    vertout.color=color;
+    vertout.id=id;
+    vertout.ao=ao;
 }

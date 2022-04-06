@@ -2,7 +2,7 @@ package minecraft54.engine.tiledmap;
 
 import minecraft54.engine.graphics.Texture;
 import minecraft54.engine.graphics.TextureRegion;
-import minecraft54.engine.utils.Assets;
+import minecraft54.engine.util.Assets;
 
 import java.util.HashMap;
 

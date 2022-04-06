@@ -4,16 +4,15 @@ import minecraft54.engine.app.AppScreen;
 import minecraft54.engine.audio.SoundManager;
 import minecraft54.engine.graphics.OrthographicCamera;
 import minecraft54.engine.graphics.SpriteBatch;
-import minecraft54.engine.gui.*;
-import minecraft54.engine.gui.Button;
-import minecraft54.engine.utils.Assets;
+import minecraft54.engine.ui.*;
+import minecraft54.engine.ui.Button;
+import minecraft54.engine.util.Assets;
 import minecraft54.main.*;
 import minecraft54.main.client.controls.Controls;
 import minecraft54.main.client.world.World;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.Set;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -135,8 +134,7 @@ public class WorldListScreen implements AppScreen{
                             Controls.setPosition(GameScreen.player.getHitbox().getPosition().clone().add(GameScreen.player.getEye()));
                             Controls.ignoreRotation();
                             Main.cfg.setScreen("game");
-                            if(GameScreen.chunkUpdateThread.getState().equals(Thread.State.NEW))
-                                GameScreen.chunkUpdateThread.start();
+                            GameScreen.startThreads();
                         }
                     });
                     layout.addElement("listElement"+i,button);
@@ -163,10 +161,10 @@ public class WorldListScreen implements AppScreen{
         layout.update(Main.mouse,Main.keyboard,Main.window);
         layout.render(sb);
 
-        if(Main.keyboard.isKeyReleased(GLFW_KEY_ESCAPE))
+        if(Main.keyboard.isKeyDown(GLFW_KEY_ESCAPE))
             Main.cfg.setScreen("menu");
 
-        if(Main.keyboard.isKeyReleased(GLFW_KEY_F11))
+        if(Main.keyboard.isKeyDown(GLFW_KEY_F11))
             Main.window.toggleFullscreen();
 
         sb.render(cam);

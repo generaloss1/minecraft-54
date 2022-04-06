@@ -87,11 +87,12 @@ public class Texture{
         glBindTexture(GL_TEXTURE_2D,id);
     }
 
+    public static void unbind(){
+        glBindTexture(GL_TEXTURE_2D,0);
+    }
+
     public void dispose(){
-        if(id!=0){
-            glDeleteTextures(id);
-            id=0;
-        }
+        glDeleteTextures(id);
     }
 
     public Pixmap getPixmap(){

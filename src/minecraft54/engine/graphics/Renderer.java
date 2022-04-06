@@ -1,7 +1,7 @@
 package minecraft54.engine.graphics;
 
-import minecraft54.engine.math.Matrix4;
-import minecraft54.engine.utils.Color;
+import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.util.Color;
 
 public class Renderer{
 
@@ -82,10 +82,6 @@ public class Renderer{
 
     public void end(){
         if(isBegin){
-            if(isCustomShader)
-                customShader.unbind();
-            else
-                defaultShader.unbind();
             isCustomShader=false;
             isBegin=false;
         }

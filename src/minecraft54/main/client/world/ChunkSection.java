@@ -2,9 +2,7 @@ package minecraft54.main.client.world;
 
 import minecraft54.engine.graphics.Mesh;
 import minecraft54.engine.graphics.VertexAttribute;
-import minecraft54.engine.utils.FastArrayList;
-import minecraft54.main.Minecraft54;
-import minecraft54.main.server.generator.SimplexNoise;
+import minecraft54.engine.util.FastArrayList;
 import org.lwjgl.opengl.GL46C;
 
 public class ChunkSection extends ChunkSectionData{
@@ -69,9 +67,9 @@ public class ChunkSection extends ChunkSectionData{
         if(!building){
             building=true;
 
-            SimplexNoise noiseR=new SimplexNoise(200,0.1,(int)chunk.world.seed);
-            SimplexNoise noiseG=new SimplexNoise(200,0.1,(int)chunk.world.seed+1);
-            SimplexNoise noiseB=new SimplexNoise(200,0.1,(int)chunk.world.seed+2);
+            //SimplexNoise noiseR=new SimplexNoise(200,0.1,(int)chunk.world.seed);
+            //SimplexNoise noiseG=new SimplexNoise(200,0.1,(int)chunk.world.seed+1);
+            //SimplexNoise noiseB=new SimplexNoise(200,0.1,(int)chunk.world.seed+2);
 
             vertLists[0].clear();
             vertLists[1].clear();
@@ -80,15 +78,15 @@ public class ChunkSection extends ChunkSectionData{
 
             //long millis=System.currentTimeMillis(); int faces=0;
 
-            int[] AOSides=new int[WIDTH_X*WIDTH_Z*HEIGHT*6];
-            FastArrayList<Integer> checkSides=new FastArrayList<>();
+            //int[] AOSides=new int[WIDTH_X*WIDTH_Z*HEIGHT*6];
+            //FastArrayList<Integer> checkSides=new FastArrayList<>();
 
             for(byte lx=0; lx<WIDTH_X; lx++)
                 for(byte lz=0; lz<WIDTH_Z; lz++){
 
-                    float grassBlockR=(float)noiseR.getNoise(this.chunk.x*WIDTH_X+lx,this.chunk.z*WIDTH_Z+lz)*(0.4f-0.3f)+0.3f;
-                    float grassBlockG=(float)noiseG.getNoise(this.chunk.x*WIDTH_X+lx,this.chunk.z*WIDTH_Z+lz)*(0.85f-0.7f)+0.7f;
-                    float grassBlockB=(float)noiseB.getNoise(this.chunk.x*WIDTH_X+lx,this.chunk.z*WIDTH_Z+lz)*(0.3f-0.2f)+0.2f;
+                    //float grassBlockR=(float)noiseR.getNoise(this.chunk.x*WIDTH_X+lx,this.chunk.z*WIDTH_Z+lz)*(0.4f-0.3f)+0.3f;
+                    //float grassBlockG=(float)noiseG.getNoise(this.chunk.x*WIDTH_X+lx,this.chunk.z*WIDTH_Z+lz)*(0.85f-0.7f)+0.7f;
+                    //float grassBlockB=(float)noiseB.getNoise(this.chunk.x*WIDTH_X+lx,this.chunk.z*WIDTH_Z+lz)*(0.3f-0.2f)+0.2f;
                     //System.out.println((x*WIDTH_X+lx)+", "+(z*WIDTH_Z+lz)+": "+grassBlockR+", "+grassBlockG+", "+grassBlockB);
 
                     for(short ly=0; ly<HEIGHT; ly++){
@@ -106,7 +104,7 @@ public class ChunkSection extends ChunkSectionData{
                         if(blockData==null)
                             continue;
 
-                        Chunk chunk=this.chunk.world.getChunk(this.chunk.x+1,this.chunk.z);
+                        Chunk chunk=this.chunk.world.chunkProvider.getChunk(this.chunk.x+1,this.chunk.z);
                         BlockData px_block=lx+1<WIDTH_X?
                                 getBlock((short)(lx+1),ly,lz)
                                 :
@@ -115,7 +113,7 @@ public class ChunkSection extends ChunkSectionData{
                                         :
                                         null;
 
-                        chunk=this.chunk.world.getChunk(this.chunk.x-1,this.chunk.z);
+                        chunk=this.chunk.world.chunkProvider.getChunk(this.chunk.x-1,this.chunk.z);
                         BlockData mx_block=lx-1>-1?
                                 getBlock((short)(lx-1),ly,lz)
                                 :
@@ -140,7 +138,7 @@ public class ChunkSection extends ChunkSectionData{
                                         :
                                         null;
 
-                        chunk=this.chunk.world.getChunk(this.chunk.x,this.chunk.z+1);
+                        chunk=this.chunk.world.chunkProvider.getChunk(this.chunk.x,this.chunk.z+1);
                         BlockData pz_block=lz+1<WIDTH_Z?
                                 getBlock(lx,ly,(short)(lz+1))
                                 :
@@ -149,7 +147,7 @@ public class ChunkSection extends ChunkSectionData{
                                         :
                                         null;
 
-                        chunk=this.chunk.world.getChunk(this.chunk.x,this.chunk.z-1);
+                        chunk=this.chunk.world.chunkProvider.getChunk(this.chunk.x,this.chunk.z-1);
                         BlockData mz_block=lz-1>-1?
                                 getBlock(lx,ly,(short)(lz-1))
                                 :
@@ -190,11 +188,11 @@ public class ChunkSection extends ChunkSectionData{
                             if(side==null || !sides[sideIndex])
                                 continue;
 
-                            if(blockData.sides[sideIndex].render_layer==0 && sideIndex!=6 && Minecraft54.GLASS.getId()!=block.getId()){
-                                int pos=lx*6*WIDTH_Z*HEIGHT+ly*6*WIDTH_Z+lz*6+sideIndex;
-                                AOSides[pos]=vertLists[0].size()+1;
-                                checkSides.add(pos);
-                            }
+                            //if(blockData.sides[sideIndex].render_layer==0 && sideIndex!=6 && Minecraft54.GLASS.getId()!=block.getId()){
+                            //    int pos=lx*6*WIDTH_Z*HEIGHT+ly*6*WIDTH_Z+lz*6+sideIndex;
+                            //    AOSides[pos]=vertLists[0].size()+1;
+                            //    checkSides.add(pos);
+                            //}
 
                             float[] sideMesh=side.getMesh();
                             for(int v=0; v<sideMesh.length; v+=Block.BlockSide.VERTEX_SIZE){
@@ -237,7 +235,7 @@ public class ChunkSection extends ChunkSectionData{
 
             //Ambient Occlusion
 
-            if(true){
+            /*if(false){
 
                 float ao=0.65f;
 
@@ -605,7 +603,7 @@ public class ChunkSection extends ChunkSectionData{
 
                 }
 
-            }
+            }*/
 
             isBuild=true;
             //System.out.println(faces+" faces, "+(System.currentTimeMillis()-millis)/1000f+" sec.");

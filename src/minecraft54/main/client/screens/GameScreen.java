@@ -2,19 +2,18 @@ package minecraft54.main.client.screens;
 
 import minecraft54.engine.app.AppScreen;
 import minecraft54.engine.audio.SoundManager;
-import minecraft54.engine.graphics.OrthographicCamera;
-import minecraft54.engine.graphics.Renderer;
-import minecraft54.engine.graphics.SpriteBatch;
-import minecraft54.engine.graphics.TrueTypeFont;
-import minecraft54.engine.gui.Layout;
-import minecraft54.engine.gui.LayoutElement;
-import minecraft54.engine.gui.TouchCallback;
+import minecraft54.engine.graphics.*;
+import minecraft54.engine.particles.BillboardParticleEmitter;
+import minecraft54.engine.particles.Particle;
+import minecraft54.engine.ui.Layout;
+import minecraft54.engine.ui.LayoutElement;
+import minecraft54.engine.ui.TouchCallback;
 import minecraft54.engine.io.Window;
-import minecraft54.engine.math.Intersector;
-import minecraft54.engine.math.Maths;
-import minecraft54.engine.math.vectors.Vector3d;
-import minecraft54.engine.physics.HitboxAabb;
-import minecraft54.engine.utils.Assets;
+import minecraft54.engine.maths.Intersector;
+import minecraft54.engine.maths.Maths;
+import minecraft54.engine.maths.vectors.Vector3d;
+import minecraft54.engine.physics.Aabb;
+import minecraft54.engine.util.Assets;
 import minecraft54.main.*;
 import minecraft54.main.client.controls.Controls;
 import minecraft54.main.client.controls.CursorRay;
@@ -35,13 +34,15 @@ public class GameScreen implements AppScreen, EventListener{
     public static World world;
     public static Player player;
     private boolean showHud=true;
-    public static Thread chunkUpdateThread;
+    public static Thread thread1,thread2;
+    public BillboardParticleEmitter partBatch;
 
     public Layout layout;
     public boolean pause;
 
 
     public void create(){
+        partBatch=new BillboardParticleEmitter();
         renderer=new Renderer();
         sb=new SpriteBatch();
         cam=new OrthographicCamera(Main.window);
@@ -55,34 +56,7 @@ public class GameScreen implements AppScreen, EventListener{
         itemBar=new int[]{Minecraft54.GRASS_BLOCK.getId(),Minecraft54.LOG.getId(),Minecraft54.PLANKS.getId(),Minecraft54.COBBLESTONE.getId(),Minecraft54.GLASS.getId(),Minecraft54.GRASS.getId(),Minecraft54.WATER.getId()};
         blockId=itemBar[barSelect];
 
-        chunkUpdateThread=new Thread(()->{
-            while(!Thread.interrupted()){
-                int playerChunkX=Maths.round(Controls.getPosition().x/Chunk.WIDTH_X);
-                int playerChunkZ=Maths.round(Controls.getPosition().z/Chunk.WIDTH_Z);
-                for(int i=playerChunkX-Options.RENDER_DISTANCE; i<playerChunkX+Options.RENDER_DISTANCE; i++)
-                    for(int j=playerChunkZ-Options.RENDER_DISTANCE; j<playerChunkZ+Options.RENDER_DISTANCE; j++){
-                        Chunk chunk=world.getChunk(i,j);
-                        if(chunk==null){
-                            if(!world.loadChunk(i,j))
-                                world.generateChunk(i,j);
-                        }else
-                            world.generateChunk(i,j);
-                    }
-
-                for(int i=0; i<world.chunks.size(); i++){
-                    Chunk chunk=world.chunks.get(i);
-                    if(chunk!=null)
-                        chunk.build();
-                }
-
-                try{
-                    Thread.sleep(1000/Window.getRefreshRate());
-                }catch(InterruptedException ignored){}
-
-            }
-        });
-
-        Minecraft54.getServer().registerEvents(this);
+        //Minecraft54.server.registerEvents(this);
 
         layout=new Layout();
         layout.load("gui/pause.json");
@@ -117,8 +91,75 @@ public class GameScreen implements AppScreen, EventListener{
                 world.dispose();
                 Main.cfg.setScreen("world list");
                 Main.mouse.show(true);
+                pause=false;
             }
         });
+
+        thread1=new Thread(()->{
+            while(!Thread.interrupted()){
+                int playerChunkX=Maths.round(Controls.getPosition().x/Chunk.WIDTH_X);
+                int playerChunkZ=Maths.round(Controls.getPosition().z/Chunk.WIDTH_Z);
+                for(int i=playerChunkX-Options.RENDER_DISTANCE; i<playerChunkX+Options.RENDER_DISTANCE; i++)
+                    for(int j=playerChunkZ-Options.RENDER_DISTANCE; j<playerChunkZ+Options.RENDER_DISTANCE; j++){
+                        Chunk chunk=world.chunkProvider.getChunk(i,j);
+                        if(chunk==null){
+                            if(!world.chunkProvider.loadChunk(i,j))
+                                world.generateChunk(i,j);
+                        }else
+                            world.generateChunk(i,j);
+                    }
+
+                for(int i=0; i<world.chunkProvider.loadedChunks.size(); i++){
+                    Chunk chunk=world.chunkProvider.loadedChunks.get(i);
+                    if(chunk!=null)
+                        chunk.build();
+                }
+
+                try{
+                    Thread.sleep(1000/Window.getRefreshRate());
+                }catch(InterruptedException ignored){}
+
+            }
+        });
+
+        thread2=new Thread(()->{
+            while(!Thread.interrupted()){
+                int playerChunkX=Maths.round(Controls.getPosition().x/Chunk.WIDTH_X);
+                int playerChunkZ=Maths.round(Controls.getPosition().z/Chunk.WIDTH_Z);
+                for(int i=playerChunkX-Options.RENDER_DISTANCE; i<playerChunkX+Options.RENDER_DISTANCE; i++)
+                    for(int j=playerChunkZ-Options.RENDER_DISTANCE; j<playerChunkZ+Options.RENDER_DISTANCE; j++){
+                        Chunk chunk=world.chunkProvider.getChunk(i,j);
+                        if(chunk==null){
+                            if(!world.chunkProvider.loadChunk(i,j))
+                                world.generateChunk(i,j);
+                        }else
+                            world.generateChunk(i,j);
+                    }
+
+                for(int i=0; i<world.chunkProvider.loadedChunks.size(); i++){
+                    Chunk chunk=world.chunkProvider.loadedChunks.get(i);
+                    if(chunk!=null)
+                        chunk.build();
+                }
+
+                try{
+                    Thread.sleep(1000/Window.getRefreshRate());
+                }catch(InterruptedException ignored){}
+
+            }
+        });
+
+    }
+
+    public static void startThreads(){
+        if(thread1.getState().equals(Thread.State.NEW))
+            thread1.start();
+        //if(thread2.getState().equals(Thread.State.NEW))
+        //    thread2.start();
+    }
+    public static void stopThreads(){
+        thread1.interrupt();
+        //thread2.interrupt();
     }
 
 
@@ -128,12 +169,13 @@ public class GameScreen implements AppScreen, EventListener{
         Controls.CAMERA.update();
 
         world.render();
+        partBatch.render(Controls.CAMERA);//.getProjection(),Matrix4.mul(Controls.CAMERA.getRotationMatrix(),new Matrix4().translate(Controls.getPosition().clone().mul(-1))));
 
         if(showHud){
             TrueTypeFont font=Assets.getTTF("font6");
             sb.setAlpha(0.5f);
             sb.drawText(font,"fps: "+Math.round(Main.cfg.FPS)+", vsync: "+Main.window.isVSync(),10,Main.window.getHeight()-10-font.getFontHeight());
-            sb.drawText(font,"tps: "+Math.round(Minecraft54.getServer().getTps()),10,Main.window.getHeight()-(10+font.getFontHeight())*2);
+            //sb.drawText(font,"tps: "+Math.round(Minecraft54.server.getTps()),10,Main.window.getHeight()-(10+font.getFontHeight())*2);
             sb.drawText(font,"seed: "+world.seed,10,Main.window.getHeight()-(10+font.getFontHeight())*3);
             sb.drawText(font,"pos: "+player.getHitbox().getPosition(),10,Main.window.getHeight()-(10+font.getFontHeight())*4);
             sb.drawText(font,"dir: "+Controls.CAMERA.getDirection(),10,Main.window.getHeight()-(10+font.getFontHeight())*5);
@@ -142,6 +184,7 @@ public class GameScreen implements AppScreen, EventListener{
             sb.drawText(font,"sections: "+world.renderSectionsCount,10,Main.window.getHeight()-(10+font.getFontHeight())*8);
             sb.drawText(font,"fov: "+Controls.fov,10,Main.window.getHeight()-(10+font.getFontHeight())*9);
             sb.drawText(font,"sounds: "+SoundManager.sources.size(),10,Main.window.getHeight()-(10+font.getFontHeight())*10);
+            sb.drawText(font,"particles: "+partBatch.getParticles().size(),10,Main.window.getHeight()-(10+font.getFontHeight())*11);
             sb.setAlpha(1);
 
             sb.draw(Assets.getTexture("crosshair"),Main.window.getWidth()/2f-(Main.window.getWidth()/50f/Main.window.getWidth()*Main.window.getHeight()/2),Main.window.getHeight()/2f-(Main.window.getHeight()/50f/2),Main.window.getWidth()/50f/Main.window.getWidth()*Main.window.getHeight(),Main.window.getHeight()/50f);
@@ -152,6 +195,10 @@ public class GameScreen implements AppScreen, EventListener{
             Main.mouse.show(pause);
             if(!pause)
                 Main.mouse.setPosCenter(Main.window);
+        }
+        if(Main.keyboard.isKeyDown(GLFW_KEY_F11)){
+            Controls.ignoreRotation();
+            Main.window.toggleFullscreen();
         }
 
         if(pause){
@@ -174,9 +221,10 @@ public class GameScreen implements AppScreen, EventListener{
 
         player.update();
         world.update();
+        partBatch.update();
 
-        for(int i=0; i<world.chunks.size(); i++){
-            Chunk chunk=world.chunks.get(i);
+        for(int i=0; i<world.chunkProvider.loadedChunks.size(); i++){
+            Chunk chunk=world.chunkProvider.loadedChunks.get(i);
             if(chunk!=null){
                 if(!chunk.init)
                     chunk.init();
@@ -200,11 +248,6 @@ public class GameScreen implements AppScreen, EventListener{
             blockId=itemBar[barSelect];
         }
 
-        if(Main.keyboard.isKeyReleased(GLFW_KEY_F11)){
-            Controls.ignoreRotation();
-            Main.window.toggleFullscreen();
-        }
-
         if(Main.keyboard.isKeyPressed(GLFW_KEY_F3) && Main.keyboard.isKeyDown(GLFW_KEY_F4)){
             player.setGameMode(
                     switch(player.gameMode()){
@@ -221,30 +264,37 @@ public class GameScreen implements AppScreen, EventListener{
         Vector3d pp=player.getHitbox().getPosition();
         if(Main.keyboard.isKeyPressed(GLFW_KEY_B))
             world.setBlock(Minecraft54.STONE.getId(),pp.xf(),pp.yf()-1,pp.zf(),true);
-        Chunk bChunk=world.getChunk(Maths.floor((float)pp.xf()/Chunk.WIDTH_X),Maths.floor((float)pp.zf()/Chunk.WIDTH_Z));
+        Chunk bChunk=world.chunkProvider.getChunk(Maths.floor((float)pp.xf()/Chunk.WIDTH_X),Maths.floor((float)pp.zf()/Chunk.WIDTH_Z));
         if(bChunk!=null)
             bChunk.build();
 
         for(int[] blockArr:Minecraft54.setBlockStack){
             int id=blockArr[0];
-            if(id==0 || !Intersector.aabbAabbNS(player.getHitbox(),new HitboxAabb(blockArr[2],blockArr[3],blockArr[4],blockArr[2]+1,blockArr[3]+1,blockArr[4]+1))){
+            if(id==0 || !Intersector.aabbAabbNS(player.getHitbox(),new Aabb(blockArr[2],blockArr[3],blockArr[4],blockArr[2]+1,blockArr[3]+1,blockArr[4]+1))){
                 if(id==0){
                     Block block=BlockManager.getBlockFromId(world.getBlockId((short)blockArr[2],(short)blockArr[3],(short)blockArr[4]));
                     if(block!=null){
                         BlockData blockData=block.getBlockData(world.getBlockData((short)blockArr[2],(short)blockArr[3],(short)blockArr[4]));
+
+                        for(int i=0; i<32; i++){
+                            Particle particle=new Particle(new TextureRegion(Assets.getTexture("dirt"),Maths.random(0,12/16f),Maths.random(0,12/16f),4/16f,4/16f),new Vector3d(blockArr[2]+Maths.random(0,1f),blockArr[3]+Maths.random(0,1f),blockArr[4]+Maths.random(0,1f)),Maths.random(1000,3000),Maths.random(3/32f,3/16f),Minecraft54.particleBehavior1);
+                            particle.getVelocity().get().set(Maths.random(-0.05f,0.05f),Maths.random(0,0.1f),Maths.random(-0.05f,0.05f));
+                            partBatch.addParticle(particle);
+                        }
+
                         if(blockData.sounds!=null)
-                            blockData.sounds.playDestroy();
+                            blockData.sounds.playDestroy(blockArr[2]+0.5f,blockArr[3]+0.5f,blockArr[4]+0.5f);
                     }
                 }else{
                     Block block=BlockManager.getBlockFromId((short)blockArr[0]);
                     if(block!=null){
                         BlockData blockData=block.getBlockData((short)blockArr[1]);
                         if(blockData.sounds!=null)
-                            blockData.sounds.playPlace();
+                            blockData.sounds.playPlace(blockArr[2]+0.5f,blockArr[3]+0.5f,blockArr[4]+0.5f);
                     }
                 }
                 world.setBlock((short)blockArr[0],(short)blockArr[1],blockArr[2],blockArr[3],blockArr[4],true);
-                bChunk=world.getChunk(Maths.floor((float)blockArr[2]/Chunk.WIDTH_X),Maths.floor((float)blockArr[4]/Chunk.WIDTH_Z));
+                bChunk=world.chunkProvider.getChunk(Maths.floor((float)blockArr[2]/Chunk.WIDTH_X),Maths.floor((float)blockArr[4]/Chunk.WIDTH_Z));
                 if(bChunk!=null)
                     bChunk.build();
             }
@@ -261,9 +311,10 @@ public class GameScreen implements AppScreen, EventListener{
 
     public void dispose(){
         sb.dispose();
+        partBatch.dispose();
         if(world!=null){
-            world.dispose();
             world.saveStats(player);
+            world.dispose();
         }
     }
 

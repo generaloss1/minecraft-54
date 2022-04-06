@@ -1,12 +1,8 @@
-#version 400
+#version 460
+
+in VO{ vec2 uv; vec4 color; float tex; } attr;
 
 out vec4 fragColor;
-
-in VO{
-    vec2 uv;
-    vec4 color;
-    float tex;
-} attr;
 
 uniform sampler2D u_textures[192];
 

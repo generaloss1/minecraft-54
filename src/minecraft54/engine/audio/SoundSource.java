@@ -1,7 +1,7 @@
 package minecraft54.engine.audio;
 
-import minecraft54.engine.math.Maths;
-import minecraft54.engine.math.vectors.Vector3f;
+import minecraft54.engine.maths.Maths;
+import minecraft54.engine.maths.vectors.Vector3f;
 
 import static org.lwjgl.openal.AL10.*;
 

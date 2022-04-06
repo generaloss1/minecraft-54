@@ -1,7 +1,7 @@
 package minecraft54.main.server.generator;
 
-import minecraft54.engine.math.Maths;
-import minecraft54.engine.utils.Random;
+import minecraft54.engine.maths.Maths;
+import minecraft54.engine.util.Random;
 import minecraft54.main.client.world.Block;
 import minecraft54.main.client.world.BlockData;
 import minecraft54.main.client.world.Chunk;
@@ -30,24 +30,28 @@ public class Generator{
     }
 
     public void generate(Chunk chunk,long seed){
-        if(chunk!=null){
-            callback.generate(chunk,seed);
-            chunk.generated=true;
+        new Thread(()->{
+            if(chunk!=null && !chunk.generation){
+                chunk.generation=true;
+                callback.generate(chunk,seed);
 
-            chunk.changed(true);
-            Chunk cChunk=chunk.world.getChunk(chunk.x-1,chunk.z);
-            if(cChunk!=null)
-                cChunk.changed(true);
-            cChunk=chunk.world.getChunk(chunk.x+1,chunk.z);
-            if(cChunk!=null)
-                cChunk.changed(true);
-            cChunk=chunk.world.getChunk(chunk.x,chunk.z-1);
-            if(cChunk!=null)
-                cChunk.changed(true);
-            cChunk=chunk.world.getChunk(chunk.x,chunk.z+1);
-            if(cChunk!=null)
-                cChunk.changed(true);
-        }
+                chunk.changed(true);
+                Chunk cChunk=chunk.world.chunkProvider.getChunk(chunk.x-1,chunk.z);
+                if(cChunk!=null)
+                    cChunk.changed(true);
+                cChunk=chunk.world.chunkProvider.getChunk(chunk.x+1,chunk.z);
+                if(cChunk!=null)
+                    cChunk.changed(true);
+                cChunk=chunk.world.chunkProvider.getChunk(chunk.x,chunk.z-1);
+                if(cChunk!=null)
+                    cChunk.changed(true);
+                cChunk=chunk.world.chunkProvider.getChunk(chunk.x,chunk.z+1);
+                if(cChunk!=null)
+                    cChunk.changed(true);
+                chunk.generation=false;
+                chunk.generated=true;
+            }
+        }).start();
     }
 
 
@@ -57,6 +61,8 @@ public class Generator{
     static{
 
         TEST_3=new Generator("Test-3 (Caves)",(Chunk chunk,long seed)->{
+
+            byte[][][] tmp=new byte[Chunk.WIDTH_X][Chunk.HEIGHT][Chunk.WIDTH_Z];
 
             SimplexNoise noise0=new SimplexNoise(50,0.35f,(int)seed);
             SimplexNoise noise1=new SimplexNoise(400,0.4f,(int)seed);
@@ -79,8 +85,21 @@ public class Generator{
                         double noise3dGenCaves2=noise4.getNoise(gx,ly,gz);
                         double noiseGenCavesFloor=noise3.getNoise(gx,gz)*5+5;
                         if((noise3dGen>ly/(height/2) || ly<=height) && (noise3dGenCaves<ly/((height*2.6)/2f) || noise3dGenCaves2>0.25 || ly<noiseGenCavesFloor))
-                            chunk.setBlock(Minecraft54.STONE.getBlockData(),lx,ly,lz,false);
+                            tmp[lx][ly][lz]=1;
                     }
+                }
+
+            for(short lx=0; lx<Chunk.WIDTH_X; lx++)
+                for(short lz=0; lz<Chunk.WIDTH_Z; lz++){
+                    chunk.setBlock(Minecraft54.BEDROCK,lx,0,lz,false);
+                    if(treeGenRandom.randomBoolean(0.8))
+                        chunk.setBlock(Minecraft54.BEDROCK,lx,1,lz,false);
+                    if(treeGenRandom.randomBoolean(0.6))
+                        chunk.setBlock(Minecraft54.BEDROCK,lx,2,lz,false);
+                    if(treeGenRandom.randomBoolean(0.4))
+                        chunk.setBlock(Minecraft54.BEDROCK,lx,3,lz,false);
+                    if(treeGenRandom.randomBoolean(0.2))
+                        chunk.setBlock(Minecraft54.BEDROCK,lx,4,lz,false);
                 }
 
             for(short lx=0; lx<Chunk.WIDTH_X; lx++)
@@ -88,13 +107,13 @@ public class Generator{
                     int gx=chunk.x*Chunk.WIDTH_X+lx;
                     int gz=chunk.z*Chunk.WIDTH_Z+lz;
                     for(int ly=128; ly>=0; ly--){
-                        if(chunk.getBlockId(lx,ly,lz)==1){
+                        if(tmp[lx][ly][lz]==1){
                             boolean sand=sandGenNoise.getNoise(gx,gz)>0.5;
 
                             if(sand && ly<64+noise0.getNoise(gx,gz)*2){
                                 int height=Maths.round(noise0.getNoise(lx,lz)*(5-3)+3);
                                 for(int dly=ly; dly>=ly-height; dly--){
-                                    if(chunk.getBlockId(lx,dly,lz)==0)
+                                    if(tmp[lx][dly][lz]==0)
                                         break;
                                     chunk.setBlock(Minecraft54.SAND,lx,dly,lz,false);
                                 }
@@ -104,10 +123,12 @@ public class Generator{
                                 else
                                     chunk.setBlock(Minecraft54.DIRT,lx,ly,lz,false);
                                 int height=Maths.round(noise0.getNoise(lx,lz)*(5-3)+3);
-                                for(int dly=ly-1; dly>=ly-height; dly--){
-                                    if(chunk.getBlockId(lx,dly,lz)==0)
-                                        break;
-                                    chunk.setBlock(Minecraft54.DIRT,lx,dly,lz,false);
+                                if(ly!=0){
+                                    for(int dly=ly-1; dly>=ly-height; dly--){
+                                        if(tmp[lx][dly][lz]==0)
+                                            break;
+                                        chunk.setBlock(Minecraft54.DIRT,lx,dly,lz,false);
+                                    }
                                 }
 
                                 if(ly>=64){
@@ -121,6 +142,10 @@ public class Generator{
                                     }
                                 }
                             }
+
+                            for(int ly2=ly; ly2>=0; ly2--)
+                                if(tmp[lx][ly2][lz]==1 && chunk.getBlockId(lx,ly2,lz)==0)
+                                    chunk.setBlock(Minecraft54.STONE.getBlockData(),lx,ly2,lz,false);
 
                             break;
                         }else if(ly==63)
@@ -205,7 +230,7 @@ public class Generator{
         TEST_1=new Generator("Test-1",(Chunk chunk,long seed)->{
 
             Random treeGenerationRandom=new Random(seed+chunk.x*1000L+chunk.z);
-            minecraft54.engine.math.SimplexNoise noise=new minecraft54.engine.math.SimplexNoise();
+            minecraft54.engine.maths.SimplexNoise noise=new minecraft54.engine.maths.SimplexNoise();
             noise.genGrad(seed);
 
             for(int lx=0; lx<Chunk.WIDTH_X; lx++)
