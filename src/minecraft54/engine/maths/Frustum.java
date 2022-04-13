@@ -53,12 +53,12 @@ public class Frustum{
         frustum[index][3]/=f;
     }
 
-    private float multiply(int index,float x,float y,float z){
+    private double multiply(int index,double x,double y,double z){
         return frustum[index][0]*x + frustum[index][1]*y + frustum[index][2]*z + frustum[index][3];
     }
 
 
-    public boolean isBoxInFrustum(float x1,float y1,float z1,float x2,float y2,float z2){
+    public boolean isBoxInFrustum(double x1,double y1,double z1,double x2,double y2,double z2){
         for(int i=0; i<6; i++){
             if(
                     multiply(i, x1, y1, z1)<=0 &&

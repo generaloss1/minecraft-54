@@ -1,6 +1,7 @@
 package minecraft54.engine.graphics;
 
-import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.Matrix4d;
+import minecraft54.engine.maths.Matrix4f;
 import minecraft54.engine.maths.vectors.Vector2f;
 import minecraft54.engine.maths.vectors.Vector3f;
 import minecraft54.engine.util.Color;
@@ -82,8 +83,12 @@ public class ShaderProgram{
         glBindAttribLocation(programId,index,name);
     }
 
-    public void setUniform(String uniformName,Matrix4 matrix4){
-        glUniformMatrix4fv(uniforms.get(uniformName),false,matrix4.val);
+    public void setUniform(String uniformName,Matrix4d matrix4d){
+        glUniformMatrix4dv(uniforms.get(uniformName),false,matrix4d.val);
+    }
+
+    public void setUniform(String uniformName,Matrix4f matrix4f){
+        glUniformMatrix4fv(uniforms.get(uniformName),false,matrix4f.val);
     }
 
     public void setUniform(String uniformName,float x,float y){

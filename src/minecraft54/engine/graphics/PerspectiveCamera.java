@@ -1,7 +1,7 @@
 package minecraft54.engine.graphics;
 
 import minecraft54.engine.maths.EulerAngle;
-import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.Matrix4f;
 import minecraft54.engine.maths.vectors.Vector3f;
 
 public class PerspectiveCamera{
@@ -11,8 +11,8 @@ public class PerspectiveCamera{
     private final EulerAngle rotation;
 
     private boolean dirtyProjection;
-    private final Matrix4 projection;
-    private Matrix4 view;
+    private final Matrix4f projection;
+    private Matrix4f view;
 
     private float fov,near,far;
     private int width,height;
@@ -28,8 +28,8 @@ public class PerspectiveCamera{
         position=new Vector3f();
         rotation=new EulerAngle();
 
-        projection=new Matrix4().setToPerspective(width,height,near,far,fov);
-        view=new Matrix4();
+        projection=new Matrix4f().setToPerspective(width,height,near,far,fov);
+        view=new Matrix4f();
     }
 
     public void update(){
@@ -37,7 +37,7 @@ public class PerspectiveCamera{
             projection.setToPerspective(width,height,near,far,fov);
             dirtyProjection=false;
         }
-        view=Matrix4.lookAt(position,rotation.direction());
+        view=Matrix4f.lookAt(position,rotation.direction());
     }
 
     public void resize(int width,int height){
@@ -46,11 +46,11 @@ public class PerspectiveCamera{
         dirtyProjection=true;
     }
 
-    public Matrix4 getView(){
+    public Matrix4f getView(){
         return view;
     }
 
-    public Matrix4 getProjection(){
+    public Matrix4f getProjection(){
         return projection;
     }
 

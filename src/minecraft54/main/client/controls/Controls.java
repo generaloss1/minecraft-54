@@ -5,8 +5,7 @@ import minecraft54.engine.graphics.PerspectiveCamera;
 import minecraft54.engine.io.Mouse;
 import minecraft54.engine.io.Window;
 import minecraft54.engine.maths.Frustum;
-import minecraft54.engine.maths.Maths;
-import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.Matrix4f;
 import minecraft54.engine.maths.vectors.Vector3d;
 import minecraft54.engine.maths.vectors.Vector3f;
 import minecraft54.main.Main;
@@ -97,7 +96,7 @@ public class Controls{
             mouse.show(true);
 
 
-        frustum.setFrustum(Matrix4.lookAt(new Vector3f(position),CAMERA.getRotation().direction()).val,CAMERA.getProjection().val);
+        frustum.setFrustum(Matrix4f.lookAt(new Vector3f(position),CAMERA.getRotation().direction()).val,CAMERA.getProjection().val);
     }
 
 

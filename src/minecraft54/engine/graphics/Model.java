@@ -1,6 +1,6 @@
 package minecraft54.engine.graphics;
 
-import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.Matrix4f;
 import minecraft54.engine.maths.vectors.Vector3f;
 
 public class Model{
@@ -11,7 +11,7 @@ public class Model{
     public Mesh mesh;
     public Material material;
 
-    private Matrix4 modelView;
+    private Matrix4f modelView;
 
     public boolean isReqCalcMat;
 
@@ -24,7 +24,7 @@ public class Model{
         rotation=new Vector3f();
         scale=new Vector3f(1);
 
-        modelView=new Matrix4();
+        modelView=new Matrix4f();
         isReqCalcMat=false;
     }
 
@@ -36,21 +36,21 @@ public class Model{
         rotation=new Vector3f(model.rotation);
         scale=new Vector3f(model.scale);
 
-        modelView=new Matrix4(model.modelView);
+        modelView=new Matrix4f(model.modelView);
         isReqCalcMat=model.isReqCalcMat;
     }
 
 
     public void calculateMatrix(){
-        Matrix4 translation=Matrix4.translated(position);
-        Matrix4 scaling=Matrix4.scaled(scale);
+        Matrix4f translation=Matrix4f.translated(position);
+        Matrix4f scaling=Matrix4f.scaled(scale);
 
-        Matrix4 rotXMatrix=Matrix4.rotatedX(rotation.x);
-        Matrix4 rotYMatrix=Matrix4.rotatedY(rotation.y);
-        Matrix4 rotZMatrix=Matrix4.rotatedZ(rotation.z);
-        Matrix4 rotate=Matrix4.mul(rotXMatrix,Matrix4.mul(rotYMatrix,rotZMatrix));
+        Matrix4f rotXMatrix=Matrix4f.rotatedX(rotation.x);
+        Matrix4f rotYMatrix=Matrix4f.rotatedY(rotation.y);
+        Matrix4f rotZMatrix=Matrix4f.rotatedZ(rotation.z);
+        Matrix4f rotate=Matrix4f.mul(rotXMatrix,Matrix4f.mul(rotYMatrix,rotZMatrix));
 
-        modelView=Matrix4.mul(Matrix4.mul(scaling,translation),rotate);
+        modelView=Matrix4f.mul(Matrix4f.mul(scaling,translation),rotate);
         isReqCalcMat=false;
     }
 
@@ -123,7 +123,7 @@ public class Model{
         return scale;
     }
 
-    public Matrix4 getModelMatrix(){
+    public Matrix4f getModelMatrix(){
         return modelView;
     }
 

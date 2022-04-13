@@ -1,7 +1,7 @@
 package minecraft54.engine.particles;
 
 import minecraft54.engine.graphics.*;
-import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.Matrix4f;
 import minecraft54.engine.maths.vectors.Vector3d;
 import minecraft54.engine.maths.vectors.Vector3f;
 import minecraft54.engine.util.Color;
@@ -75,7 +75,7 @@ public class ParticleEmitter{
         render(camera.getProjection(),camera.getView());
     }
 
-    public void render(Matrix4 projection,Matrix4 world){
+    public void render(Matrix4f projection,Matrix4f world){
         for(int i=0; i<particles.size(); i++){
             Particle particle=particles.get(i);
 

@@ -1,7 +1,7 @@
 package minecraft54.engine.particles;
 
 import minecraft54.engine.graphics.*;
-import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.Matrix4f;
 import minecraft54.engine.maths.vectors.Vector3d;
 import minecraft54.engine.util.Color;
 import minecraft54.engine.util.FastArrayList;
@@ -39,7 +39,7 @@ public class BillboardParticleEmitter{
         render(camera.getProjection(),camera.getView());
     }
 
-    public void render(Matrix4 projection,Matrix4 view){
+    public void render(Matrix4f projection,Matrix4f view){
         int cullFace=glGetInteger(GL_CULL_FACE);
         glDisable(GL_CULL_FACE);
 

@@ -1,6 +1,6 @@
 package minecraft54.engine.graphics;
 
-import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.Matrix4f;
 import minecraft54.engine.util.Color;
 import minecraft54.engine.util.Utils;
 import org.lwjgl.stb.STBTTAlignedQuad;
@@ -220,7 +220,7 @@ public class SpriteBatch{
         render(cam.getProjection(),cam.getView());
     }
 
-    public void render(Matrix4 projection,Matrix4 view){
+    public void render(Matrix4f projection,Matrix4f view){
         int depthTest=glGetInteger(GL_DEPTH_TEST);
         int cullFace=glGetInteger(GL_CULL_FACE);
 

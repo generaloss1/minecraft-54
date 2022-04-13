@@ -1,7 +1,7 @@
 package minecraft54.engine.graphics;
 
 import minecraft54.engine.io.Window;
-import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.Matrix4f;
 import minecraft54.engine.maths.vectors.Vector2f;
 
 public class OrthographicCamera{
@@ -9,7 +9,7 @@ public class OrthographicCamera{
     private float scale,rotation;
     private final Vector2f position;
     private float width,height;
-    private Matrix4 projection,view;
+    private Matrix4f projection,view;
 
     public OrthographicCamera(float width,float height){
         this.width=width;
@@ -17,8 +17,8 @@ public class OrthographicCamera{
         position=new Vector2f();
         scale=1;
 
-        projection=new Matrix4();
-        view=new Matrix4();
+        projection=new Matrix4f();
+        view=new Matrix4f();
     }
 
     public OrthographicCamera(Window window){
@@ -27,8 +27,8 @@ public class OrthographicCamera{
         position=new Vector2f();
         scale=1;
 
-        projection=new Matrix4();
-        view=new Matrix4();
+        projection=new Matrix4f();
+        view=new Matrix4f();
     }
 
     public void resize(int width,int height){
@@ -37,12 +37,12 @@ public class OrthographicCamera{
     }
 
     public void update(){
-        projection.setIdentity().setToOrthographic(0,0,width,height);
+        projection.identity().setToOrthographic(0,0,width,height);
 
-        Matrix4 translationMatrix=Matrix4.translated(position.clone().mul(-1));
-        Matrix4 rotationMatrix=Matrix4.rotatedZ(rotation);
+        Matrix4f translationMatrix=Matrix4f.translated(position.clone().mul(-1));
+        Matrix4f rotationMatrix=Matrix4f.rotatedZ(rotation);
 
-        view=Matrix4.mul(translationMatrix,rotationMatrix);
+        view=Matrix4f.mul(translationMatrix,rotationMatrix);
     }
 
     public void translate(float x,float y){
@@ -81,11 +81,11 @@ public class OrthographicCamera{
         return rotation;
     }
 
-    public Matrix4 getProjection(){
+    public Matrix4f getProjection(){
         return projection;
     }
 
-    public Matrix4 getView(){
+    public Matrix4f getView(){
         return view;
     }
 

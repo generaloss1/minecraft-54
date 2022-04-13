@@ -1,6 +1,6 @@
 package minecraft54.engine.graphics;
 
-import minecraft54.engine.maths.Matrix4;
+import minecraft54.engine.maths.Matrix4f;
 import minecraft54.engine.util.Color;
 
 public class Renderer{
@@ -63,7 +63,7 @@ public class Renderer{
         }
     }
 
-    public void begin(Matrix4 projection,Matrix4 view){
+    public void begin(Matrix4f projection,Matrix4f view){
         if(!isBegin){
             defaultShader.bind();
             defaultShader.setUniform("viewMat",view);
@@ -112,7 +112,7 @@ public class Renderer{
     }
 
 
-    public void draw(Mesh mesh,Texture3D texture3d,Matrix4 modelMatrix){
+    public void draw(Mesh mesh,Texture3D texture3d,Matrix4f modelMatrix){
         if(texture3d==null || mesh==null)
             return;
 
@@ -128,7 +128,7 @@ public class Renderer{
         mesh.render();
     }
 
-    public void draw(Mesh mesh,Texture texture,Matrix4 modelMatrix){
+    public void draw(Mesh mesh,Texture texture,Matrix4f modelMatrix){
         if(texture==null || mesh==null)
             return;
 

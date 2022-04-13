@@ -172,7 +172,7 @@ public class Quaternion{
         return this;
     }
 
-    public Matrix4 toMatrix(){
+    public Matrix4f toMatrix(){
         final float xx=x*x;
         final float xy=x*y;
         final float xz=x*z;
@@ -183,24 +183,24 @@ public class Quaternion{
         final float zz=z*z;
         final float zw=z*w;
 
-        Matrix4 result=new Matrix4();
+        Matrix4f result=new Matrix4f();
 
-        result.val[Matrix4.m00]=1-2*(yy+zz);
-        result.val[Matrix4.m01]=2*(xy-zw);
-        result.val[Matrix4.m02]=2*(xz+yw);
-        result.val[Matrix4.m03]=0;
-        result.val[Matrix4.m10]=2*(xy+zw);
-        result.val[Matrix4.m11]=1-2*(xx+zz);
-        result.val[Matrix4.m12]=2*(yz-xw);
-        result.val[Matrix4.m13]=0;
-        result.val[Matrix4.m20]=2*(xz-yw);
-        result.val[Matrix4.m21]=2*(yz+xw);
-        result.val[Matrix4.m22]=1-2*(xx+yy);
-        result.val[Matrix4.m23]=0;
-        result.val[Matrix4.m30]=0;
-        result.val[Matrix4.m31]=0;
-        result.val[Matrix4.m32]=0;
-        result.val[Matrix4.m33]=1;
+        result.val[Matrix4f.m00]=1-2*(yy+zz);
+        result.val[Matrix4f.m01]=2*(xy-zw);
+        result.val[Matrix4f.m02]=2*(xz+yw);
+        result.val[Matrix4f.m03]=0;
+        result.val[Matrix4f.m10]=2*(xy+zw);
+        result.val[Matrix4f.m11]=1-2*(xx+zz);
+        result.val[Matrix4f.m12]=2*(yz-xw);
+        result.val[Matrix4f.m13]=0;
+        result.val[Matrix4f.m20]=2*(xz-yw);
+        result.val[Matrix4f.m21]=2*(yz+xw);
+        result.val[Matrix4f.m22]=1-2*(xx+yy);
+        result.val[Matrix4f.m23]=0;
+        result.val[Matrix4f.m30]=0;
+        result.val[Matrix4f.m31]=0;
+        result.val[Matrix4f.m32]=0;
+        result.val[Matrix4f.m33]=1;
 
         return result;
     }
