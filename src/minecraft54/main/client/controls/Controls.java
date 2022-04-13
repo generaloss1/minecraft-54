@@ -5,6 +5,7 @@ import minecraft54.engine.graphics.PerspectiveCamera;
 import minecraft54.engine.io.Mouse;
 import minecraft54.engine.io.Window;
 import minecraft54.engine.maths.Frustum;
+import minecraft54.engine.maths.Maths;
 import minecraft54.engine.maths.Matrix4;
 import minecraft54.engine.maths.vectors.Vector3d;
 import minecraft54.engine.maths.vectors.Vector3f;
@@ -25,7 +26,7 @@ public class Controls{
 
 
     static{
-        CAMERA=new PerspectiveCamera(Main.window.getWidth()/2,Main.window.getHeight()/2,0.1f,1000f,Options.FOV);
+        CAMERA=new PerspectiveCamera(Main.window.getWidth()/2,Main.window.getHeight()/2,0.05f,1000f,Options.FOV);
         frustum=new Frustum(CAMERA.getView().val,CAMERA.getProjection().val);
     }
 
@@ -47,7 +48,7 @@ public class Controls{
         CAMERA.getPosition().set(0,(float)position.y,0);
 
         SoundListener.setPosition(position);
-        SoundListener.setOrientation(CAMERA.getDirection().mul(-1),new Vector3f(0,1,0));
+        SoundListener.setOrientation(CAMERA.getRotation().direction().mul(-1),new Vector3f(0,1,0));
 
         if(interpolation){
             if(fov>ifov+i)
@@ -60,7 +61,7 @@ public class Controls{
             }
         }
 
-        CAMERA.setFOV(fov);
+        CAMERA.setFov(fov);
 
         if(window.isFocused()){
             int x=mouse.getX();
@@ -89,17 +90,14 @@ public class Controls{
                     rotY==0?y:halfH
             );
 
-            CAMERA.rotate(rotY,rotX,0);
+            CAMERA.getRotation().rotate(rotX,rotY,0);
             CAMERA.getRotation().constrain();
 
         }else if(!mouse.isVisible())
             mouse.show(true);
 
 
-        frustum.setFrustum(Matrix4.mul(
-                CAMERA.getRotationMatrix(),
-                new Matrix4().translate( position.clone().mul(-1).add(CAMERA.getDirection().clone().mul(100)) )
-        ).val,CAMERA.getProjection().val);
+        frustum.setFrustum(Matrix4.lookAt(new Vector3f(position),CAMERA.getRotation().direction()).val,CAMERA.getProjection().val);
     }
 
 

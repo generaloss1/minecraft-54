@@ -53,7 +53,7 @@ public class SettingsScreen implements AppScreen{
         ((Slider)layout.getElement("slr1")).setSliderCallback(new SliderCallback(){
             public void updateValue(LayoutElement current,float value){
                 Options.FOV=Maths.round(value*(110-10)+10);
-                Controls.CAMERA.setFOV(Options.FOV);
+                Controls.CAMERA.setFov(Options.FOV);
                 Controls.fov=Options.FOV;
                 ((Text)layout.getElement("slr1txt")).setText("Field of view: "+(int)Options.FOV);
                 Options.save();

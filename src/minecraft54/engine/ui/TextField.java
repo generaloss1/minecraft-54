@@ -87,8 +87,22 @@ public class TextField extends LayoutElement{
             if(Main.keyboard.isKeyDown(GLFW.GLFW_KEY_SPACE))
                 text+=" ";
         }
-        if(Main.keyboard.isKeyDown(GLFW.GLFW_KEY_BACKSPACE) && text.length()>0)
-            text=text.substring(0,text.length()-1);
+        if(Main.keyboard.isKeyDown(GLFW.GLFW_KEY_BACKSPACE) && text.length()>0){
+            if(Main.keyboard.isKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL)){
+                int symbols=1;
+                while(true){
+                    if(symbols==text.length())
+                        break;
+                    char symbol=text.charAt(text.length()-symbols-1);
+                    if(symbol==' ')
+                        break;
+
+                    symbols++;
+                }
+                text=text.substring(0,text.length()-symbols);
+            }else
+                text=text.substring(0,text.length()-1);
+        }
     }
 
     public String getType(){

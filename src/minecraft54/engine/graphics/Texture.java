@@ -17,9 +17,13 @@ public class Texture{
     private int filter=GL_NEAREST;
 
     public Texture(String file){
+        this(file,false);
+    }
+
+    public Texture(String file,boolean invY){
         try{
             BufferedImage img=ImageIO.read(new FileInputStream(file));
-            pixmap=new PixmapRGBA(img);
+            pixmap=new PixmapRGBA(img,invY);
         }catch(FileNotFoundException e){
             System.err.println("Texture "+file+" is not exists");
         }catch(IOException e){
@@ -63,8 +67,8 @@ public class Texture{
         {
             glTexStorage2D(GL_TEXTURE_2D,1,GL_RGBA8,width,height);
 
-            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,filter);
 
@@ -74,10 +78,8 @@ public class Texture{
             glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAX_LEVEL,1);
 
             glTexSubImage2D(GL_TEXTURE_2D,0,0,0,width,height,pixmap.getFormat(),GL_UNSIGNED_BYTE,pixmap.getPixels());
-
             glGenerateMipmap(GL_TEXTURE_2D);
         }
-        glBindTexture(GL_TEXTURE_2D,0);
 
         return this;
     }

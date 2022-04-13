@@ -2,20 +2,19 @@ package minecraft54.engine.graphics;
 
 import minecraft54.engine.io.Window;
 import minecraft54.engine.maths.Matrix4;
-import minecraft54.engine.maths.vectors.Vector2;
-import minecraft54.engine.maths.vectors.Vector3f;
+import minecraft54.engine.maths.vectors.Vector2f;
 
 public class OrthographicCamera{
 
     private float scale,rotation;
-    private final Vector2 position;
+    private final Vector2f position;
     private float width,height;
     private Matrix4 projection,view;
 
     public OrthographicCamera(float width,float height){
         this.width=width;
         this.height=height;
-        position=new Vector2();
+        position=new Vector2f();
         scale=1;
 
         projection=new Matrix4();
@@ -25,7 +24,7 @@ public class OrthographicCamera{
     public OrthographicCamera(Window window){
         this.width=window.getWidth();
         this.height=window.getHeight();
-        position=new Vector2();
+        position=new Vector2f();
         scale=1;
 
         projection=new Matrix4();
@@ -38,10 +37,10 @@ public class OrthographicCamera{
     }
 
     public void update(){
-        projection.setIdentity().setToOrtho2D(0,0,width,height);
+        projection.setIdentity().setToOrthographic(0,0,width,height);
 
-        Matrix4 translationMatrix=new Matrix4().translate(new Vector3f(position).mul(-1));
-        Matrix4 rotationMatrix=Matrix4.rotated(rotation,0,0,1);
+        Matrix4 translationMatrix=Matrix4.translated(position.clone().mul(-1));
+        Matrix4 rotationMatrix=Matrix4.rotatedZ(rotation);
 
         view=Matrix4.mul(translationMatrix,rotationMatrix);
     }
@@ -50,7 +49,7 @@ public class OrthographicCamera{
         position.add(x,y);
     }
 
-    public void translate(Vector2 v){
+    public void translate(Vector2f v){
         position.add(v);
     }
 
@@ -58,7 +57,7 @@ public class OrthographicCamera{
         position.set(x,y);
     }
 
-    public void setPosition(Vector2 pos){
+    public void setPosition(Vector2f pos){
         position.set(pos);
     }
 
@@ -90,7 +89,7 @@ public class OrthographicCamera{
         return view;
     }
 
-    public Vector2 getPos(){
+    public Vector2f getPos(){
         return position;
     }
 

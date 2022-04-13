@@ -49,23 +49,23 @@ public class Quaternion{
     }
 
     public Quaternion setEulerAngles(float yaw,float pitch,float roll){
-        return setEulerAnglesRad(yaw*Maths.toRadians,pitch*Maths.toRadians,roll*Maths.toRadians);
+        return setEulerAnglesRad(Maths.toRadians*yaw,Maths.toRadians*pitch,Maths.toRadians*roll);
     }
 
     public Quaternion setEulerAnglesRad(float yaw,float pitch,float roll){
-        final float hr=roll*0.5f;
-        final float shr=(float)Math.sin(hr);
-        final float chr=(float)Math.cos(hr);
-        final float hp=pitch*0.5f;
-        final float shp=(float)Math.sin(hp);
-        final float chp=(float)Math.cos(hp);
-        final float hy=yaw*0.5f;
-        final float shy=(float)Math.sin(hy);
-        final float chy=(float)Math.cos(hy);
-        final float chy_shp=chy*shp;
-        final float shy_chp=shy*chp;
-        final float chy_chp=chy*chp;
-        final float shy_shp=shy*shp;
+        float hr=roll*0.5f;
+        float shr=(float)Math.sin(hr);
+        float chr=(float)Math.cos(hr);
+        float hp=pitch*0.5f;
+        float shp=(float)Math.sin(hp);
+        float chp=(float)Math.cos(hp);
+        float hy=yaw*0.5f;
+        float shy=(float)Math.sin(hy);
+        float chy=(float)Math.cos(hy);
+        float chy_shp=chy*shp;
+        float shy_chp=shy*chp;
+        float chy_chp=chy*chp;
+        float shy_shp=shy*shp;
 
         x=(chy_shp*chr)+(shy_chp*shr); // cos(yaw/2) * sin(pitch/2) * cos(roll/2) + sin(yaw/2) * cos(pitch/2) * sin(roll/2)
         y=(shy_chp*chr)-(chy_shp*shr); // sin(yaw/2) * cos(pitch/2) * cos(roll/2) - cos(yaw/2) * sin(pitch/2) * sin(roll/2)

@@ -3,6 +3,8 @@ package minecraft54.main.client.world;
 import minecraft54.engine.graphics.Mesh;
 import minecraft54.engine.graphics.VertexAttribute;
 import minecraft54.engine.util.FastArrayList;
+import minecraft54.main.Minecraft54;
+import minecraft54.main.util.Direction;
 import org.lwjgl.opengl.GL46C;
 
 public class ChunkSection extends ChunkSectionData{
@@ -63,7 +65,7 @@ public class ChunkSection extends ChunkSectionData{
 
 
 
-    public void buildOld(){
+    public void build(){
         if(!building){
             building=true;
 
@@ -78,8 +80,8 @@ public class ChunkSection extends ChunkSectionData{
 
             //long millis=System.currentTimeMillis(); int faces=0;
 
-            //int[] AOSides=new int[WIDTH_X*WIDTH_Z*HEIGHT*6];
-            //FastArrayList<Integer> checkSides=new FastArrayList<>();
+            int[] AOSides=new int[(WIDTH_X+2)*(WIDTH_Z+2)*(HEIGHT+2)*6];
+            FastArrayList<Integer> checkSides=new FastArrayList<>();
 
             for(byte lx=0; lx<WIDTH_X; lx++)
                 for(byte lz=0; lz<WIDTH_Z; lz++){
@@ -108,7 +110,7 @@ public class ChunkSection extends ChunkSectionData{
                         BlockData px_block=lx+1<WIDTH_X?
                                 getBlock((short)(lx+1),ly,lz)
                                 :
-                                chunk!=null?
+                                chunk!=null && chunk.init?
                                         chunk.sections[y].getBlock((short)0,ly,lz)
                                         :
                                         null;
@@ -117,7 +119,7 @@ public class ChunkSection extends ChunkSectionData{
                         BlockData mx_block=lx-1>-1?
                                 getBlock((short)(lx-1),ly,lz)
                                 :
-                                chunk!=null?
+                                chunk!=null && chunk.init?
                                         chunk.sections[y].getBlock((short)(WIDTH_X-1),ly,lz)
                                         :
                                         null;
@@ -128,7 +130,7 @@ public class ChunkSection extends ChunkSectionData{
                                 y<Chunk.SECTION_COUNT-1?
                                         this.chunk.sections[y+1].getBlock(lx,(short)0,lz)
                                         :
-                                        null;
+                                        Minecraft54.AIR.getBlockData();
 
                         BlockData my_block=ly-1>-1?
                                 getBlock(lx,(short)(ly-1),lz)
@@ -136,13 +138,13 @@ public class ChunkSection extends ChunkSectionData{
                                 y>0?
                                         this.chunk.sections[y-1].getBlock(lx,(short)(HEIGHT-1),lz)
                                         :
-                                        null;
+                                        Minecraft54.AIR.getBlockData();
 
                         chunk=this.chunk.world.chunkProvider.getChunk(this.chunk.x,this.chunk.z+1);
                         BlockData pz_block=lz+1<WIDTH_Z?
                                 getBlock(lx,ly,(short)(lz+1))
                                 :
-                                chunk!=null?
+                                chunk!=null && chunk.init?
                                         chunk.sections[y].getBlock(lx,ly,(short)0)
                                         :
                                         null;
@@ -151,7 +153,7 @@ public class ChunkSection extends ChunkSectionData{
                         BlockData mz_block=lz-1>-1?
                                 getBlock(lx,ly,(short)(lz-1))
                                 :
-                                chunk!=null?
+                                chunk!=null && chunk.init?
                                         chunk.sections[y].getBlock(lx,ly,(short)(WIDTH_Z-1))
                                         :
                                         null;
@@ -173,26 +175,26 @@ public class ChunkSection extends ChunkSectionData{
                                 true
                         };
 
-                        /*boolean[] sides=new boolean[]{
-                                (px==0 && (px_block==null || !Utils.contains(px_block.showFor[1],-id))) || (px_block!=null && !Utils.contains(px_block.showFor[1],-id) && (Utils.contains(px_block.showFor[1],id) || (Utils.contains(px_block.showFor[1],Block.ALL) && px!=id))),
-                                (mx==0 && (mx_block==null || !Utils.contains(mx_block.showFor[0],-id))) || (mx_block!=null && !Utils.contains(mx_block.showFor[0],-id) && (Utils.contains(mx_block.showFor[0],id) || (Utils.contains(mx_block.showFor[0],Block.ALL) && mx!=id))),
-                                (py==0 && (py_block==null || !Utils.contains(py_block.showFor[3],-id))) || (py_block!=null && !Utils.contains(py_block.showFor[3],-id) && (Utils.contains(py_block.showFor[3],id) || (Utils.contains(py_block.showFor[3],Block.ALL) && py!=id))),
-                                (my==0 && (my_block==null || !Utils.contains(my_block.showFor[2],-id))) || (my_block!=null && !Utils.contains(my_block.showFor[2],-id) && (Utils.contains(my_block.showFor[2],id) || (Utils.contains(my_block.showFor[2],Block.ALL) && my!=id))),
-                                (pz==0 && (pz_block==null || !Utils.contains(pz_block.showFor[5],-id))) || (pz_block!=null && !Utils.contains(pz_block.showFor[5],-id) && (Utils.contains(pz_block.showFor[5],id) || (Utils.contains(pz_block.showFor[5],Block.ALL) && pz!=id))),
-                                (mz==0 && (mz_block==null || !Utils.contains(mz_block.showFor[4],-id))) || (mz_block!=null && !Utils.contains(mz_block.showFor[4],-id) && (Utils.contains(mz_block.showFor[4],id) || (Utils.contains(mz_block.showFor[4],Block.ALL) && mz!=id))),
-                                true
-                        };*/
+                        //boolean[] sides=new boolean[]{
+                        //        (px==0 && (px_block==null || !Utils.contains(px_block.showFor[1],-id))) || (px_block!=null && !Utils.contains(px_block.showFor[1],-id) && (Utils.contains(px_block.showFor[1],id) || (Utils.contains(px_block.showFor[1],Block.ALL) && px!=id))),
+                        //        (mx==0 && (mx_block==null || !Utils.contains(mx_block.showFor[0],-id))) || (mx_block!=null && !Utils.contains(mx_block.showFor[0],-id) && (Utils.contains(mx_block.showFor[0],id) || (Utils.contains(mx_block.showFor[0],Block.ALL) && mx!=id))),
+                        //        (py==0 && (py_block==null || !Utils.contains(py_block.showFor[3],-id))) || (py_block!=null && !Utils.contains(py_block.showFor[3],-id) && (Utils.contains(py_block.showFor[3],id) || (Utils.contains(py_block.showFor[3],Block.ALL) && py!=id))),
+                        //        (my==0 && (my_block==null || !Utils.contains(my_block.showFor[2],-id))) || (my_block!=null && !Utils.contains(my_block.showFor[2],-id) && (Utils.contains(my_block.showFor[2],id) || (Utils.contains(my_block.showFor[2],Block.ALL) && my!=id))),
+                        //        (pz==0 && (pz_block==null || !Utils.contains(pz_block.showFor[5],-id))) || (pz_block!=null && !Utils.contains(pz_block.showFor[5],-id) && (Utils.contains(pz_block.showFor[5],id) || (Utils.contains(pz_block.showFor[5],Block.ALL) && pz!=id))),
+                        //        (mz==0 && (mz_block==null || !Utils.contains(mz_block.showFor[4],-id))) || (mz_block!=null && !Utils.contains(mz_block.showFor[4],-id) && (Utils.contains(mz_block.showFor[4],id) || (Utils.contains(mz_block.showFor[4],Block.ALL) && mz!=id))),
+                        //        true
+                        //};
 
                         for(byte sideIndex=0; sideIndex<7; sideIndex++){
                             Block.BlockSide side=blockData.sides[sideIndex];
                             if(side==null || !sides[sideIndex])
                                 continue;
 
-                            //if(blockData.sides[sideIndex].render_layer==0 && sideIndex!=6 && Minecraft54.GLASS.getId()!=block.getId()){
-                            //    int pos=lx*6*WIDTH_Z*HEIGHT+ly*6*WIDTH_Z+lz*6+sideIndex;
-                            //    AOSides[pos]=vertLists[0].size()+1;
-                            //    checkSides.add(pos);
-                            //}
+                            if(blockData.sides[sideIndex].render_layer==0 && sideIndex!=6 && Minecraft54.GLASS.getId()!=block.getId()){
+                                int pos=lx*6*WIDTH_Z*HEIGHT+ly*6*WIDTH_Z+lz*6+sideIndex;
+                                AOSides[pos]=vertLists[0].size()+1;
+                                checkSides.add(pos);
+                            }
 
                             float[] sideMesh=side.getMesh();
                             for(int v=0; v<sideMesh.length; v+=Block.BlockSide.VERTEX_SIZE){
@@ -204,17 +206,18 @@ public class ChunkSection extends ChunkSectionData{
                                 vertLists[side.render_layer].add(sideMesh[v+4 ]);
                                 vertLists[side.render_layer].add(sideMesh[v+5 ]);
 
-                                /*if((block.getId()==Minecraft54.GRASS_BLOCK.getId() && sideIndex!=5 && (sideIndex==4 || v>=6*Block.BlockSide.VERTEX_SIZE)) || block.getId()==Minecraft54.GRASS.getId()){
-                                    vertLists[side.render_layer].add(grassBlockR);
-                                    vertLists[side.render_layer].add(grassBlockG);
-                                    vertLists[side.render_layer].add(grassBlockB);
-                                    vertLists[side.render_layer].add(sideMesh[v+9 ]);
-                                }else if(block.getId()==Minecraft54.LEAVES.getId()){
-                                    vertLists[side.render_layer].add(grassBlockR*0.7f);
-                                    vertLists[side.render_layer].add(grassBlockG*0.9f);
-                                    vertLists[side.render_layer].add(grassBlockB*0.7f);
-                                    vertLists[side.render_layer].add(sideMesh[v+9 ]);
-                                }else*/{
+                                //if((block.getId()==Minecraft54.GRASS_BLOCK.getId() && sideIndex!=5 && (sideIndex==4 || v>=6*Block.BlockSide.VERTEX_SIZE)) || block.getId()==Minecraft54.GRASS.getId()){
+                                //    vertLists[side.render_layer].add(grassBlockR);
+                                //    vertLists[side.render_layer].add(grassBlockG);
+                                //    vertLists[side.render_layer].add(grassBlockB);
+                                //    vertLists[side.render_layer].add(sideMesh[v+9 ]);
+                                //}else if(block.getId()==Minecraft54.LEAVES.getId()){
+                                //    vertLists[side.render_layer].add(grassBlockR*0.7f);
+                                //    vertLists[side.render_layer].add(grassBlockG*0.9f);
+                                //    vertLists[side.render_layer].add(grassBlockB*0.7f);
+                                //    vertLists[side.render_layer].add(sideMesh[v+9 ]);
+                                //}else
+    {
                                     vertLists[side.render_layer].add(sideMesh[v+6 ]);
                                     vertLists[side.render_layer].add(sideMesh[v+7 ]);
                                     vertLists[side.render_layer].add(sideMesh[v+8 ]);
@@ -235,7 +238,7 @@ public class ChunkSection extends ChunkSectionData{
 
             //Ambient Occlusion
 
-            /*if(false){
+            if(true){
 
                 float ao=0.65f;
 
@@ -603,7 +606,7 @@ public class ChunkSection extends ChunkSectionData{
 
                 }
 
-            }*/
+            }
 
             isBuild=true;
             //System.out.println(faces+" faces, "+(System.currentTimeMillis()-millis)/1000f+" sec.");
@@ -613,16 +616,15 @@ public class ChunkSection extends ChunkSectionData{
 
 
     /*public void build(){
-        /
-            I. init
-                1. render layers vertices lists
-                2. sides list
-            II. for in sides
-                1. put unknown sides in render layers vertices lists
-                2. put their in sides list
-            III. ambient occlusion
-            IV. put sides list in render layers vertices lists
-        /
+
+        // I. init
+        //     1. render layers vertices lists
+        //     2. sides list
+        // II. for in sides
+        //     1. put unknown sides in render layers vertices lists
+        //     2. put their in sides list
+        // III. ambient occlusion
+        // IV. put sides list in render layers vertices lists
 
         if(!building){
             building=true;
@@ -639,14 +641,14 @@ public class ChunkSection extends ChunkSectionData{
                 for(short ly=0; ly<HEIGHT; ly++)
                     for(byte lz=0; lz<WIDTH_Z; lz++){ // II.
 
-                        /int key=lx*WIDTH_Z*HEIGHT+ly*WIDTH_Z+lz;
-                        short id=(short)(blocks[key]%Short.MAX_VALUE);
-                        if(id==Minecraft54.AIR.getId())
-                            continue;
-                        Block_NRE block=BlockManager.getBlockFromId(id);
-                        if(block==null)
-                            continue;/
-                        Block.BlockData blockData=getBlockWoPC(lx,ly,lz);//block.getBlockData((short)(blocks[key]-id));
+                        //int key=lx*WIDTH_Z*HEIGHT+ly*WIDTH_Z+lz;
+                        //short id=(short)(blocks[key]%Short.MAX_VALUE);
+                        //if(id==Minecraft54.AIR.getId())
+                        //    continue;
+                        //Block block=BlockManager.getBlockFromId(id);
+                        //if(block==null)
+                        //    continue;
+                        BlockData blockData=getBlock(lx,ly,lz);//block.getBlockData((short)(blocks[key]-id));
                         if(blockData==null)
                             continue;
 
@@ -654,12 +656,12 @@ public class ChunkSection extends ChunkSectionData{
                         Chunk chunk;
                         Block.BlockSide side=blockData.sides[Direction.NORTH.ordinal()];
                         if(side!=null){
-                            chunk=world.getChunk(x+1,z);
+                            chunk=this.chunk.world.chunkProvider.getChunk(this.chunk.x+1,this.chunk.z);
                             int neighbor=lx+1<WIDTH_X?
-                                    getBlockIdDataWoPC(lx+1,ly,lz)
+                                    getIdData((short)(lx+1),ly,lz)
                                 :
                                     chunk!=null?
-                                            chunk.getBlockIdDataWoPC(0,ly,lz)
+                                            chunk.getBlockIdData(0,ly,lz)
                                         :
                                             -1;
                             short neighborId=(short)(neighbor%Short.MAX_VALUE);
@@ -670,12 +672,12 @@ public class ChunkSection extends ChunkSectionData{
                         //SOUTH
                         side=blockData.sides[Direction.SOUTH.ordinal()];
                         if(side!=null){
-                            chunk=world.getChunk(x-1,z);
+                            chunk=this.chunk.world.chunkProvider.getChunk(this.chunk.x-1,this.chunk.z);
                             int neighbor=lx-1>-1?
-                                    getBlockIdDataWoPC(lx-1,ly,lz)
+                                    getIdData((short)(lx-1),ly,lz)
                                 :
                                     chunk!=null?
-                                            chunk.getBlockIdDataWoPC(WIDTH_X-1,ly,lz)
+                                            chunk.getBlockIdData(WIDTH_X-1,ly,lz)
                                         :
                                             -1;
                             short neighborId=(short)(neighbor%Short.MAX_VALUE);
@@ -686,12 +688,12 @@ public class ChunkSection extends ChunkSectionData{
                         //EAST
                         side=blockData.sides[Direction.EAST.ordinal()];
                         if(side!=null){
-                            chunk=world.getChunk(x,z+1);
+                            chunk=this.chunk.world.chunkProvider.getChunk(this.chunk.x,this.chunk.z+1);
                             int neighbor=lz+1<WIDTH_Z?
-                                    getBlockIdDataWoPC(lx,ly,lz+1)
+                                    getIdData(lx,ly,(short)(lz+1))
                                 :
                                     chunk!=null?
-                                            chunk.getBlockIdDataWoPC(lx,ly,0)
+                                            chunk.getBlockIdData(lx,ly,0)
                                         :
                                             -1;
                             short neighborId=(short)(neighbor%Short.MAX_VALUE);
@@ -702,12 +704,12 @@ public class ChunkSection extends ChunkSectionData{
                         //WEST
                         side=blockData.sides[Direction.WEST.ordinal()];
                         if(side!=null){
-                            chunk=world.getChunk(x,z-1);
+                            chunk=this.chunk.world.chunkProvider.getChunk(this.chunk.x,this.chunk.z-1);
                             int neighbor=lz-1>-1?
-                                    getBlockIdDataWoPC(lx,ly,lz-1)
+                                    getIdData(lx,ly,(short)(lz-1))
                                 :
                                     chunk!=null?
-                                            chunk.getBlockIdDataWoPC(lx,ly,WIDTH_Z-1)
+                                            chunk.getBlockIdData(lx,ly,WIDTH_Z-1)
                                         :
                                             -1;
                             short neighborId=(short)(neighbor%Short.MAX_VALUE);
@@ -719,7 +721,7 @@ public class ChunkSection extends ChunkSectionData{
                         side=blockData.sides[Direction.UP.ordinal()];
                         if(side!=null){
                             int neighbor=ly+1<HEIGHT?
-                                    getBlockIdDataWoPC(lx,ly+1,lz)
+                                    getIdData(lx,(short)(ly+1),lz)
                                 :
                                     0;
                             short neighborId=(short)(neighbor%Short.MAX_VALUE);
@@ -731,7 +733,7 @@ public class ChunkSection extends ChunkSectionData{
                         side=blockData.sides[Direction.DOWN.ordinal()];
                         if(side!=null){
                             int neighbor=ly-1>-1?
-                                    getBlockIdDataWoPC(lx,ly-1,lz)
+                                    getIdData(lx,(short)(ly-1),lz)
                                 :
                                     0;
                             short neighborId=(short)(neighbor%Short.MAX_VALUE);

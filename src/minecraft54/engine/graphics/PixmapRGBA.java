@@ -18,12 +18,20 @@ public class PixmapRGBA implements Pixmap{
 
 
     public PixmapRGBA(BufferedImage bufferedImage){
-        setFromBufferedImage(bufferedImage);
+        this(bufferedImage,false);
     }
 
     public PixmapRGBA(String filePath){
+        this(filePath,false);
+    }
+
+    public PixmapRGBA(BufferedImage bufferedImage,boolean invY){
+        setFromBufferedImage(bufferedImage,invY);
+    }
+
+    public PixmapRGBA(String filePath,boolean invY){
         try{
-            setFromBufferedImage(ImageIO.read(new File(filePath)));
+            setFromBufferedImage(ImageIO.read(new File(filePath)),invY);
         }catch(FileNotFoundException e){
             System.err.println("Pixmap "+filePath+" is not exists");
         }catch(IOException e){
@@ -73,7 +81,7 @@ public class PixmapRGBA implements Pixmap{
         return this;
     }
 
-    private void setFromBufferedImage(BufferedImage bufferedImage){
+    private void setFromBufferedImage(BufferedImage bufferedImage,boolean invY){
         width=bufferedImage.getWidth();
         height=bufferedImage.getHeight();
         int[] pixels=new int[width*height];
@@ -82,7 +90,7 @@ public class PixmapRGBA implements Pixmap{
 
         for(int h=0; h<height; h++){
             for(int w=0; w<width; w++){
-                int pixel=pixels[h*width+w];
+                int pixel=pixels[(invY?h:height-1-h)*width+w];
 
                 buffer.put((byte)((pixel>>16) & 0xFF));
                 buffer.put((byte)((pixel>>8) & 0xFF));

@@ -44,6 +44,8 @@ public class Mouse{
     }
 
     public void show(boolean show){
+        if(show==isVisible)
+            return;
         glfwSetInputMode(windowId,GLFW_CURSOR,show?GLFW_CURSOR_NORMAL:GLFW_CURSOR_HIDDEN);
         isVisible=show;
     }

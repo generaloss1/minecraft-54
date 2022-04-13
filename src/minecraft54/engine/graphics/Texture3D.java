@@ -72,12 +72,16 @@ public class Texture3D{
     }
 
     public Texture3D(int width,int height,String... file){
+        this(width,height,false,file);
+    }
+
+    public Texture3D(int width,int height,boolean invY,String... file){
         pixmapList=new ArrayList<>();
         id=glGenTextures();
         glBindTexture(GL_TEXTURE_2D_ARRAY,id);
         glTexStorage3D(GL_TEXTURE_2D_ARRAY,1,GL_RGBA8,width,height,file.length);
 
-        glTexParameterf(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAX_LEVEL,1);
+        //glTexParameterf(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAX_LEVEL,1);
 
         glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
@@ -91,20 +95,18 @@ public class Texture3D{
             String f=file[z];
             try{
                 BufferedImage img=ImageIO.read(new FileInputStream(f));
-                Pixmap td=new PixmapRGBA(img);
+                Pixmap td=new PixmapRGBA(img,invY);
                 pixmapList.add(td);
 
                 glTexSubImage3D(GL_TEXTURE_2D_ARRAY,0,0,0,z,width,height,1,td.getFormat(),GL_UNSIGNED_BYTE,td.getPixels());
+
             }catch(FileNotFoundException e){
                 System.err.println("Texture "+f+" is not exists");
             }catch(IOException e){
                 e.printStackTrace();
             }
         }
-
         glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
-
-        glBindTexture(GL_TEXTURE_2D_ARRAY,0);
     }
 
     public void bind(int unit){

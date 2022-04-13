@@ -31,7 +31,7 @@ public class CursorRay{
 
 
     public static void update(World world,PerspectiveCamera cam){
-        Vector3d dir=new Vector3d(cam.getDirection());
+        Vector3d dir=new Vector3d(cam.getRotation().direction());
         for(float i=0.75f; i<rayLength; i+=0.001f){
             Vector3f pos=new Vector3f(dir).mul(i).add(Controls.getPosition());
             int x=Maths.floor(pos.x);
@@ -73,8 +73,8 @@ public class CursorRay{
                     for(int q=0; q<6; q++){
                         for(int t=0; t<6; t++){
                             if(sides[q] && sides[t] && q!=t){
-                                double dq=Vector3d.dst(points[q],Controls.getPosition());
-                                double dt=Vector3d.dst(points[t],Controls.getPosition());
+                                double dq=points[q].dst(Controls.getPosition());
+                                double dt=points[t].dst(Controls.getPosition());
                                 if(dq<dt)
                                     side=q;
                                 else

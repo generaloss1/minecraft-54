@@ -1,5 +1,6 @@
 package minecraft54.engine.io;
 
+import minecraft54.engine.graphics.PixmapRGBA;
 import minecraft54.engine.graphics.Texture;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;
@@ -31,7 +32,7 @@ public class Window{
 
         id=glfwCreateWindow(width,height,title,0,0);
         if(id==0)
-            throw new RuntimeException("Failed to create the GLFW Window");
+            System.err.println("Failed to create the GLFW Window");
 
 
         GLFWVidMode vidMode=GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
@@ -59,7 +60,7 @@ public class Window{
     }
 
     public void setIcon(String filePath){
-        Texture iconTexture=new Texture(filePath);
+        Texture iconTexture=new Texture(filePath,true);
         GLFWImage iconImage=GLFWImage.malloc();
         GLFWImage.Buffer iconBuffer=GLFWImage.malloc(1);
         iconImage.set(iconTexture.getWidth(),iconTexture.getHeight(),iconTexture.getPixmap().getPixels());

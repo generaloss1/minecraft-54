@@ -125,7 +125,7 @@ public class Generator{
                                 int height=Maths.round(noise0.getNoise(lx,lz)*(5-3)+3);
                                 if(ly!=0){
                                     for(int dly=ly-1; dly>=ly-height; dly--){
-                                        if(tmp[lx][dly][lz]==0)
+                                        if(dly<0 || tmp[lx][dly][lz]==0)
                                             break;
                                         chunk.setBlock(Minecraft54.DIRT,lx,dly,lz,false);
                                     }

@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Engine Test" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="minecraft54.test.Main" />
+    <module name="Minecraft54" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/assets" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

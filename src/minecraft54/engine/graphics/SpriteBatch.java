@@ -3,7 +3,6 @@ package minecraft54.engine.graphics;
 import minecraft54.engine.maths.Matrix4;
 import minecraft54.engine.util.Color;
 import minecraft54.engine.util.Utils;
-import org.lwjgl.opengl.GL11C;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.system.MemoryStack;
 
@@ -39,7 +38,7 @@ public class SpriteBatch{
     public SpriteBatch(int maxBatchSize){
         this.maxBatchSize=maxBatchSize;
 
-        shader=new ShaderProgram(Utils.readFile("shaders/SpriteBatch.vert"),Utils.readFile("shaders/SpriteBatch.frag"));
+        shader=new ShaderProgram(Utils.readFile("shaders/SpriteBatch.v"),Utils.readFile("shaders/SpriteBatch.f"));
         shader.addUniforms("u_textures","u_proj","u_view");
 
         color=new Color();
@@ -147,25 +146,26 @@ public class SpriteBatch{
         }
 
         addVertex(
-                x+width,y+height,
-                1,0,
-                textureId
-        );
-        addVertex(
-                x+width,y,
-                1,1,
-                textureId
-        );
-        addVertex(
                 x,y,
-                0,1,
+                0,0,
                 textureId
         );
         addVertex(
                 x,y+height,
-                0,0,
+                0,1,
                 textureId
         );
+        addVertex(
+                x+width,y+height,
+                1,1,
+                textureId
+        );
+        addVertex(
+                x+width,y,
+                1,0,
+                textureId
+        );
+
     }
 
     public void draw(TextureRegion textureRegion,float x,float y,float width,float height){
@@ -194,25 +194,26 @@ public class SpriteBatch{
         float v2=textureRegion.getV2();
 
         addVertex(
-                x+width,y+height,
-                u2,v,
-                textureId
-        );
-        addVertex(
-                x+width,y,
-                u2,v2,
-                textureId
-        );
-        addVertex(
                 x,y,
-                u,v2,
+                u,v,
                 textureId
         );
         addVertex(
                 x,y+height,
-                u,v,
+                u,v2,
                 textureId
         );
+        addVertex(
+                x+width,y+height,
+                u2,v2,
+                textureId
+        );
+        addVertex(
+                x+width,y,
+                u2,v,
+                textureId
+        );
+
     }
 
     public void render(OrthographicCamera cam){

@@ -178,7 +178,7 @@ public class GameScreen implements AppScreen, EventListener{
             //sb.drawText(font,"tps: "+Math.round(Minecraft54.server.getTps()),10,Main.window.getHeight()-(10+font.getFontHeight())*2);
             sb.drawText(font,"seed: "+world.seed,10,Main.window.getHeight()-(10+font.getFontHeight())*3);
             sb.drawText(font,"pos: "+player.getHitbox().getPosition(),10,Main.window.getHeight()-(10+font.getFontHeight())*4);
-            sb.drawText(font,"dir: "+Controls.CAMERA.getDirection(),10,Main.window.getHeight()-(10+font.getFontHeight())*5);
+            sb.drawText(font,"dir: "+Controls.CAMERA.getRotation().direction(),10,Main.window.getHeight()-(10+font.getFontHeight())*5);
             sb.drawText(font,"world: "+world.name,10,Main.window.getHeight()-(10+font.getFontHeight())*6);
             sb.drawText(font,"game mode: "+player.gameMode(),10,Main.window.getHeight()-(10+font.getFontHeight())*7);
             sb.drawText(font,"sections: "+world.renderSectionsCount,10,Main.window.getHeight()-(10+font.getFontHeight())*8);

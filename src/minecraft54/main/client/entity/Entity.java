@@ -136,7 +136,7 @@ public class Entity{
                 for(int z=Maths.round(pos.z-1-offset); z<pos.z+1+offset; z++){
                     int id=GameScreen.world.getBlockId(x,y,z);
                     if(id!=-1 && id!=Minecraft54.FLOWER.getId() && id!=Minecraft54.AIR.getId() && id!=Minecraft54.WATER.getId() && id!=Minecraft54.WATER_STILL.getId() && id!=Minecraft54.GRASS.getId())
-                        blockList.add(new Aabb(new Vector3f(x,y,z),new Vector3f(x+1,y+1,z+1)));
+                        blockList.add(new Aabb(x,y,z,x+1,y+1,z+1));
                 }
         return blockList;
     }

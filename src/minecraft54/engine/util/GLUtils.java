@@ -3,8 +3,8 @@ package minecraft54.engine.util;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.openal.*;
 
-import static org.lwjgl.openal.ALC10.*;
-import static org.lwjgl.opengl.GL30C.*;
+import static org.lwjgl.openal.ALC11.*;
+import static org.lwjgl.opengl.GL46C.*;
 
 public class GLUtils{
 
@@ -34,6 +34,25 @@ public class GLUtils{
             case GL_DOUBLE -> 8;
             default -> throw new IllegalArgumentException();
         };
+
+        /*switch(type){
+            case GL_FLOAT:
+            case GL_INT:
+            case GL_UNSIGNED_INT: return 4;
+
+            case GL_HALF_FLOAT:
+            case GL_SHORT:
+            case GL_UNSIGNED_SHORT: return 2;
+
+            case GL_BOOL:
+            case GL_BYTE:
+            case GL_UNSIGNED_BYTE: return 1;
+
+            case GL_DOUBLE: return 8;
+
+            default: throw new IllegalArgumentException();
+        }*/
+
     }
 
 }

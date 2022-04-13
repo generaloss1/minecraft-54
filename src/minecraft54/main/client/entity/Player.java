@@ -35,12 +35,25 @@ public class Player extends Entity{
 
 
     public void controls(Keyboard keyboard){
-        double cam_speed=getVelocity().max()/10;
-        Vector3f controlMoveVel=Controls.CAMERA.getDefaultMove(new Vector3f(
-                keyboard.isKeyPressed(GLFW_KEY_W)?cam_speed:keyboard.isKeyPressed(GLFW_KEY_S)?-cam_speed:0,
-                flying?(keyboard.isKeyPressed(GLFW_KEY_SPACE) ? cam_speed:keyboard.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? -cam_speed:0):0,
-                keyboard.isKeyPressed(GLFW_KEY_D)?cam_speed:keyboard.isKeyPressed(GLFW_KEY_A)?-cam_speed:0
-        ));
+        float cam_speed=(float)getVelocity().max()/10;
+
+        Vector3f controlMoveVel=new Vector3f();
+        Vector3f dirXZ=Controls.CAMERA.getRotation().direction();
+        dirXZ.y=0;
+        if(keyboard.isKeyPressed(GLFW_KEY_W))
+            controlMoveVel.add(dirXZ.mul(cam_speed));
+        if(keyboard.isKeyPressed(GLFW_KEY_S))
+            controlMoveVel.add(dirXZ.mul(-cam_speed));
+        if(flying && keyboard.isKeyPressed(GLFW_KEY_SPACE))
+            controlMoveVel.y+=cam_speed;
+        if(flying && keyboard.isKeyPressed(GLFW_KEY_LEFT_SHIFT))
+            controlMoveVel.y-=cam_speed;
+        if(keyboard.isKeyPressed(GLFW_KEY_D))
+            controlMoveVel.add(Vector3f.crs(new Vector3f(0,1,0),dirXZ).mul(cam_speed));
+        if(keyboard.isKeyPressed(GLFW_KEY_A))
+            controlMoveVel.add(Vector3f.crs(new Vector3f(0,1,0),dirXZ).mul(-cam_speed));
+        controlMoveVel.nor().mul(cam_speed);
+
 
         if(isOnGround() && gameMode!=GameMode.SPECTATOR){
             if(flying)
@@ -88,6 +101,10 @@ public class Player extends Entity{
                 }
             }
         }
+
+        //getEye().y=0.1f;
+        //getHitbox().getA().set(-0.05,0,-0.05);
+        //getHitbox().getB().set(0.05,0.2,0.05);
 
         if(isJumping())
             controlMoveVel.div(2f);

@@ -48,7 +48,7 @@ public class Chunk{
     public void build(){
         for(ChunkSection section: sections)
             if(section.notAirBlockCount!=0 && section.changed)
-                section.buildOld();
+                section.build();
     }
 
     public void update(){

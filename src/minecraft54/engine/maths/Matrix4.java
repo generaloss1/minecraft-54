@@ -1,33 +1,34 @@
 package minecraft54.engine.maths;
 
+import minecraft54.engine.maths.vectors.Vector2f;
 import minecraft54.engine.maths.vectors.Vector3f;
 import minecraft54.engine.maths.vectors.Vector3d;
 
 public class Matrix4{
 
 
-    public static final int m00=0;
-    public static final int m10=1;
-    public static final int m20=2;
-    public static final int m30=3;
+    final public static int m00=0;
+    final public static int m10=1;
+    final public static int m20=2;
+    final public static int m30=3;
 
-    public static final int m01=4;
-    public static final int m11=5;
-    public static final int m21=6;
-    public static final int m31=7;
+    final public static int m01=4;
+    final public static int m11=5;
+    final public static int m21=6;
+    final public static int m31=7;
 
-    public static final int m02=8;
-    public static final int m12=9;
-    public static final int m22=10;
-    public static final int m32=11;
+    final public static int m02=8;
+    final public static int m12=9;
+    final public static int m22=10;
+    final public static int m32=11;
 
-    public static final int m03=12;
-    public static final int m13=13;
-    public static final int m23=14;
-    public static final int m33=15;
+    final public static int m03=12;
+    final public static int m13=13;
+    final public static int m23=14;
+    final public static int m33=15;
+
 
     public float[] val;
-
 
     public Matrix4(){
         val=new float[16];
@@ -82,7 +83,6 @@ public class Matrix4{
         val[m23]=floats[m23];
         val[m33]=floats[m33];
     }
-
 
     public Matrix4 setZero(){
         val[m00]=0;
@@ -180,109 +180,13 @@ public class Matrix4{
         return this;
     }
 
-
-    public Matrix4 setToPerspective(float width,float height,float near,float far,float fov){
-        float ctgFov=1.0f/(float)Math.tan(fov*Maths.toRadians/2.0f);
-        float aspect=width/height;
-
-        val[m00]=ctgFov/aspect;
-        val[m10]=0;
-        val[m20]=0;
-        val[m30]=0;
-
-        val[m01]=0;
-        val[m11]=ctgFov;
-        val[m21]=0;
-        val[m31]=0;
-
-        val[m02]=0;
-        val[m12]=0;
-        val[m22]=(far+near)/(far-near);
-        val[m32]=1.0f;
-
-        val[m03]=0;
-        val[m13]=0;
-        val[m23]=(-2*far*near)/(far-near);
-        val[m33]=0;
-
-        return this;
+    public Matrix4 translate(Vector2f v){
+        return translate(v.x,v.y,0);
     }
 
-    public Matrix4 setToPerspectiveSphere(float width,float height,float near,float far,float fov){
-        float ctgFov=1.0f/(float)Math.tan(fov*Maths.toRadians/2.0f);
-        float aspect=width/height;
-
-        val[m00]=ctgFov/aspect;
-        val[m10]=0;
-        val[m20]=0;
-        val[m30]=0;
-
-        val[m01]=0;
-        val[m11]=ctgFov;
-        val[m21]=0;
-        val[m31]=0;
-
-        val[m02]=0;
-        val[m12]=0;
-        val[m22]=(far+near)/(far-near);
-        val[m32]=1.0f;
-
-        val[m03]=0;
-        val[m13]=0;
-        val[m23]=(-2*far*near)/(far-near);
-        val[m33]=0;
-
-        return this;
+    public Matrix4 translate(Vector3f v){
+        return translate(v.x,v.y,v.z);
     }
-
-    public Matrix4 setToOrtho(float left,float right,float bottom,float top,float near,float far){
-        val[m00]=2/(right-left);
-        val[m10]=0;
-        val[m20]=0;
-        val[m30]=0;
-
-        val[m01]=0;
-        val[m11]=2/(top-bottom);
-        val[m21]=0;
-        val[m31]=0;
-
-        val[m02]=0;
-        val[m12]=0;
-        val[m22]=-2/(far-near);
-        val[m32]=0;
-
-        val[m03]=-(right+left)/(right-left);
-        val[m13]=-(top+bottom)/(top-bottom);
-        val[m23]=-(far+near)/(far-near);
-        val[m33]=1;
-
-        return this;
-    }
-
-    public Matrix4 setToOrtho2D(float x,float y,float width,float height){
-        val[m00]=2/width;
-        val[m10]=0;
-        val[m20]=0;
-        val[m30]=0;
-
-        val[m01]=0;
-        val[m11]=2/height;
-        val[m21]=0;
-        val[m31]=0;
-
-        val[m02]=0;
-        val[m12]=0;
-        val[m22]=-2;
-        val[m32]=0;
-
-        val[m03]=-(x*2+width)/width;
-        val[m13]=-(y*2+height)/height;
-        val[m23]=-1;
-        val[m33]=1;
-
-        return this;
-    }
-
 
     public Matrix4 translate(float x,float y,float z){
         val[m03]+=val[m00]*x+val[m01]*y+val[m02]*z;
@@ -291,6 +195,10 @@ public class Matrix4{
         val[m33]+=val[m30]*x+val[m31]*y+val[m32]*z;
 
         return this;
+    }
+
+    public Matrix4 translate(Vector3d v){
+        return translate(v.x,v.y,v.z);
     }
 
     public Matrix4 translate(double x,double y,double z){
@@ -302,101 +210,177 @@ public class Matrix4{
         return this;
     }
 
-    public Matrix4 translate(Vector3f vector3){
-        val[m03]+=val[m00]*vector3.x+val[m01]*vector3.y+val[m02]*vector3.z;
-        val[m13]+=val[m10]*vector3.x+val[m11]*vector3.y+val[m12]*vector3.z;
-        val[m23]+=val[m20]*vector3.x+val[m21]*vector3.y+val[m22]*vector3.z;
-        val[m33]+=val[m30]*vector3.x+val[m31]*vector3.y+val[m32]*vector3.z;
-
-        return this;
+    public static Matrix4 scaled(Vector3f v){
+        return scaled(v.x,v.y,v.z);
     }
 
-    public Matrix4 translate(Vector3d vector3){
-        val[m03]+=val[m00]*vector3.x+val[m01]*vector3.y+val[m02]*vector3.z;
-        val[m13]+=val[m10]*vector3.x+val[m11]*vector3.y+val[m12]*vector3.z;
-        val[m23]+=val[m20]*vector3.x+val[m21]*vector3.y+val[m22]*vector3.z;
-        val[m33]+=val[m30]*vector3.x+val[m31]*vector3.y+val[m32]*vector3.z;
-
-        return this;
+    public static Matrix4 scaled(Vector3d v){
+        return scaled((float)v.x,(float)v.y,(float)v.z);
     }
 
-
-    public Matrix4 scale(Vector3f scl){
-        val[m00]=scl.x;
-        val[m11]=scl.y;
-        val[m22]=scl.z;
-
-        return this;
+    public static Matrix4 scaled(double x,double y,double z){
+        return scaled((float)x,(float)y,(float)z);
     }
 
-
-    public static Matrix4 translated(Vector3f translate){
+    public static Matrix4 scaled(float x,float y,float z){
         Matrix4 result=new Matrix4();
 
-        result.val[m30]=translate.x;
-        result.val[m31]=translate.y;
-        result.val[m32]=translate.z;
+        result.val[m00]=x;
+        result.val[m11]=y;
+        result.val[m22]=z;
 
         return result;
     }
 
-    public static Matrix4 translated(Vector3d translate){
+    public static Matrix4 translated(Vector2f v){
+        return translated(v.x,v.y,0);
+    }
+
+    public static Matrix4 translated(Vector3f v){
+        return translated(v.x,v.y,v.z);
+    }
+
+    public static Matrix4 translated(Vector3d v){
+        return translated((float)v.x,(float)v.y,(float)v.z);
+    }
+
+    public static Matrix4 translated(double x,double y,double z){
+        return translated((float)x,(float)y,(float)z);
+    }
+
+    public static Matrix4 translated(float x,float y,float z){
         Matrix4 result=new Matrix4();
 
-        result.val[m30]=(float)translate.x;
-        result.val[m31]=(float)translate.y;
-        result.val[m32]=(float)translate.z;
+        result.val[m03]=x;
+        result.val[m13]=y;
+        result.val[m23]=z;
 
         return result;
     }
 
-    public static Matrix4 rotated(float angle,float x,float y,float z){
+    public static Matrix4 rotatedX(float deg){
+        return rotatedXRad(Math.toRadians(deg));
+    }
+
+    public static Matrix4 rotatedXRad(double rad){
         Matrix4 result=new Matrix4();
 
-        float cos=(float)Math.cos(Math.toRadians(angle));
-        float sin=(float)Math.sin(Math.toRadians(angle));
-        float C=1-cos;
+        float cos=Maths.cos(rad);
+        float sin=Maths.sin(rad);
 
-        result.val[m00]=cos+x*x*C;
-        result.val[m01]=x*y*C-z*sin;
-        result.val[m02]=x*z*C+y*sin;
-        result.val[m10]=y*x*C+z*sin;
-        result.val[m11]=cos+y*y*C;
-        result.val[m12]=y*z*C-x*sin;
-        result.val[m20]=z*x*C-y*sin;
-        result.val[m21]=z*y*C+x*sin;
-        result.val[m22]=cos+z*z*C;
+        result.val[m11]=cos;
+        result.val[m12]=-sin;
+        result.val[m21]=sin;
+        result.val[m22]=cos;
 
         return result;
     }
 
-
-    public static Matrix4 mul(Matrix4 matrixA,Matrix4 matrixB){
-        float[] mata=matrixA.val;
-        float[] matb=matrixB.val;
-        float[] matc={
-                mata[m00]*matb[m00]+mata[m01]*matb[m10]+mata[m02]*matb[m20]+mata[m03]*matb[m30],
-                mata[m10]*matb[m00]+mata[m11]*matb[m10]+mata[m12]*matb[m20]+mata[m13]*matb[m30],
-                mata[m20]*matb[m00]+mata[m21]*matb[m10]+mata[m22]*matb[m20]+mata[m23]*matb[m30],
-                mata[m30]*matb[m00]+mata[m31]*matb[m10]+mata[m32]*matb[m20]+mata[m33]*matb[m30],
-
-                mata[m00]*matb[m01]+mata[m01]*matb[m11]+mata[m02]*matb[m21]+mata[m03]*matb[m31],
-                mata[m10]*matb[m01]+mata[m11]*matb[m11]+mata[m12]*matb[m21]+mata[m13]*matb[m31],
-                mata[m20]*matb[m01]+mata[m21]*matb[m11]+mata[m22]*matb[m21]+mata[m23]*matb[m31],
-                mata[m30]*matb[m01]+mata[m31]*matb[m11]+mata[m32]*matb[m21]+mata[m33]*matb[m31],
-
-                mata[m00]*matb[m02]+mata[m01]*matb[m12]+mata[m02]*matb[m22]+mata[m03]*matb[m32],
-                mata[m10]*matb[m02]+mata[m11]*matb[m12]+mata[m12]*matb[m22]+mata[m13]*matb[m32],
-                mata[m20]*matb[m02]+mata[m21]*matb[m12]+mata[m22]*matb[m22]+mata[m23]*matb[m32],
-                mata[m30]*matb[m02]+mata[m31]*matb[m12]+mata[m32]*matb[m22]+mata[m33]*matb[m32],
-
-                mata[m00]*matb[m03]+mata[m01]*matb[m13]+mata[m02]*matb[m23]+mata[m03]*matb[m33],
-                mata[m10]*matb[m03]+mata[m11]*matb[m13]+mata[m12]*matb[m23]+mata[m13]*matb[m33],
-                mata[m20]*matb[m03]+mata[m21]*matb[m13]+mata[m22]*matb[m23]+mata[m23]*matb[m33],
-                mata[m30]*matb[m03]+mata[m31]*matb[m13]+mata[m32]*matb[m23]+mata[m33]*matb[m33]
-        };
-        return new Matrix4(matc);
+    public static Matrix4 rotatedY(float deg){
+        return rotatedYRad(Math.toRadians(deg));
     }
 
+    public static Matrix4 rotatedYRad(double rad){
+        Matrix4 result=new Matrix4();
+
+        float cos=Maths.cos(rad);
+        float sin=Maths.sin(rad);
+
+        result.val[m00]=cos;
+        result.val[m02]=sin;
+        result.val[m20]=-sin;
+        result.val[m22]=cos;
+
+        return result;
+    }
+
+    public static Matrix4 rotatedZ(float deg){
+        return rotatedZRad(Math.toRadians(deg));
+    }
+
+    public static Matrix4 rotatedZRad(double rad){
+        Matrix4 result=new Matrix4();
+
+        float cos=Maths.cos(rad);
+        float sin=Maths.sin(rad);
+
+        result.val[m00]=cos;
+        result.val[m01]=-sin;
+        result.val[m10]=sin;
+        result.val[m11]=cos;
+
+        return result;
+    }
+
+    public Matrix4 setToOrthographic(float left,float right,float bottom,float top,float near,float far){
+        val[m00]=2/(right-left);             val[m10]=0;                          val[m20]=0;                      val[m30]=0;
+        val[m01]=0;                          val[m11]=2/(top-bottom);             val[m21]=0;                      val[m31]=0;
+        val[m02]=0;                          val[m12]=0;                          val[m22]=-2/(far-near);          val[m32]=0;
+        val[m03]=-(right+left)/(right-left); val[m13]=-(top+bottom)/(top-bottom); val[m23]=-(far+near)/(far-near); val[m33]=1;
+
+        return this;
+    }
+
+    public Matrix4 setToOrthographic(float x,float y,float width,float height){
+        val[m00]=2/width;            val[m10]=0;                    val[m20]=0;  val[m30]=0;
+        val[m01]=0;                  val[m11]=2/height;             val[m21]=0;  val[m31]=0;
+        val[m02]=0;                  val[m12]=0;                    val[m22]=-2; val[m32]=0;
+        val[m03]=-(x*2+width)/width; val[m13]=-(y*2+height)/height; val[m23]=-1; val[m33]=1;
+
+        return this;
+    }
+
+    public Matrix4 setToPerspective(float width,float height,float near,float far,float fov){
+        float ctgFov=1/(float)Math.tan(Math.toRadians(fov/2));
+        float aspect=width/height;
+
+        val[m00]=ctgFov/aspect; val[m10]=0;      val[m20]=0;                        val[m30]=0;
+        val[m01]=0;             val[m11]=ctgFov; val[m21]=0;                        val[m31]=0;
+        val[m02]=0;             val[m12]=0;      val[m22]=(far+near)/(far-near);    val[m32]=1;
+        val[m03]=0;             val[m13]=0;      val[m23]=-(2*far*near)/(far-near); val[m33]=0;
+
+        return this;
+    }
+
+    public static Matrix4 lookAt(Vector3f position,Vector3f axisX,Vector3f axisY,Vector3f axisZ){
+        Matrix4 a=new Matrix4();
+
+        a.val[m00]=axisX.x; a.val[m10]=axisY.x; a.val[m20]=axisZ.x;
+        a.val[m01]=axisX.y; a.val[m11]=axisY.y; a.val[m21]=axisZ.y;
+        a.val[m02]=axisX.z; a.val[m12]=axisY.z; a.val[m22]=axisZ.z;
+
+        return mul(a,Matrix4.translated(position.clone().mul(-1)));
+    }
+
+    public static Matrix4 lookAt(Vector3f position,Vector3f direction){
+        Vector3f up=new Vector3f(0,1,0);
+        Vector3f right=Vector3f.crs(up,direction.nor()).nor();
+        up=Vector3f.crs(direction,right).nor();
+        return lookAt(position,right,up,direction);
+    }
+
+    public static Matrix4 mul(Matrix4 a,Matrix4 b){
+        return new Matrix4(new float[]{
+                a.val[m00]*b.val[m00]+a.val[m01]*b.val[m10]+a.val[m02]*b.val[m20]+a.val[m03]*b.val[m30],
+                a.val[m10]*b.val[m00]+a.val[m11]*b.val[m10]+a.val[m12]*b.val[m20]+a.val[m13]*b.val[m30],
+                a.val[m20]*b.val[m00]+a.val[m21]*b.val[m10]+a.val[m22]*b.val[m20]+a.val[m23]*b.val[m30],
+                a.val[m30]*b.val[m00]+a.val[m31]*b.val[m10]+a.val[m32]*b.val[m20]+a.val[m33]*b.val[m30],
+
+                a.val[m00]*b.val[m01]+a.val[m01]*b.val[m11]+a.val[m02]*b.val[m21]+a.val[m03]*b.val[m31],
+                a.val[m10]*b.val[m01]+a.val[m11]*b.val[m11]+a.val[m12]*b.val[m21]+a.val[m13]*b.val[m31],
+                a.val[m20]*b.val[m01]+a.val[m21]*b.val[m11]+a.val[m22]*b.val[m21]+a.val[m23]*b.val[m31],
+                a.val[m30]*b.val[m01]+a.val[m31]*b.val[m11]+a.val[m32]*b.val[m21]+a.val[m33]*b.val[m31],
+
+                a.val[m00]*b.val[m02]+a.val[m01]*b.val[m12]+a.val[m02]*b.val[m22]+a.val[m03]*b.val[m32],
+                a.val[m10]*b.val[m02]+a.val[m11]*b.val[m12]+a.val[m12]*b.val[m22]+a.val[m13]*b.val[m32],
+                a.val[m20]*b.val[m02]+a.val[m21]*b.val[m12]+a.val[m22]*b.val[m22]+a.val[m23]*b.val[m32],
+                a.val[m30]*b.val[m02]+a.val[m31]*b.val[m12]+a.val[m32]*b.val[m22]+a.val[m33]*b.val[m32],
+
+                a.val[m00]*b.val[m03]+a.val[m01]*b.val[m13]+a.val[m02]*b.val[m23]+a.val[m03]*b.val[m33],
+                a.val[m10]*b.val[m03]+a.val[m11]*b.val[m13]+a.val[m12]*b.val[m23]+a.val[m13]*b.val[m33],
+                a.val[m20]*b.val[m03]+a.val[m21]*b.val[m13]+a.val[m22]*b.val[m23]+a.val[m23]*b.val[m33],
+                a.val[m30]*b.val[m03]+a.val[m31]*b.val[m13]+a.val[m32]*b.val[m23]+a.val[m33]*b.val[m33]
+        });
+    }
 
 }

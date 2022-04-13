@@ -24,7 +24,7 @@ public class BillboardParticleEmitter{
     public BillboardParticleEmitter(){
         particles=new FastArrayList<>();
 
-        shader=new ShaderProgram(Utils.readFile("shaders/BillboardParticle.vert"),Utils.readFile("shaders/BillboardParticle.frag"));
+        shader=new ShaderProgram(Utils.readFile("shaders/BillboardParticle.v"),Utils.readFile("shaders/BillboardParticle.f"));
         shader.addUniforms("u_texture","u_proj","u_modelView");
 
         vao=new VertexArrayObject();

@@ -15,16 +15,15 @@ public class VertexBufferObject{
 
     public void enableAttributes(VertexAttribute... attributes){
         //bind();
-
         for(VertexAttribute attribute: attributes)
             vertexSize+=attribute.getCount();
 
         int pointer=0;
-        for(int i=0; i<attributes.length; i++){
+        for(byte i=0; i<attributes.length; i++){
             VertexAttribute attribute=attributes[i];
             int typeSize=GLUtils.getGLTypeSize(attribute.getType());
 
-            glVertexAttribPointer(i,attribute.getCount(),attribute.getType(),false,vertexSize*typeSize,pointer);
+            glVertexAttribPointer(i,attribute.getCount(),attribute.getType(),attribute.isNormalize(),vertexSize*typeSize,pointer);
             glEnableVertexAttribArray(i);
 
             pointer+=attribute.getCount()*typeSize;

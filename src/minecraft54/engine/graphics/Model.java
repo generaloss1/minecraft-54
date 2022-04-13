@@ -42,12 +42,12 @@ public class Model{
 
 
     public void calculateMatrix(){
-        Matrix4 translation=new Matrix4().translate(position);
-        Matrix4 scaling=new Matrix4().scale(scale);
+        Matrix4 translation=Matrix4.translated(position);
+        Matrix4 scaling=Matrix4.scaled(scale);
 
-        Matrix4 rotXMatrix=Matrix4.rotated(rotation.x,1,0,0);
-        Matrix4 rotYMatrix=Matrix4.rotated(rotation.y,0,1,0);
-        Matrix4 rotZMatrix=Matrix4.rotated(rotation.z,0,0,1);
+        Matrix4 rotXMatrix=Matrix4.rotatedX(rotation.x);
+        Matrix4 rotYMatrix=Matrix4.rotatedY(rotation.y);
+        Matrix4 rotZMatrix=Matrix4.rotatedZ(rotation.z);
         Matrix4 rotate=Matrix4.mul(rotXMatrix,Matrix4.mul(rotYMatrix,rotZMatrix));
 
         modelView=Matrix4.mul(Matrix4.mul(scaling,translation),rotate);

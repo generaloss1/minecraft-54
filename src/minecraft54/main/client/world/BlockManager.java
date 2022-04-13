@@ -109,14 +109,17 @@ public class BlockManager{
 
     public static float[] quad_vertices(float x1,float y1,float z1,float x2,float y2,float z2,float x3,float y3,float z3,float x4,float y4,float z4){
         return new float[]{x3,y3,z3, x2,y2,z2, x1,y1,z1, x1,y1,z1, x4,y4,z4, x3,y3,z3};
+        //return new float[]{x1,y1,z1, x2,y2,z2, x3,y3,z3, x3,y3,z3, x4,y4,z4, x1,y1,z1,};
     }
 
     public static float[] quad_uvs(){
         return new float[]{1,1, 0,1, 0,0, 0,0, 1,0, 1,1};
+        //return new float[]{0,0, 0,1, 1,1, 1,1, 1,0, 0,0,};
     }
 
     public static float[] quad_uvs(float u1,float v1,float u2,float v2){
         return new float[]{u2,v2, u1,v2, u1,v1, u1,v1, u2,v1, u2,v2};
+        //return new float[]{u2,v2, u1,v2, u1,v1, u1,v1, u2,v1, u2,v2};
     }
 
 }

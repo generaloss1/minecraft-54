@@ -36,7 +36,7 @@ public class ParticleEmitter{
 
         particles=new FastArrayList<>();
 
-        shader=new ShaderProgram(Utils.readFile("shaders/Particle.vert"),Utils.readFile("shaders/Particle.frag"));
+        shader=new ShaderProgram(Utils.readFile("shaders/Particle.v"),Utils.readFile("shaders/Particle.f"));
         shader.addUniforms("u_textures","u_proj","u_world");
 
         vao=new VertexArrayObject();

@@ -1,6 +1,6 @@
 package minecraft54.engine.maths;
 
-import minecraft54.engine.maths.vectors.Vector2;
+import minecraft54.engine.maths.vectors.Vector2f;
 import minecraft54.engine.maths.vectors.Vector3f;
 
 import java.awt.*;
@@ -14,6 +14,10 @@ public class Maths{
     static public final float toDegrees=180f/PI;
     static public final float toRadians=PI/180f;
 
+
+    public static float atan2(double y,double x){
+        return (float)Math.atan2(y,x);
+    }
 
     public static float sin(double a){
         return (float)Math.sin(a);
@@ -63,15 +67,15 @@ public class Maths{
         return (float)Math.sqrt(1-sin*sin);
     }
 
-    public static Vector2 normDegAngle(float a){
-        return new Vector2((float)Math.cos(a*toRadians),(float)Math.sin(a*toRadians));
+    public static Vector2f normDegAngle(float a){
+        return new Vector2f((float)Math.cos(a*toRadians),(float)Math.sin(a*toRadians));
     }
 
     public static float angleDeg(float x,float y){
         return (float)Math.atan2(y,x)*toDegrees+180;
     }
 
-    public static float angleBetweenVectorsDeg(Vector2 v1,Vector2 v2){
+    public static float angleBetweenVectorsDeg(Vector2f v1,Vector2f v2){
         return angleDeg(v1.x-v2.x,v1.y-v2.y);
     }
 
@@ -93,6 +97,16 @@ public class Maths{
 
     public static boolean overlaps(float x1,float y1,float w1,float h1,float x2,float y2,float w2,float h2){
         return x1<x2+w2 && x1+w1>x2 && y1<y2+h2 && y1+h1>y2;
+    }
+
+    public static float fract(float x){
+        x=x<0?-x:x;
+        return (float)(x-Math.floor(x));
+    }
+
+    public static double fract(double x){
+        x=x<0?-x:x;
+        return x-Math.floor(x);
     }
 
     public static float clamp(float v,float min,float max){

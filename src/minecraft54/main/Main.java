@@ -43,8 +43,6 @@ public class Main{
 
         glEnable(GL_TEXTURE);
 
-        //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-
         glEnable(GL_MULTISAMPLE);
         glfwWindowHint(GLFW_SAMPLES,1);
 

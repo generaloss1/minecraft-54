@@ -181,7 +181,7 @@ public class World{
             JSONObject stats=new JSONObject(statsString);
 
             player.getHitbox().getPosition().set(new Vector3f(stats.getFloat("x"),stats.getFloat("y"),stats.getFloat("z")));
-            Controls.CAMERA.setRotation(stats.getFloat("yaw"),stats.getFloat("pitch"),stats.getFloat("roll"));
+            Controls.CAMERA.getRotation().set(stats.getFloat("yaw"),stats.getFloat("pitch"),stats.getFloat("roll"));
             player.setGameMode(GameMode.valueOf(stats.getString("gameMode")));
 
             return true;
@@ -203,9 +203,9 @@ public class World{
             stats.put("x",player.getHitbox().getPosition().x);
             stats.put("y",player.getHitbox().getPosition().y);
             stats.put("z",player.getHitbox().getPosition().z);
-            stats.put("yaw",camRot.getYaw());
-            stats.put("pitch",camRot.getPitch());
-            stats.put("roll",camRot.getRoll());
+            stats.put("yaw",camRot.yaw());
+            stats.put("pitch",camRot.pitch());
+            stats.put("roll",camRot.roll());
             stats.put("gameMode",player.gameMode());
 
             File statsFile=new File(worldPath+"/stats/"+player.getName()+".json");
@@ -229,7 +229,7 @@ public class World{
 
             for(int i=0; i<chunkProvider.loadedChunks.size(); i++){
                 Chunk chunk=chunkProvider.loadedChunks.get(i);
-                if(!chunkUnloadStack.contains(chunk) && (chunk.x<playerChunkX-Options.RENDER_DISTANCE-1 || chunk.x>=playerChunkX+Options.RENDER_DISTANCE+1 || chunk.z<playerChunkZ-Options.RENDER_DISTANCE-1 || chunk.z>=playerChunkZ+Options.RENDER_DISTANCE+1))
+                if(chunk!=null && !chunkUnloadStack.contains(chunk) && (chunk.x<playerChunkX-Options.RENDER_DISTANCE-1 || chunk.x>=playerChunkX+Options.RENDER_DISTANCE+1 || chunk.z<playerChunkZ-Options.RENDER_DISTANCE-1 || chunk.z>=playerChunkZ+Options.RENDER_DISTANCE+1))
                     chunkUnloadStack.add(chunk);
             }
         }).start();
@@ -267,7 +267,7 @@ public class World{
                 for(int j=0; j<chunk.sections.length; j++){
                     ChunkSection section=chunk.sections[j];
                     if(section.notAirBlockCount!=0 && Controls.frustum.isBoxInFrustum(chunk.x*Chunk.WIDTH_X,j*ChunkSection.HEIGHT,chunk.z*Chunk.WIDTH_Z,(chunk.x+1)*Chunk.WIDTH_X,(j+1)*ChunkSection.HEIGHT,(chunk.z+1)*Chunk.WIDTH_Z)){
-                        shader.setUniform("u_model",new Matrix4().translate(
+                        shader.setUniform("u_model",Matrix4.translated(
                                 (float)(chunk.x*Chunk.WIDTH_X-camPos.x), j*ChunkSection.HEIGHT, (float)(chunk.z*Chunk.WIDTH_Z-camPos.z)
                         ));
                         glEnable(GL_CULL_FACE);
@@ -289,7 +289,7 @@ public class World{
                 for(int j=0; j<chunk.sections.length; j++){
                     ChunkSection section=chunk.sections[j];
                     if(section.notAirBlockCount!=0 && Controls.frustum.isBoxInFrustum(chunk.x*Chunk.WIDTH_X,j*ChunkSection.HEIGHT,chunk.z*Chunk.WIDTH_Z,(chunk.x+1)*Chunk.WIDTH_X,(j+1)*ChunkSection.HEIGHT,(chunk.z+1)*Chunk.WIDTH_Z)){
-                        shader.setUniform("u_model",new Matrix4().translate(
+                        shader.setUniform("u_model",Matrix4.translated(
                                 (float)(chunk.x*Chunk.WIDTH_X-camPos.x), j*ChunkSection.HEIGHT, (float)(chunk.z*Chunk.WIDTH_Z-camPos.z)
                         ));
                         if(section.mesh4!=null)
@@ -304,7 +304,7 @@ public class World{
                 for(int j=0; j<chunk.sections.length; j++){
                     ChunkSection section=chunk.sections[j];
                     if(section.notAirBlockCount!=0 && Controls.frustum.isBoxInFrustum(chunk.x*Chunk.WIDTH_X,j*ChunkSection.HEIGHT,chunk.z*Chunk.WIDTH_Z,(chunk.x+1)*Chunk.WIDTH_X,(j+1)*ChunkSection.HEIGHT,(chunk.z+1)*Chunk.WIDTH_Z)){
-                        shader.setUniform("u_model",new Matrix4().translate(
+                        shader.setUniform("u_model",Matrix4.translated(
                                 (float)(chunk.x*Chunk.WIDTH_X-camPos.x), j*ChunkSection.HEIGHT, (float)(chunk.z*Chunk.WIDTH_Z-camPos.z)
                         ));
                         glDisable(GL_CULL_FACE);

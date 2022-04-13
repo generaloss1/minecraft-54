@@ -85,7 +85,7 @@ public class Minecraft54 implements AppListener{
             Assets.loadTexture("textures/block/dirt.png","dirt");
 
             String blocks="textures/block/";
-            Assets.loadTexture3d(new Texture3D(16,16,
+            Assets.loadTexture3d(new Texture3D(16,16,true,
                     blocks+"grass_block_side.png", // 0
                     blocks+"grass_block_top.png",
                     blocks+"dirt.png",
@@ -205,7 +205,7 @@ public class Minecraft54 implements AppListener{
         }
 
         { // Load Shaders
-            ShaderProgram chunkShader=new ShaderProgram(Utils.readFile("shaders/Chunk.vert"),Utils.readFile("shaders/Chunk.frag"),Utils.readFile("shaders/Chunk.geom"));
+            ShaderProgram chunkShader=new ShaderProgram(Utils.readFile("shaders/Chunk.v"),Utils.readFile("shaders/Chunk.f"),Utils.readFile("shaders/Chunk.g"));
             chunkShader.addUniforms("u_texture","u_world","u_proj","u_model","underWater","u_camPos");
             Assets.loadShader(chunkShader,"chunk");
         }
