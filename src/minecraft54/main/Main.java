@@ -41,11 +41,6 @@ public class Main{
 
         glEnable(GL_CULL_FACE);
 
-        glEnable(GL_TEXTURE);
-
-        glEnable(GL_MULTISAMPLE);
-        glfwWindowHint(GLFW_SAMPLES,1);
-
         cfg.init(new Minecraft54());
     }
 

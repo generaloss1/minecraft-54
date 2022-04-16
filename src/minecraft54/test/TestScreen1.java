@@ -75,14 +75,6 @@ public class TestScreen1 implements AppScreen{
             };
             vbo2.setData(vertices2,GL_DYNAMIC_DRAW);
         }
-
-        if(Main.keyboard.isKeyDown(GLFW_KEY_F11))
-            Main.window.setFullscreen(!Main.window.isFullscreen());
-        if(Main.keyboard.isKeyDown(GLFW_KEY_V))
-            Main.window.setVSync(!Main.window.isVSync());
-        if(Main.keyboard.isKeyDown(GLFW_KEY_ESCAPE))
-            System.exit(0);
-        Main.window.setTitle("Test 54; Fps: "+Main.cfg.FPS);
     }
 
     @Override

@@ -1,24 +1,33 @@
 package minecraft54.engine.maths;
 
+import minecraft54.engine.maths.vectors.Vector3d;
 import minecraft54.engine.maths.vectors.Vector3f;
 
 public class EulerAngle{
 
-
-    private float pitch,yaw,roll;
-
+    private double pitch,yaw,roll;
 
     public EulerAngle(){}
 
-    public EulerAngle(float pitch,float yaw){
+    public EulerAngle(double pitch,double yaw){
         this.pitch=pitch;
         this.yaw=yaw;
     }
 
-    public EulerAngle(float yaw,float pitch,float roll){
+    public EulerAngle(double yaw,double pitch,double roll){
         this.pitch=pitch;
         this.yaw=yaw;
         this.roll=roll;
+    }
+
+    public double yaw(){
+        return yaw;
+    }
+    public double pitch(){
+        return pitch;
+    }
+    public double roll(){
+        return roll;
     }
 
     public void constrain(){
@@ -44,11 +53,16 @@ public class EulerAngle{
         );
     }
 
-    public void setDirection(Vector3f direction){
-        Vector3f dir=direction.clone().nor();
+    public void setDirection(double x,double y,double z){
+        yaw=-Math.atan2(x,z)*Maths.toDegrees+90;
+        pitch=Math.atan2(y,Math.sqrt(x*x+z*z))*Maths.toDegrees;
+    }
 
-        yaw=-Maths.atan2(dir.x,dir.z)*Maths.toDegrees+90;
-        pitch=Maths.atan2(dir.y,Math.sqrt(dir.x*dir.x+dir.z*dir.z))*Maths.toDegrees;
+    public void setDirection(Vector3d dir){
+        setDirection(dir.x,dir.y,dir.z);
+    }
+    public void setDirection(Vector3f dir){
+        setDirection(dir.x,dir.y,dir.z);
     }
 
     public void set(EulerAngle eulerAngle){
@@ -56,41 +70,53 @@ public class EulerAngle{
         pitch=eulerAngle.pitch;
         roll=eulerAngle.roll;
     }
-    public void set(float yaw,float pitch,float roll){
+
+    public void set(double yaw,double pitch,double roll){
         this.yaw=yaw;
         this.pitch=pitch;
         this.roll=roll;
     }
-    public void set(float yaw,float pitch){
+
+    public void set(double yaw,double pitch){
         this.yaw=yaw;
         this.pitch=pitch;
-        roll=0;
     }
 
-    public void rotate(float yaw,float pitch,float roll){
+    public void setPitch(double pitch){
+        this.pitch=pitch;
+    }
+    public void setYaw(double yaw){
+        this.yaw=yaw;
+    }
+    public void setRoll(double roll){
+        this.roll=roll;
+    }
+
+    public void rotate(EulerAngle eulerAngle){
+        yaw+=eulerAngle.yaw;
+        pitch+=eulerAngle.pitch;
+        roll+=eulerAngle.roll;
+    }
+
+    public void rotate(double yaw,double pitch,double roll){
         this.yaw+=yaw;
         this.pitch+=pitch;
         this.roll+=roll;
     }
 
-    public void setPitch(float pitch){
-        this.pitch=pitch;
-    }
-    public void setYaw(float yaw){
-        this.yaw=yaw;
-    }
-    public void setRoll(float roll){
-        this.roll=roll;
+    public void rotate(double yaw,double pitch){
+        this.yaw+=yaw;
+        this.pitch+=pitch;
     }
 
-    public float yaw(){
-        return yaw;
+    public void rotatePitch(double pitch){
+        this.pitch+=pitch;
     }
-    public float pitch(){
-        return pitch;
+    public void rotateYaw(double yaw){
+        this.yaw+=yaw;
     }
-    public float roll(){
-        return roll;
+    public void rotateRoll(double roll){
+        this.roll+=roll;
     }
 
 }

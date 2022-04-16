@@ -11,6 +11,7 @@ import minecraft54.main.Main;
 import minecraft54.main.Minecraft54;
 import minecraft54.main.Options;
 import minecraft54.main.client.screens.GameScreen;
+import minecraft54.main.client.world.Chunk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,8 @@ public class Entity{
                 }
             }
 
-            if(noGravity || GameScreen.world.chunkProvider.getChunk(Maths.floor(hitbox.getPosition().x/16f),Maths.floor(hitbox.getPosition().z/16f))==null){
+            Chunk chunk=GameScreen.world.chunkProvider.getChunk(Maths.floor(hitbox.getPosition().x/16f),Maths.floor(hitbox.getPosition().z/16f));
+            if(noGravity || chunk==null || !chunk.generated){
                 jumpVelocity=0;
                 gravityVelocity=0;
             }

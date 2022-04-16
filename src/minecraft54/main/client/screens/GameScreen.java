@@ -3,8 +3,11 @@ package minecraft54.main.client.screens;
 import minecraft54.engine.app.AppScreen;
 import minecraft54.engine.audio.SoundManager;
 import minecraft54.engine.graphics.*;
+import minecraft54.engine.maths.Matrix4f;
+import minecraft54.engine.maths.vectors.Vector3f;
 import minecraft54.engine.particles.BillboardParticleEmitter;
 import minecraft54.engine.particles.Particle;
+import minecraft54.engine.particles.ParticleEmitter;
 import minecraft54.engine.ui.Layout;
 import minecraft54.engine.ui.LayoutElement;
 import minecraft54.engine.ui.TouchCallback;
@@ -35,14 +38,14 @@ public class GameScreen implements AppScreen, EventListener{
     public static Player player;
     private boolean showHud=true;
     public static Thread thread1,thread2;
-    public BillboardParticleEmitter partBatch;
+    public ParticleEmitter partBatch;
 
     public Layout layout;
     public boolean pause;
 
 
     public void create(){
-        partBatch=new BillboardParticleEmitter();
+        partBatch=new ParticleEmitter(10000);
         renderer=new Renderer();
         sb=new SpriteBatch();
         cam=new OrthographicCamera(Main.window);
@@ -169,7 +172,7 @@ public class GameScreen implements AppScreen, EventListener{
         Controls.CAMERA.update();
 
         world.render();
-        partBatch.render(Controls.CAMERA);//.getProjection(),Matrix4.mul(Controls.CAMERA.getRotationMatrix(),new Matrix4().translate(Controls.getPosition().clone().mul(-1))));
+        partBatch.render(Controls.CAMERA.getProjection(),Matrix4f.lookAt(new Vector3f(Controls.getPosition()),Controls.CAMERA.getRotation().direction()));
 
         if(showHud){
             TrueTypeFont font=Assets.getTTF("font6");

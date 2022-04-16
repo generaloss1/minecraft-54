@@ -2,6 +2,7 @@ package minecraft54.test;
 
 import minecraft54.engine.app.AppScreen;
 import minecraft54.engine.graphics.*;
+import minecraft54.engine.maths.Matrix4f;
 import minecraft54.engine.maths.vectors.Vector3f;
 import minecraft54.engine.util.Utils;
 
@@ -13,9 +14,8 @@ public class TestScreen2 implements AppScreen{
 
     VertexBufferObject vbo1,vbo2;
     VertexArrayObject vao1,vao2;
-    ElementBufferObject ebo1,ebo2;
 
-    ShaderProgram shader;
+    ShaderProgram shader1,shader2;
 
     PerspectiveCamera cam;
 
@@ -25,85 +25,102 @@ public class TestScreen2 implements AppScreen{
     @Override
     public void create(){
         cam=new PerspectiveCamera(Main.window.getWidth(),Main.window.getHeight(),0.001f,1000,85);
-        cam.getPosition().set(3,3,3);
+        cam.getPosition().set(0,0,2);
+        cam.getRotation().set(0,0,0);
 
         texture=new Texture("textures/block/deepslate.png");
         texture.gen();
 
-        shader=new ShaderProgram(Utils.readFile("test/shader2.v"),Utils.readFile("test/shader2.f"));
-        shader.addUniforms("u_texture","u_projection","u_view");
+        shader1=new ShaderProgram(Utils.readFile("test/shader1.v"),Utils.readFile("test/shader1.f"));
+        shader1.addUniforms("u_projection","u_view");
+
+        shader2=new ShaderProgram(Utils.readFile("test/shader2.v"),Utils.readFile("test/shader2.f"));
+        shader2.addUniforms("u_texture","u_projection","u_view");
 
         vao1=new VertexArrayObject();
         vbo1=new VertexBufferObject();
-        vbo1.enableAttributes(new VertexAttribute(3,GL_FLOAT),new VertexAttribute(2,GL_FLOAT));
+        vbo1.enableAttributes(new VertexAttribute(3,GL_FLOAT),new VertexAttribute(4,GL_FLOAT));
         float[] vertices1=new float[]{
-                -1,-1, 1, 0,0,
-                 1,-1, 1, 1,0,
-                -1, 1, 1, 0,1,
-                 1, 1, 1, 1,1,
-                -1,-1,-1, 0,1,
-                 1,-1,-1, 1,0,
-                -1, 1,-1, 0,0,
-                 1, 1,-1, 1,0,
+                0 ,0,0,  1,0,0,1,
+                10,0,0,  1,0,0,1,
+
+                0,0 ,0,  0,1,0,1,
+                0,10,0,  0,1,0,1,
+
+                0,0,0 ,  0,0,1,1,
+                0,0,10,  0,0,1,1,
         };
         vbo1.setData(vertices1,GL_STATIC_DRAW);
-        ebo1=new ElementBufferObject();
-        int[] indices1=new int[]{
-                2, 6, 7,
-                2, 3, 7,
-                //Bottom
-                0, 4, 5,
-                0, 1, 5,
-                //Left
-                0, 2, 6,
-                0, 4, 6,
-                //Right
-                1, 3, 7,
-                1, 5, 7,
-                //Front
-                0, 2, 3,
-                0, 1, 3,
-                //Back
-                4, 6, 7,
-                4, 5, 7,
-        };
-        ebo1.setData(indices1,GL_STATIC_DRAW);
 
         vao2=new VertexArrayObject();
         vbo2=new VertexBufferObject();
         vbo2.enableAttributes(new VertexAttribute(3,GL_FLOAT),new VertexAttribute(2,GL_FLOAT));
-        float[] vertices2=new float[]{
+        float[] vertices2={
+                -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+                 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+                 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+                 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+                -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
+                -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+                -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+                 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+                 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+                 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+                -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+                -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+                -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+                -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+                -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+                 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+                 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+                 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+                 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+                 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+                 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+                -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+                -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+                 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+                 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+                 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+                -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+                 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+                 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+                 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+                -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+                -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
         };
         vbo2.setData(vertices2,GL_STATIC_DRAW);
-        ebo2=new ElementBufferObject();
-        int[] indices2=new int[]{
-
-        };
-        ebo2.setData(indices2,GL_STATIC_DRAW);
     }
 
     @Override
     public void render(){
         glClearColor(0.1f,0.1f,0.15f,1f);
 
-        rotateCamera();
+        //rotateCamera();
         controlCamera();
         cam.update();
 
-        shader.bind();
         texture.bind(0);
-        shader.setUniform("u_texture",0);
-        shader.setUniform("u_projection",cam.getProjection());
-        shader.setUniform("u_view",cam.getView());
-        vao1.drawElements(36);
-        vao2.drawElements(36);
 
-        if(Main.keyboard.isKeyDown(GLFW_KEY_F11))
-            Main.window.setFullscreen(!Main.window.isFullscreen());
-        if(Main.keyboard.isKeyDown(GLFW_KEY_ESCAPE))
-            System.exit(0);
-        Main.window.setTitle("Test 54; Fps: "+Main.cfg.FPS);
+        shader1.bind();
+        shader1.setUniform("u_projection",cam.getProjection());
+        shader1.setUniform("u_view",Matrix4f.lookAt(cam.getPosition(),cam.getPosition().clone().mul(-1)));
+        vao1.draw(GL_LINES,6);
+
+        shader2.bind();
+        shader2.setUniform("u_texture",0);
+        shader2.setUniform("u_projection",cam.getProjection());
+        shader2.setUniform("u_view",Matrix4f.lookAt(cam.getPosition(),cam.getPosition().clone().mul(-1)));
+        vao2.draw(36);
     }
 
     @Override
@@ -113,12 +130,13 @@ public class TestScreen2 implements AppScreen{
 
     @Override
     public void dispose(){
-        shader.dispose();
+        texture.dispose();
+        shader1.dispose();
+        shader2.dispose();
         vbo1.dispose();
         vao1.dispose();
         vbo2.dispose();
         vao2.dispose();
-        texture.dispose();
     }
 
     @Override
@@ -127,6 +145,7 @@ public class TestScreen2 implements AppScreen{
     }
 
 
+    public boolean ignoreCamRot=true;
     public void rotateCamera(){
         if(Main.window.isFocused()){
             int x=Main.mouse.getX();
@@ -144,6 +163,11 @@ public class TestScreen2 implements AppScreen{
                     rotY==0?y:halfH
             );
 
+            if(ignoreCamRot){
+                ignoreCamRot=false;
+                return;
+            }
+
             cam.getRotation().rotate(rotX,rotY,0);
             cam.getRotation().constrain();
 
@@ -154,7 +178,7 @@ public class TestScreen2 implements AppScreen{
     public void controlCamera(){
         float cam_speed=0.05f;
         Vector3f controlMoveVel=new Vector3f();
-        Vector3f dirXZ=cam.getRotation().direction();
+        Vector3f dirXZ=cam.getPosition().clone().mul(-1).nor();//cam.getRotation().direction();
         dirXZ.y=0;
         if(Main.keyboard.isKeyPressed(GLFW_KEY_W))
             controlMoveVel.add(dirXZ.mul(cam_speed));
