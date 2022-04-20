@@ -24,7 +24,7 @@ public class Assets{
             System.err.println("Texture load error: "+path+" is not exists.");
             return false;
         }
-        Texture texture=new Texture(path).gen();
+        Texture texture=new Texture(path).genTexture();
         textures.put(id,texture);
         textures_ids.add(id);
         return true;

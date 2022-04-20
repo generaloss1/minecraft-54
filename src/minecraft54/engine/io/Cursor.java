@@ -1,6 +1,6 @@
 package minecraft54.engine.io;
 
-import minecraft54.engine.graphics.PixmapRGBA;
+import minecraft54.engine.graphics.Pixmap;
 import minecraft54.engine.graphics.Texture;
 import org.lwjgl.glfw.GLFWImage;
 
@@ -12,7 +12,7 @@ public class Cursor{
     private final long id;
 
     public Cursor(String filePath){
-        PixmapRGBA cursorTextureData=new PixmapRGBA(filePath);
+        Pixmap cursorTextureData=new Pixmap(filePath);
         GLFWImage cursorBuffer=GLFWImage.malloc();
         cursorBuffer.set(cursorTextureData.getWidth(),cursorTextureData.getHeight(),cursorTextureData.getPixels());
         id=glfwCreateCursor(cursorBuffer,0,0);
@@ -24,7 +24,7 @@ public class Cursor{
         id=glfwCreateCursor(cursorBuffer,0,0);
     }
 
-    public Cursor(PixmapRGBA cursorTexture){
+    public Cursor(Pixmap cursorTexture){
         GLFWImage cursorBuffer=GLFWImage.malloc();
         cursorBuffer.set(cursorTexture.getWidth(),cursorTexture.getHeight(),cursorTexture.getPixels());
         id=glfwCreateCursor(cursorBuffer,0,0);

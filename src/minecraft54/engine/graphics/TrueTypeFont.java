@@ -2,7 +2,6 @@ package minecraft54.engine.graphics;
 
 import minecraft54.engine.util.Utils;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL13C;
 import org.lwjgl.stb.STBTTBakedChar;
 import org.lwjgl.stb.STBTTFontinfo;
 import org.lwjgl.system.MemoryStack;
@@ -11,6 +10,7 @@ import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+import static org.lwjgl.opengl.GL46C.*;
 import static org.lwjgl.stb.STBTruetype.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
@@ -34,7 +34,6 @@ public class TrueTypeFont{
         int width=size*(96);
         int height=size*3;
 
-
         data=Utils.fileByteBuffer(file);
 
         if(data==null){
@@ -49,25 +48,23 @@ public class TrueTypeFont{
         charData=STBTTBakedChar.malloc(96);
         stbtt_BakeFontBitmap(data,fontHeight,bitmap,width,height,32,charData);
 
-        PixmapRGBA pixmap=new PixmapRGBA(width,height);
+        Pixmap pixmap=new Pixmap(width,height);
         for(int i=0; i<width; i++)
             for(int j=0; j<height; j++){
                 int v2=Byte.toUnsignedInt(bitmap.get(i*height+j));
                 pixmap.setPixel(i,j,1,1,1,v2/256f);
             }
-        texture=new Texture(pixmap).setFilter(GL13C.GL_LINEAR).gen();
+        texture=new Texture(pixmap).setFilter(GL_LINEAR).genTexture();
 
-        try(MemoryStack stack=stackPush()){
-            IntBuffer pAscent=stack.mallocInt(1);
-            IntBuffer pDescent=stack.mallocInt(1);
-            IntBuffer pLineGap=stack.mallocInt(1);
+        int[] pAscent=new int[1];
+        int[] pDescent=new int[1];
+        int[] pLineGap=new int[1];
 
-            stbtt_GetFontVMetrics(info,pAscent,pDescent,pLineGap);
+        stbtt_GetFontVMetrics(info,pAscent,pDescent,pLineGap);
 
-            ascent=pAscent.get(0);
-            descent=pDescent.get(0);
-            lineGap=pLineGap.get(0);
-        }
+        ascent=pAscent[0];
+        descent=pDescent[0];
+        lineGap=pLineGap[0];
 
         cscale=stbtt_ScaleForPixelHeight(info,fontHeight);
     }

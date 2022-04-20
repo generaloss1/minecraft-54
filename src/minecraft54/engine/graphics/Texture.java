@@ -21,14 +21,7 @@ public class Texture{
     }
 
     public Texture(String file,boolean invY){
-        try{
-            BufferedImage img=ImageIO.read(new FileInputStream(file));
-            pixmap=new PixmapRGBA(img,invY);
-        }catch(FileNotFoundException e){
-            System.err.println("Texture "+file+" is not exists");
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        pixmap=new Pixmap(file,invY);
     }
 
     public Texture(int id){
@@ -36,12 +29,12 @@ public class Texture{
     }
 
     public Texture(int id,Pixmap pixmap){
-        this.pixmap=pixmap.clone();
+        this.pixmap=pixmap;
         this.id=id;
     }
 
     public Texture(Pixmap pixmap){
-        this.pixmap=pixmap.clone();
+        this.pixmap=pixmap;
     }
 
     public Texture(Texture texture){
@@ -49,7 +42,7 @@ public class Texture{
     }
 
     public Texture(BufferedImage bufferedImage){
-        pixmap=new PixmapRGBA(bufferedImage);
+        pixmap=new Pixmap(bufferedImage);
     }
 
 
@@ -58,7 +51,12 @@ public class Texture{
         return this;
     }
 
-    public Texture gen(){
+    public Texture setPixmap(Pixmap pixmap){
+        this.pixmap.set(pixmap);
+        return this;
+    }
+
+    public Texture genTexture(){
         int width=pixmap.getWidth();
         int height=pixmap.getHeight();
 
@@ -77,7 +75,7 @@ public class Texture{
 
             glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAX_LEVEL,1);
 
-            glTexSubImage2D(GL_TEXTURE_2D,0,0,0,width,height,pixmap.getFormat(),GL_UNSIGNED_BYTE,pixmap.getPixels());
+            glTexSubImage2D(GL_TEXTURE_2D,0,0,0,width,height,GL_RGBA,GL_UNSIGNED_BYTE,pixmap.getPixels());
             glGenerateMipmap(GL_TEXTURE_2D);
         }
 

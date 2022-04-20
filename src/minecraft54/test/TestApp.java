@@ -1,7 +1,6 @@
 package minecraft54.test;
 
 import minecraft54.engine.app.AppListener;
-import minecraft54.engine.util.Assets;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -11,8 +10,9 @@ public class TestApp implements AppListener{
     public void create(){
         Main.cfg.addScreen("screen1",new TestScreen1());
         Main.cfg.addScreen("screen2",new TestScreen2());
+        Main.cfg.addScreen("screen3",new TestScreen3());
 
-        Main.cfg.setScreen("screen2");
+        Main.cfg.setScreen("screen3");
     }
 
     @Override

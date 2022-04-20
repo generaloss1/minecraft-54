@@ -6,7 +6,6 @@ import minecraft54.engine.io.Mouse;
 import minecraft54.engine.io.Window;
 import minecraft54.engine.util.GLUtils;
 
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL46C.*;
 
 public class Main{

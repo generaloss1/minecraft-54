@@ -1,6 +1,5 @@
 package minecraft54.engine.io;
 
-import minecraft54.engine.graphics.PixmapRGBA;
 import minecraft54.engine.graphics.Texture;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;

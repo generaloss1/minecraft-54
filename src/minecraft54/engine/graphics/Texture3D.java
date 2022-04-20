@@ -1,7 +1,5 @@
 package minecraft54.engine.graphics;
 
-import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
@@ -29,7 +27,7 @@ public class Texture3D{
 
             glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-            glTexSubImage3D(GL_TEXTURE_2D_ARRAY,0,0,0,z,td.getWidth(),td.getHeight(),1,td.getFormat(),GL_UNSIGNED_BYTE,td.getPixels());
+            glTexSubImage3D(GL_TEXTURE_2D_ARRAY,0,0,0,z,td.getWidth(),td.getHeight(),1,GL_RGBA,GL_UNSIGNED_BYTE,td.getPixels());
             glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
         }
         glBindTexture(GL_TEXTURE_2D_ARRAY,0);
@@ -42,12 +40,12 @@ public class Texture3D{
         glTexStorage3D(GL_TEXTURE_2D_ARRAY,1,GL_RGBA8,width,height,bufferedImage.length);
 
         for(int z=0; z<bufferedImage.length; z++){
-            Pixmap td=new PixmapRGBA(bufferedImage[z]);
+            Pixmap td=new Pixmap(bufferedImage[z]);
             pixmapList.add(td);
 
             glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-            glTexSubImage3D(GL_TEXTURE_2D_ARRAY,0,0,0,z,td.getWidth(),td.getHeight(),1,td.getFormat(),GL_UNSIGNED_BYTE,td.getPixels());
+            glTexSubImage3D(GL_TEXTURE_2D_ARRAY,0,0,0,z,td.getWidth(),td.getHeight(),1,GL_RGBA,GL_UNSIGNED_BYTE,td.getPixels());
             glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
         }
         glBindTexture(GL_TEXTURE_2D_ARRAY,0);
@@ -65,7 +63,7 @@ public class Texture3D{
 
             glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-            glTexSubImage3D(GL_TEXTURE_2D_ARRAY,0,0,0,z,td.getWidth(),td.getHeight(),1,td.getFormat(),GL_UNSIGNED_BYTE,td.getPixels());
+            glTexSubImage3D(GL_TEXTURE_2D_ARRAY,0,0,0,z,td.getWidth(),td.getHeight(),1,GL_RGBA,GL_UNSIGNED_BYTE,td.getPixels());
             glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
         }
         glBindTexture(GL_TEXTURE_2D_ARRAY,0);
@@ -93,18 +91,10 @@ public class Texture3D{
 
         for(int z=0; z<file.length; z++){
             String f=file[z];
-            try{
-                BufferedImage img=ImageIO.read(new FileInputStream(f));
-                Pixmap td=new PixmapRGBA(img,invY);
-                pixmapList.add(td);
+            Pixmap td=new Pixmap(f,invY);
+            pixmapList.add(td);
 
-                glTexSubImage3D(GL_TEXTURE_2D_ARRAY,0,0,0,z,width,height,1,td.getFormat(),GL_UNSIGNED_BYTE,td.getPixels());
-
-            }catch(FileNotFoundException e){
-                System.err.println("Texture "+f+" is not exists");
-            }catch(IOException e){
-                e.printStackTrace();
-            }
+            glTexSubImage3D(GL_TEXTURE_2D_ARRAY,0,0,0,z,width,height,1,GL_RGBA,GL_UNSIGNED_BYTE,td.getPixels());
         }
         glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
     }

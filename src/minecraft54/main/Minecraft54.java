@@ -69,7 +69,7 @@ public class Minecraft54 implements AppListener{
         }
 
         { // Load Textures
-            Assets.loadTexture(new Texture(new PixmapRGB(1,1).setPixel(0,0,1,1,1)),"white");
+            Assets.loadTexture(new Texture(new Pixmap(1,1).setPixel(0,0,1,1,1,1)),"white");
             Assets.loadTexture("textures/ui/crosshair.png","crosshair");
 
             Assets.loadTexture("textures/ui/button1.png","button1_n");

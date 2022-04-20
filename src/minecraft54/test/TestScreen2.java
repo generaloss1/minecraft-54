@@ -29,7 +29,7 @@ public class TestScreen2 implements AppScreen{
         cam.getRotation().set(0,0,0);
 
         texture=new Texture("textures/block/deepslate.png");
-        texture.gen();
+        texture.genTexture();
 
         shader1=new ShaderProgram(Utils.readFile("test/shader1.v"),Utils.readFile("test/shader1.f"));
         shader1.addUniforms("u_projection","u_view");
