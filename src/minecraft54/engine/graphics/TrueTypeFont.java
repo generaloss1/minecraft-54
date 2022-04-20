@@ -51,7 +51,7 @@ public class TrueTypeFont{
         Pixmap pixmap=new Pixmap(width,height);
         for(int i=0; i<width; i++)
             for(int j=0; j<height; j++){
-                int v2=Byte.toUnsignedInt(bitmap.get(i*height+j));
+                int v2=Byte.toUnsignedInt(bitmap.get(j*width+i));
                 pixmap.setPixel(i,j,1,1,1,v2/256f);
             }
         texture=new Texture(pixmap).setFilter(GL_LINEAR).genTexture();
