@@ -4,7 +4,6 @@ import minecraft54.engine.util.Utils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBTTBakedChar;
 import org.lwjgl.stb.STBTTFontinfo;
-import org.lwjgl.system.MemoryStack;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -12,7 +11,6 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL46C.*;
 import static org.lwjgl.stb.STBTruetype.*;
-import static org.lwjgl.system.MemoryStack.stackPush;
 
 public class TrueTypeFont{
 

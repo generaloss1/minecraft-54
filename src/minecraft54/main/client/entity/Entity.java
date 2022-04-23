@@ -23,7 +23,7 @@ public class Entity{
     private final Vector3f eye;
     private final Velocity velocity;
     private float jumpVelocity,gravityVelocity;
-    private boolean noClip,noGravity,jumping;
+    private boolean noClip,noGravity,jumping,justJump;
     private float jumpHeight,jumpDuration;
     private double fallUpperY,prevVelocityY;
 
@@ -46,11 +46,6 @@ public class Entity{
                 fallUpperY=hitbox.getPosition().y;
             prevVelocityY=velocityY;
 
-            hitbox.move(velocity.get().clone().add(new Vector3f(0,(jumpVelocity+gravityVelocity),0)).mul(Main.getDeltaTime()));
-            Vector3d collidedMove=Collider.getCollidedMove(hitbox,hitboxList());
-            hitbox.getPosition().add(collidedMove);
-            velocity.collidedAxesToZero(collidedMove).reduce(velocity.max()/30);
-
             if(isOnGround()){
                 if(velocityY<0){
                     double fallHeight=fallUpperY-hitbox.getPosition().y;
@@ -60,7 +55,7 @@ public class Entity{
                         SoundManager.play("damage_fallsmall",Options.PLAYERS_VOLUME*Options.MASTER_VOLUME);
                 }
                 gravityVelocity=0;
-                if(jumping){
+                if(jumping && !justJump){
                     jumping=false;
                     jumpVelocity=0;
                 }
@@ -74,6 +69,12 @@ public class Entity{
                     gravityVelocity=0;
                 }
             }
+
+            hitbox.move(velocity.get().clone().add(new Vector3f(0,(jumpVelocity+gravityVelocity),0)).mul(Main.getDeltaTime()));
+            Vector3d collidedMove=Collider.getCollidedMove(hitbox,hitboxList());
+            hitbox.getPosition().add(collidedMove);
+            velocity.collidedAxesToZero(collidedMove).reduce(velocity.max()/30);
+            justJump=false;
 
             Chunk chunk=GameScreen.world.chunkProvider.getChunk(Maths.floor(hitbox.getPosition().x/16f),Maths.floor(hitbox.getPosition().z/16f));
             if(noGravity || chunk==null || !chunk.generated){
@@ -94,6 +95,7 @@ public class Entity{
         if(jumping)
             return;
 
+        justJump=true;
         jumping=true;
         jumpVelocity=2*(jumpHeight)/(jumpDuration/2);
     }

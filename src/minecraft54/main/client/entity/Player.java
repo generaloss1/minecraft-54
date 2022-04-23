@@ -56,13 +56,18 @@ public class Player extends Entity{
 
 
         if(isOnGround() && gameMode!=GameMode.SPECTATOR){
+            if(keyboard.isKeyPressed(GLFW_KEY_SPACE)){
+                jump();
+                stepTimer.setSeconds(1);
+            }
+
             if(flying)
                 flying=false;
 
             if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_SHIFT)){
                 setSpeed(1.3);
                 getEye().y=getEye().y>1.3f?getEye().y-0.04f:1.3f; //1.32
-                getHitbox().getB().set(0.3,1.3,0.3); //1.3
+                getHitbox().getB().set(0.3,1.5,0.3); //1.3
 
                 if(!isOnGround(controlMoveVel.x,0,0)){
                     controlMoveVel.x=0;
@@ -74,18 +79,13 @@ public class Player extends Entity{
                 }
 
             }else if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL)){
-                setSpeed(5.6);
+                setSpeed(5.612);
                 getEye().y=getEye().y<1.62f?getEye().y+0.04f:1.62f;
                 getHitbox().getB().set(0.3,1.8,0.3);
             }else{
-                setSpeed(4.3);
+                setSpeed(4.316);
                 getEye().y=getEye().y<1.62f?getEye().y+0.04f:1.62f;
                 getHitbox().getB().set(0.3,1.8,0.3);
-            }
-
-            if(keyboard.isKeyPressed(GLFW_KEY_SPACE)){
-                jump();
-                stepTimer.setSeconds(1);
             }
 
             // Step Sounds
@@ -114,7 +114,7 @@ public class Player extends Entity{
             if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL))
                 setSpeed(22);
             else
-                setSpeed(4.3);
+                setSpeed(4.316);
         }else{
             setNoGravity(false);
             if(keyboard.isKeyDown(GLFW_KEY_F) && isCanFly())
