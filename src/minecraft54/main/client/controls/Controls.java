@@ -1,14 +1,14 @@
 package minecraft54.main.client.controls;
 
-import minecraft54.engine.audio.SoundListener;
-import minecraft54.engine.graphics.PerspectiveCamera;
-import minecraft54.engine.io.Mouse;
-import minecraft54.engine.io.Window;
-import minecraft54.engine.maths.Frustum;
-import minecraft54.engine.maths.Matrix4f;
-import minecraft54.engine.maths.vectors.Vector3d;
-import minecraft54.engine.maths.vectors.Vector3f;
-import minecraft54.main.Main;
+import engine54.E54;
+import engine54.audio.SoundListener;
+import engine54.graphics.camera.PerspectiveCamera;
+import engine54.io.Mouse;
+import engine54.io.Window;
+import engine54.maths.Frustum;
+import engine54.maths.Matrix4f;
+import engine54.maths.vectors.Vector3d;
+import engine54.maths.vectors.Vector3f;
 import minecraft54.main.Options;
 
 public class Controls{
@@ -25,7 +25,7 @@ public class Controls{
 
 
     static{
-        CAMERA=new PerspectiveCamera(Main.window.getWidth()/2,Main.window.getHeight()/2,0.05f,1000f,Options.FOV);
+        CAMERA=new PerspectiveCamera(E54.getWinWidth()/2,E54.getWinHeight()/2,0.05f,1000f,Options.FOV);
         frustum=new Frustum(CAMERA.getView().val,CAMERA.getProjection().val);
     }
 

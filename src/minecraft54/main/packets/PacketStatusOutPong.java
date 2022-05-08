@@ -1,6 +1,6 @@
 package minecraft54.main.packets;
 
-import minecraft54.engine.net.Packet;
+import engine54.net.Packet;
 
 public class PacketStatusOutPong implements Packet{
 

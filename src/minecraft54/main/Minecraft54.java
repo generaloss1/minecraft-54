@@ -1,24 +1,22 @@
 package minecraft54.main;
 
-import minecraft54.engine.app.AppListener;
-import minecraft54.engine.graphics.*;
-import minecraft54.engine.particles.Particle;
-import minecraft54.engine.particles.ParticleBehavior;
-import minecraft54.engine.ui.Text;
-import minecraft54.engine.net.Packet;
-import minecraft54.engine.net.TCPClient;
-import minecraft54.engine.net.TCPClientListener;
-import minecraft54.engine.util.Assets;
-import minecraft54.engine.util.Utils;
+import engine54.E54;
+import engine54.app.AppListener;
+import engine54.graphics.ShaderProgram;
+import engine54.graphics.TrueTypeFont;
+import engine54.graphics.texture.Pixmap;
+import engine54.graphics.texture.Texture;
+import engine54.graphics.texture.Texture3D;
+import engine54.particles.ParticleBehavior;
+import engine54.util.ArrayUtils;
+import engine54.util.Assets;
+import engine54.util.Utils;
 import minecraft54.main.client.audio.SoundPack;
-import minecraft54.main.client.controls.Controls;
 import minecraft54.main.client.screens.*;
 import minecraft54.main.client.world.BlockData;
 import minecraft54.main.client.world.BlockManager;
 import minecraft54.main.client.world.Block;
 import minecraft54.main.util.Direction;
-import minecraft54.main.packets.PacketStatusOutPong;
-import minecraft54.main.server.Server;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -85,7 +83,7 @@ public class Minecraft54 implements AppListener{
             Assets.loadTexture("textures/block/dirt.png","dirt");
 
             String blocks="textures/block/";
-            Assets.loadTexture3d(new Texture3D(16,16,true,
+            Assets.loadTexture3D(new Texture3D(16,16,false,
                     blocks+"grass_block_side.png", // 0
                     blocks+"grass_block_top.png",
                     blocks+"dirt.png",
@@ -211,14 +209,14 @@ public class Minecraft54 implements AppListener{
         }
 
         { // Configure Screens
-            Main.cfg.addScreen("menu",new MenuScreen());
-            Main.cfg.addScreen("world list",new WorldListScreen());
-            Main.cfg.addScreen("game",new GameScreen());
-            Main.cfg.addScreen("serverList",new ServerListScreen());
-            Main.cfg.addScreen("worldCreate",new WorldCreateScreen());
-            Main.cfg.addScreen("settings",new SettingsScreen());
+            E54.context().defineScreen(new MenuScreen()       ,"menu"       );
+            E54.context().defineScreen(new WorldListScreen()  ,"world list" );
+            E54.context().defineScreen(new GameScreen()       ,"game"       );
+            E54.context().defineScreen(new ServerListScreen() ,"serverList" );
+            E54.context().defineScreen(new WorldCreateScreen(),"worldCreate");
+            E54.context().defineScreen(new SettingsScreen()   ,"settings"   );
 
-            Main.cfg.setScreen("menu");
+            E54.context().setScreen("menu");
         }
 
         { // Load Settings Options
@@ -255,10 +253,10 @@ public class Minecraft54 implements AppListener{
             id++;
             GRASS_BLOCK=new Block(id);
             blockData=new BlockData(id,0,true,false,false);
-            blockData.sides[Direction.NORTH.ordinal()]=new Block.BlockSide(Direction.NORTH,id,0,Utils.add(BlockManager.quad_vertices(1,1,1,1,0,1,1,0,0,1,1,0),BlockManager.quad_vertices(1,1,1,1,0,1,1,0,0,1,1,0)),new float[]{0,15},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
-            blockData.sides[Direction.SOUTH.ordinal()]=new Block.BlockSide(Direction.SOUTH,id,0,Utils.add(BlockManager.quad_vertices(0,1,0,0,0,0,0,0,1,0,1,1),BlockManager.quad_vertices(0,1,0,0,0,0,0,0,1,0,1,1)),new float[]{0,15},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
-            blockData.sides[Direction.EAST.ordinal() ]=new Block.BlockSide(Direction.EAST ,id,0,Utils.add(BlockManager.quad_vertices(0,1,1,0,0,1,1,0,1,1,1,1),BlockManager.quad_vertices(0,1,1,0,0,1,1,0,1,1,1,1)),new float[]{0,15},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
-            blockData.sides[Direction.WEST.ordinal() ]=new Block.BlockSide(Direction.WEST ,id,0,Utils.add(BlockManager.quad_vertices(1,1,0,1,0,0,0,0,0,0,1,0),BlockManager.quad_vertices(1,1,0,1,0,0,0,0,0,0,1,0)),new float[]{0,15},Utils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
+            blockData.sides[Direction.NORTH.ordinal()]=new Block.BlockSide(Direction.NORTH,id,0,ArrayUtils.add(BlockManager.quad_vertices(1,1,1,1,0,1,1,0,0,1,1,0),BlockManager.quad_vertices(1,1,1,1,0,1,1,0,0,1,1,0)),new float[]{0,15},ArrayUtils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
+            blockData.sides[Direction.SOUTH.ordinal()]=new Block.BlockSide(Direction.SOUTH,id,0,ArrayUtils.add(BlockManager.quad_vertices(0,1,0,0,0,0,0,0,1,0,1,1),BlockManager.quad_vertices(0,1,0,0,0,0,0,0,1,0,1,1)),new float[]{0,15},ArrayUtils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
+            blockData.sides[Direction.EAST.ordinal() ]=new Block.BlockSide(Direction.EAST ,id,0,ArrayUtils.add(BlockManager.quad_vertices(0,1,1,0,0,1,1,0,1,1,1,1),BlockManager.quad_vertices(0,1,1,0,0,1,1,0,1,1,1,1)),new float[]{0,15},ArrayUtils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
+            blockData.sides[Direction.WEST.ordinal() ]=new Block.BlockSide(Direction.WEST ,id,0,ArrayUtils.add(BlockManager.quad_vertices(1,1,0,1,0,0,0,0,0,0,1,0),BlockManager.quad_vertices(1,1,0,1,0,0,0,0,0,0,1,0)),new float[]{0,15},ArrayUtils.add(BlockManager.quad_uvs(),BlockManager.quad_uvs()),new float[]{1,1,1,1, grassBlockR,grassBlockG,grassBlockB,1});
             blockData.sides[Direction.UP.ordinal()   ]=new Block.BlockSide(Direction.UP   ,id,0,          BlockManager.quad_vertices(1,1,1,1,1,0,0,1,0,0,1,1),                                                     new float[]{1},             BlockManager.quad_uvs(),                         new float[]{         grassBlockR,grassBlockG,grassBlockB,1});
             blockData.sides[Direction.DOWN.ordinal() ]=new Block.BlockSide(Direction.DOWN ,id,0,          BlockManager.quad_vertices(1,0,0,1,0,1,0,0,1,0,0,0),                                                     new float[]{2},             BlockManager.quad_uvs(),                         new float[]{1,1,1,1});
             soundPack=new SoundPack();
@@ -403,9 +401,9 @@ public class Minecraft54 implements AppListener{
             GRASS=new Block(id);
             blockData=new BlockData(id,0,false,false,false);
             blockData.sides[6]=new Block.BlockSide(Direction.UNKNOWN,id,1,
-                    Utils.add( BlockManager.quad_vertices(1,1,1,1,0,1,0,0,0,0,1,0), BlockManager.quad_vertices(0,1,1,0,0,1,1,0,0,1,1,0) ),
+                    ArrayUtils.add( BlockManager.quad_vertices(1,1,1,1,0,1,0,0,0,0,1,0), BlockManager.quad_vertices(0,1,1,0,0,1,1,0,0,1,1,0) ),
                     new float[]{11,11},
-                    Utils.add( BlockManager.quad_uvs(), BlockManager.quad_uvs() ),
+                    ArrayUtils.add( BlockManager.quad_uvs(), BlockManager.quad_uvs() ),
             new float[]{grassR,grassG,grassB,1, grassR,grassG,grassB,1});
             soundPack=new SoundPack();
             soundPack.addPlace(0.75f,"dig_grass1","dig_grass2","dig_grass3","dig_grass4");
@@ -419,9 +417,9 @@ public class Minecraft54 implements AppListener{
             FLOWER=new Block(id);
             blockData=new BlockData(id,0,false,false,false);
             blockData.sides[6]=new Block.BlockSide(Direction.UNKNOWN,id,1,
-                    Utils.add( BlockManager.quad_vertices(1,1,1,1,0,1,0,0,0,0,1,0), BlockManager.quad_vertices(0,1,1,0,0,1,1,0,0,1,1,0) ),
+                    ArrayUtils.add( BlockManager.quad_vertices(1,1,1,1,0,1,0,0,0,0,1,0), BlockManager.quad_vertices(0,1,1,0,0,1,1,0,0,1,1,0) ),
                     new float[]{16,16},
-                    Utils.add( BlockManager.quad_uvs(), BlockManager.quad_uvs() ),
+                    ArrayUtils.add( BlockManager.quad_uvs(), BlockManager.quad_uvs() ),
                     new float[]{1,1,1,1, 1,1,1,1});
             soundPack=new SoundPack();
             soundPack.addPlace(0.75f,"dig_grass1","dig_grass2","dig_grass3","dig_grass4");
@@ -430,9 +428,9 @@ public class Minecraft54 implements AppListener{
             FLOWER.addData(0,blockData); // POPPY
             blockData=new BlockData(id,1,false,false,false);
             blockData.sides[6]=new Block.BlockSide(Direction.UNKNOWN,id,1,
-                    Utils.add( BlockManager.quad_vertices(1,1,1,1,0,1,0,0,0,0,1,0), BlockManager.quad_vertices(0,1,1,0,0,1,1,0,0,1,1,0) ),
+                    ArrayUtils.add( BlockManager.quad_vertices(1,1,1,1,0,1,0,0,0,0,1,0), BlockManager.quad_vertices(0,1,1,0,0,1,1,0,0,1,1,0) ),
                     new float[]{17,17},
-                    Utils.add( BlockManager.quad_uvs(), BlockManager.quad_uvs() ),
+                    ArrayUtils.add( BlockManager.quad_uvs(), BlockManager.quad_uvs() ),
                     new float[]{1,1,1,1, 1,1,1,1});
             soundPack=new SoundPack();
             soundPack.addPlace(0.75f,"dig_grass1","dig_grass2","dig_grass3","dig_grass4");
@@ -481,8 +479,8 @@ public class Minecraft54 implements AppListener{
 
     @Override
     public void update(){
-        if(Main.keyboard.isKeyReleased(GLFW_KEY_V))
-            Main.window.setVSync(!Main.window.isVSync());
+        if(E54.keyboard().isKeyReleased(GLFW_KEY_V))
+            E54.window().setVSync(!E54.window().isVSync());
         //if(Main.keyboard.isKeyReleased(GLFW_KEY_L))
         //    client.disconnect("leave");
     }

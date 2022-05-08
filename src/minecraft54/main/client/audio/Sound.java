@@ -1,10 +1,10 @@
 package minecraft54.main.client.audio;
 
-import minecraft54.engine.audio.SoundBuffer;
-import minecraft54.engine.audio.SoundManager;
-import minecraft54.engine.audio.SoundSource;
-import minecraft54.engine.maths.vectors.Vector3f;
-import minecraft54.engine.util.Assets;
+import engine54.audio.SoundBuffer;
+import engine54.audio.SoundManager;
+import engine54.audio.SoundSource;
+import engine54.maths.vectors.Vector3f;
+import engine54.util.Assets;
 
 public class Sound extends SoundBuffer{
 

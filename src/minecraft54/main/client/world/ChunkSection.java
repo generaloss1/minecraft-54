@@ -1,8 +1,8 @@
 package minecraft54.main.client.world;
 
-import minecraft54.engine.graphics.Mesh;
-import minecraft54.engine.graphics.VertexAttribute;
-import minecraft54.engine.util.FastArrayList;
+import engine54.graphics.vertices.Mesh;
+import engine54.graphics.vertices.VertexAttribute;
+import engine54.util.FastArrayList;
 import minecraft54.main.Minecraft54;
 import minecraft54.main.util.Direction;
 import org.lwjgl.opengl.GL46C;

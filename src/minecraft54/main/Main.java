@@ -1,36 +1,18 @@
 package minecraft54.main;
 
-import minecraft54.engine.app.AppCfg;
-import minecraft54.engine.io.Keyboard;
-import minecraft54.engine.io.Mouse;
-import minecraft54.engine.io.Window;
-import minecraft54.engine.util.GLUtils;
+import engine54.E54;
+import engine54.io.Window;
 
 import static org.lwjgl.opengl.GL46C.*;
 
 public class Main{
 
-    public static AppCfg cfg;
-
-    public static Window window;
-    public static Keyboard keyboard;
-    public static Mouse mouse;
-
     public static void main(String[] args){
-        GLUtils.initGLFW();
-        GLUtils.initAL();
+        E54.init();
 
-        cfg=new AppCfg();
-
-        window=new Window(925,530,"Minecraft 54",true,true);
-        keyboard=new Keyboard(window);
-        mouse=new Mouse(window);
-
+        Window window=new Window(925,530,"Minecraft 54",true,true);
         window.setIcon("icon.png");
-
-        cfg.setWindow(window);
-        cfg.setKeyboard(keyboard);
-        cfg.setMouse(mouse);
+        E54.setIO(window);
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -40,15 +22,7 @@ public class Main{
 
         glEnable(GL_CULL_FACE);
 
-        cfg.init(new Minecraft54());
-    }
-
-    public static float getFPS(){
-        return cfg.FPS;
-    }
-
-    public static float getDeltaTime(){
-        return cfg.DELTA_TIME;
+        E54.context().begin(new Minecraft54());
     }
 
 }

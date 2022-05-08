@@ -1,9 +1,10 @@
 package minecraft54.main.client.entity;
 
-import minecraft54.engine.io.Keyboard;
-import minecraft54.engine.maths.vectors.Vector3d;
-import minecraft54.engine.maths.vectors.Vector3f;
-import minecraft54.engine.util.Timer;
+import engine54.E54;
+import engine54.io.Keyboard;
+import engine54.maths.vectors.Vector3d;
+import engine54.maths.vectors.Vector3f;
+import engine54.util.Timer;
 import minecraft54.main.Options;
 import minecraft54.main.client.controls.Controls;
 import minecraft54.main.Main;
@@ -64,7 +65,7 @@ public class Player extends Entity{
             if(flying)
                 flying=false;
 
-            if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_SHIFT)){
+            if(E54.keyboard().isKeyPressed(GLFW_KEY_LEFT_SHIFT)){
                 setSpeed(1.3);
                 getEye().y=getEye().y>1.3f?getEye().y-0.04f:1.3f; //1.32
                 getHitbox().getB().set(0.3,1.5,0.3); //1.3
@@ -78,7 +79,7 @@ public class Player extends Entity{
                     getVelocity().get().z=0;
                 }
 
-            }else if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL)){
+            }else if(E54.keyboard().isKeyPressed(GLFW_KEY_LEFT_CONTROL)){
                 setSpeed(5.612);
                 getEye().y=getEye().y<1.62f?getEye().y+0.04f:1.62f;
                 getHitbox().getB().set(0.3,1.8,0.3);
@@ -111,7 +112,7 @@ public class Player extends Entity{
 
         if(flying){
             setNoGravity(true);
-            if(Main.keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL))
+            if(E54.keyboard().isKeyPressed(GLFW_KEY_LEFT_CONTROL))
                 setSpeed(22);
             else
                 setSpeed(4.316);
@@ -122,19 +123,20 @@ public class Player extends Entity{
         }
 
         getVelocity().get().add(controlMoveVel);
+        getHitbox().getVelocity().zero();
 
-        if(!Main.keyboard.isKeyPressed(GLFW_KEY_C)){
-            if(Main.keyboard.isKeyDown(GLFW_KEY_LEFT_CONTROL) && getVelocity().get().x!=0 && getVelocity().get().z!=0)
+        if(!E54.keyboard().isKeyPressed(GLFW_KEY_C)){
+            if(E54.keyboard().isKeyDown(GLFW_KEY_LEFT_CONTROL) && getVelocity().get().x!=0 && getVelocity().get().z!=0)
                 Controls.interpolateFov(Options.FOV+10);
-            else if(Main.keyboard.isKeyReleased(GLFW_KEY_LEFT_CONTROL))
+            else if(E54.keyboard().isKeyReleased(GLFW_KEY_LEFT_CONTROL))
                 Controls.interpolateFov(Options.FOV);
         }
-        if(Main.keyboard.isKeyDown(GLFW_KEY_C))
+        if(E54.keyboard().isKeyDown(GLFW_KEY_C))
             Controls.fov=Options.FOV/4;
-        else if(Main.keyboard.isKeyReleased(GLFW_KEY_C))
+        else if(E54.keyboard().isKeyReleased(GLFW_KEY_C))
             Controls.fov=Options.FOV;
 
-        ((GameScreen)Main.cfg.getScreen("game")).playerMoved(this);
+        ((GameScreen)E54.context().getScreen("game")).playerMoved(this);
 
         Controls.setPosition(getHitbox().getPosition().clone().add(getEye()));
     }

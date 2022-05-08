@@ -1,12 +1,14 @@
 package minecraft54.main.client.screens;
 
-import minecraft54.engine.app.AppScreen;
-import minecraft54.engine.audio.SoundManager;
-import minecraft54.engine.graphics.OrthographicCamera;
-import minecraft54.engine.graphics.SpriteBatch;
-import minecraft54.engine.ui.*;
-import minecraft54.engine.maths.Maths;
-import minecraft54.engine.util.Assets;
+
+import engine54.E54;
+import engine54.app.Screen;
+import engine54.audio.SoundManager;
+import engine54.graphics.SpriteBatch;
+import engine54.graphics.camera.OrthographicCamera;
+import engine54.maths.Maths;
+import engine54.ui.*;
+import engine54.util.Assets;
 import minecraft54.main.Main;
 import minecraft54.main.Options;
 import minecraft54.main.client.controls.Controls;
@@ -17,7 +19,7 @@ import minecraft54.main.util.GameMode;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F11;
 
-public class WorldCreateScreen implements AppScreen{
+public class WorldCreateScreen implements Screen{
 
 
     SpriteBatch sb;
@@ -29,7 +31,7 @@ public class WorldCreateScreen implements AppScreen{
 
     public void create(){
         sb=new SpriteBatch();
-        cam=new OrthographicCamera(Main.window);
+        cam=new OrthographicCamera(E54.window());
 
         layout=new Layout();
         layout.load("gui/worldCreate.json");
@@ -88,7 +90,7 @@ public class WorldCreateScreen implements AppScreen{
                 GameScreen.world=new World();
                 GameScreen.world.create(worldname,Generator.fromType.get(generator),Maths.randomSeed(8));
                 Controls.ignoreRotation();
-                Main.cfg.setScreen("game");
+                E54.context().setScreen("game");
                 GameScreen.startThreads();
             }
         });
@@ -98,16 +100,16 @@ public class WorldCreateScreen implements AppScreen{
     public void render(){
         cam.update();
 
-        sb.draw(Assets.getTexture("background"),0,0,Main.window.getWidth(),Main.window.getHeight());
+        sb.draw(Assets.getTexture("background"),0,0,E54.window().getWidth(),E54.window().getHeight());
 
-        layout.update(Main.mouse,Main.keyboard,Main.window);
+        layout.update(E54.mouse(),E54.keyboard(),E54.window());
         layout.render(sb);
 
-        if(Main.keyboard.isKeyDown(GLFW_KEY_ESCAPE))
-            Main.cfg.setScreen("world list");
+        if(E54.keyboard().isKeyDown(GLFW_KEY_ESCAPE))
+            E54.context().setScreen("world list");
 
-        if(Main.keyboard.isKeyDown(GLFW_KEY_F11))
-            Main.window.toggleFullscreen();
+        if(E54.keyboard().isKeyDown(GLFW_KEY_F11))
+            E54.window().toggleFullscreen();
 
         sb.render(cam);
     }
@@ -121,8 +123,8 @@ public class WorldCreateScreen implements AppScreen{
         sb.dispose();
     }
 
-    public void onSet(String arg){
-        layout.update(Main.mouse,Main.keyboard,Main.window);
+    public void set(String arg){
+        layout.update(E54.mouse(),E54.keyboard(),E54.window());
     }
 
 }

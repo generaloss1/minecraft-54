@@ -1,17 +1,20 @@
 package minecraft54.main.client.screens;
 
-import minecraft54.engine.app.AppScreen;
-import minecraft54.engine.audio.SoundManager;
-import minecraft54.engine.graphics.OrthographicCamera;
-import minecraft54.engine.graphics.SpriteBatch;
-import minecraft54.engine.ui.*;
-import minecraft54.engine.util.Assets;
+import engine54.E54;
+import engine54.app.Screen;
+import engine54.audio.SoundManager;
+import engine54.graphics.SpriteBatch;
+import engine54.graphics.camera.OrthographicCamera;
+import engine54.ui.Layout;
+import engine54.ui.LayoutElement;
+import engine54.ui.TouchCallback;
+import engine54.util.Assets;
 import minecraft54.main.Main;
 import minecraft54.main.Options;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class MenuScreen implements AppScreen{
+public class MenuScreen implements Screen{
 
 
     SpriteBatch sb;
@@ -21,7 +24,7 @@ public class MenuScreen implements AppScreen{
 
     public void create(){
         sb=new SpriteBatch();
-        cam=new OrthographicCamera(Main.window);
+        cam=new OrthographicCamera(E54.window());
 
         layout=new Layout();
         layout.load("gui/menu.json");
@@ -32,7 +35,7 @@ public class MenuScreen implements AppScreen{
             }
             public void touched(LayoutElement current){}
             public void touchOff(LayoutElement current){
-                Main.cfg.setScreen("world list");
+                E54.context().setScreen("world list");
             }
         });
         layout.getElement("btt2").setTouchCallback(new TouchCallback(){
@@ -41,7 +44,7 @@ public class MenuScreen implements AppScreen{
             }
             public void touched(LayoutElement current){}
             public void touchOff(LayoutElement current){
-                Main.cfg.setScreen("serverList");
+                E54.context().setScreen("serverList");
             }
         });
         layout.getElement("btt3").setTouchCallback(new TouchCallback(){
@@ -50,7 +53,7 @@ public class MenuScreen implements AppScreen{
             }
             public void touched(LayoutElement current){}
             public void touchOff(LayoutElement current){
-                Main.cfg.setScreen("settings");
+                E54.context().setScreen("settings");
             }
         });
         layout.getElement("btt4").setTouchCallback(new TouchCallback(){
@@ -68,16 +71,16 @@ public class MenuScreen implements AppScreen{
     public void render(){
         cam.update();
 
-        sb.draw(Assets.getTexture("background"),0,0,Main.window.getWidth(),Main.window.getHeight());
+        sb.draw(Assets.getTexture("background"),0,0,E54.window().getWidth(),E54.window().getHeight());
 
-        layout.update(Main.mouse,Main.keyboard,Main.window);
+        layout.update(E54.mouse(),E54.keyboard(),E54.window());
         layout.render(sb);
 
-        if(Main.keyboard.isKeyDown(GLFW_KEY_ESCAPE))
+        if(E54.keyboard().isKeyDown(GLFW_KEY_ESCAPE))
             System.exit(0);
 
-        if(Main.keyboard.isKeyDown(GLFW_KEY_F11))
-            Main.window.toggleFullscreen();
+        if(E54.keyboard().isKeyDown(GLFW_KEY_F11))
+            E54.window().toggleFullscreen();
 
         sb.render(cam);
     }
@@ -91,7 +94,7 @@ public class MenuScreen implements AppScreen{
         sb.dispose();
     }
 
-    public void onSet(String arg){}
+    public void set(String arg){}
 
 
 }

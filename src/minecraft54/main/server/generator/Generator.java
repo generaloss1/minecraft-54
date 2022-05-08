@@ -1,7 +1,7 @@
 package minecraft54.main.server.generator;
 
-import minecraft54.engine.maths.Maths;
-import minecraft54.engine.util.Random;
+import engine54.maths.Maths;
+import engine54.util.Random;
 import minecraft54.main.client.world.Block;
 import minecraft54.main.client.world.BlockData;
 import minecraft54.main.client.world.Chunk;
@@ -230,7 +230,7 @@ public class Generator{
         TEST_1=new Generator("Test-1",(Chunk chunk,long seed)->{
 
             Random treeGenerationRandom=new Random(seed+chunk.x*1000L+chunk.z);
-            minecraft54.engine.maths.SimplexNoise noise=new minecraft54.engine.maths.SimplexNoise();
+            engine54.maths.SimplexNoise noise=new engine54.maths.SimplexNoise();
             noise.genGrad(seed);
 
             for(int lx=0; lx<Chunk.WIDTH_X; lx++)

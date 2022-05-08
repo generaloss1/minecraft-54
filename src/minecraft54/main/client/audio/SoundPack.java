@@ -1,8 +1,8 @@
 package minecraft54.main.client.audio;
 
-import minecraft54.engine.maths.Maths;
-import minecraft54.engine.maths.vectors.Vector3f;
-import minecraft54.engine.util.Assets;
+import engine54.maths.Maths;
+import engine54.maths.vectors.Vector3f;
+import engine54.util.Assets;
 import minecraft54.main.Options;
 
 import java.util.ArrayList;

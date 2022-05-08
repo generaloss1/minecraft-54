@@ -1,6 +1,6 @@
 package minecraft54.main.util;
 
-import minecraft54.engine.maths.vectors.Vector3d;
+import engine54.maths.vectors.Vector3d;
 
 public class Location{
 

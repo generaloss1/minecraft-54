@@ -1,10 +1,11 @@
 package minecraft54.main.client.controls;
 
-import minecraft54.engine.graphics.PerspectiveCamera;
-import minecraft54.engine.maths.Intersector;
-import minecraft54.engine.maths.Maths;
-import minecraft54.engine.maths.vectors.Vector3f;
-import minecraft54.engine.maths.vectors.Vector3d;
+import engine54.E54;
+import engine54.graphics.camera.PerspectiveCamera;
+import engine54.maths.Intersector;
+import engine54.maths.Maths;
+import engine54.maths.vectors.Vector3d;
+import engine54.maths.vectors.Vector3f;
 import minecraft54.main.Main;
 import minecraft54.main.Minecraft54;
 import minecraft54.main.client.screens.GameScreen;
@@ -87,7 +88,7 @@ public class CursorRay{
                     }
                 }
 
-                ((GameScreen)Main.cfg.getScreen("game")).selectedBlock(x,y,z,side);
+                ((GameScreen)E54.context().getScreen("game")).selectedBlock(x,y,z,side);
 
                 break;
             }

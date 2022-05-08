@@ -1,13 +1,13 @@
 package minecraft54.main.client.world;
 
-import minecraft54.engine.graphics.ShaderProgram;
-import minecraft54.engine.maths.EulerAngle;
-import minecraft54.engine.maths.Maths;
-import minecraft54.engine.maths.Matrix4f;
-import minecraft54.engine.maths.vectors.Vector3f;
-import minecraft54.engine.maths.vectors.Vector3d;
-import minecraft54.engine.util.Assets;
-import minecraft54.engine.util.FastArrayList;
+import engine54.graphics.ShaderProgram;
+import engine54.maths.EulerAngle;
+import engine54.maths.Maths;
+import engine54.maths.Matrix4f;
+import engine54.maths.vectors.Vector3d;
+import engine54.maths.vectors.Vector3f;
+import engine54.util.Assets;
+import engine54.util.FastArrayList;
 import minecraft54.main.Options;
 import minecraft54.main.client.controls.Controls;
 import minecraft54.main.util.GameMode;
@@ -251,7 +251,7 @@ public class World{
         shader.bind();
         shader.setUniform("u_world",Controls.CAMERA.getView());
         shader.setUniform("u_proj",Controls.CAMERA.getProjection());
-        shader.setUniform("u_texture",Assets.getTexture3d("blocks"));
+        shader.setUniform("u_texture",Assets.getTexture3D("blocks"));
 
         shader.setUniform("u_camPos",new Vector3f(camPos));
 
